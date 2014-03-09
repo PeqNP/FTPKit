@@ -1,0 +1,8 @@
+0.13 mar 2011 now supports FTP gateway (ala emacs' ange-ftp)
+              through envvar FTP_GATEWAY
+
+0.12 aug 2006 include example toy application
+
+0.12 xxx 2004 not sure about the date...
+	      initial release
+

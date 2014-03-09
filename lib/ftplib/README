@@ -1,0 +1,11 @@
+
+README		this file
+Makefile
+version.h
+caml.c		functions for Ocaml bindings
+ftp.ml		Ocaml bindings
+ftp_var.h
+ftc.c		basic functionalities of the FTP protocol
+ftplib.h	ftplib API interface
+ftplib.c	ftplib implementation
+example.c	an example application
