@@ -104,14 +104,29 @@ do_init(void)
 	return 0;
 }
 
-
+int
+ftp_close(void)
+{
+	if (!connected)
+		return 1;
+	(void) command("QUIT");
+	if (cout) {
+		(void) fclose(cout);
+	}
+	cout = NULL;
+	connected = 0;
+	data = -1;
+	return 0;
+}
 
 int
 ftp_open(char *server, char *login, char *passwd)
 {
 	char *host;
 	unsigned short port;
+#if defined(__unix__) && CHAR_BIT == 8
 	int overbose;
+#endif
 	char reallogin[255];
 	char *gateway;
 
@@ -198,20 +213,6 @@ ftp_open(char *server, char *login, char *passwd)
 
 
 /* ZZZ */
-int
-ftp_close(void)
-{
-	if (!connected)
-		return 1;
-	(void) command("QUIT");
-	if (cout) {
-		(void) fclose(cout);
-	}
-	cout = NULL;
-	connected = 0;
-	data = -1;
-	return 0;
-}
 
 int
 ftp_cd(char *directory)

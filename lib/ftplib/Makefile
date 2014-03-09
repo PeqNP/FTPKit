@@ -20,7 +20,7 @@ all: libftp.a ftp.cmxa
 
 libftp.a: ftplib.o ftp.o caml.o
 	rm -f libftp.a
-	ar q libftp.a ftplib.o ftp.o caml.o
+	ar q libftp.a ftplib.o ftp.o #caml.o
 
 ftp.o ftplib.o: ftp_var.h ftplib.h version.h
 
