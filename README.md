@@ -167,7 +167,7 @@ If you add FTPKit to your project as a static library, you will need to set the 
 3. Add linker flags.
     - Open the "Build Settings" tab
 	- Find "Other Linker Flags" and set the value to **-ObjC -all_load**
-4. Add the FTPKit header file, **#import <FTPKit/FTPKit.h>**, where you want to use the library.
+4. Add the FTPKit header file, **#import \<FTPKit/FTPKit.h\>**, where you want to use the library.
 
 ![][1]
 
