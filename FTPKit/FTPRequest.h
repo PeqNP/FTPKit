@@ -1,4 +1,3 @@
-#import <Foundation/Foundation.h>
 #import "FTPCredentials.h"
 
 @class FTPRequest;

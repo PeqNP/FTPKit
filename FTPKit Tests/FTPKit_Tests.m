@@ -7,7 +7,7 @@
 //
 
 #import <XCTest/XCTest.h>
-#import "FTPKit.h"
+#import <FTPKit/FTPKit.h>
 
 @interface FTPKit_Tests : XCTestCase <FTPClientDelegate>
 @property (nonatomic, copy) void (^testBlock)(FTPClient *client, FTPRequest *request, BOOL failed);

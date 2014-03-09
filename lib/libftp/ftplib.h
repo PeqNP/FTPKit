@@ -10,19 +10,16 @@
 #include <sys/types.h>
 
 
-/* ------------------------------------------------------------------------
+/* ------------------------------------------------------------------------ 
   global parameters
-  they can be changed at any time between API calls
-*/
+  they can be changed at any time between API calls.
+ */
 
-int ftp_safeput = 1;  // if set, put to destfile".tmp", then rename
-int ftp_verbose = 0;
-int ftp_debug = 0;
-
-
-/* These default values are what you want. Believe me. */
-int ftp_passive = 1;
-int ftp_sendport = 0;
+extern int ftp_safeput;
+extern int ftp_verbose;
+extern int ftp_debug;
+extern int ftp_passive;
+extern int ftp_sendport;
 
 /* Other FTP "parameters" that you can't change:
 

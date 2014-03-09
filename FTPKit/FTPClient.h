@@ -1,5 +1,3 @@
-#import <Foundation/Foundation.h>
-
 #import "FTPHandle.h"
 #import "FTPCredentials.h"
 #import "FTPRequest.h"

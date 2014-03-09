@@ -51,17 +51,18 @@ char copyright[] =
 #include <netdb.h>
 #include <pwd.h>
 
-
 //
 #include <sys/stat.h>
 #include <sys/ioctl.h>
 #include <assert.h>
 
+int ftp_safeput = 1;  // if set, put to destfile".tmp", then rename
+int ftp_verbose = 0;
+int ftp_debug = 0;
 
-extern int ftp_safeput;
-extern int ftp_verbose;
-extern int ftp_sendport;
-extern int ftp_debug;
+/* These default values are what you want. Believe me. */
+int ftp_passive = 1;
+int ftp_sendport = 0;
 
 #define Extern
 #include "ftp_var.h"

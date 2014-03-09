@@ -1,8 +1,7 @@
+#import "FTPKit.h"
 #import "FTPChmodRequest.h"
 #import "NSError+Additions.h"
 #import "FTPKit+Protected.h"
-
-#import "ftplib.h"
 
 @implementation FTPChmodRequest
 
@@ -32,7 +31,7 @@
             [self didFailWithError:[NSError FTPKitErrorWithCode:425]];
             return;
         }
-        NSString *command = [NSString stringWithFormat:@"SITE CHMOD %@", self.path];
+        NSString *command = [NSString stringWithFormat:@"SITE CHMOD %i %@", mode, self.path];
         const char *cmd = [command cStringUsingEncoding:NSUTF8StringEncoding];
         char buffer[256];
         int ret = ftp_sendcommand(cmd, buffer, 256);
@@ -46,7 +45,7 @@
         }
         
 #ifdef DEBUG
-        FKLogDebug(@"Permissions changed on %@ to %d", self.path, mode);
+        FKLogDebug(@"Permissions changed on %@ to %i", self.path, mode);
 #endif
         
         [self didUpdateStatus:NSLocalizedString(@"CHMOD Done", @"")];
