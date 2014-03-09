@@ -19,7 +19,7 @@
 
 + (instancetype)requestWithCredentials:(FTPCredentials *)credentials path:(NSString *)path
 {
-    return [[FTPSingleResourceRequest alloc] initWithCredentials:credentials path:path];
+    return [[self alloc] initWithCredentials:credentials path:path];
 }
 
 + (instancetype)requestWithCredentials:(FTPCredentials *)credentials handle:(FTPHandle *)handle

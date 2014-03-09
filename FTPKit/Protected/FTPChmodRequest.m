@@ -9,7 +9,7 @@
 
 - (void)start
 {
-    if (mode < 0 || mode > 0777)
+    if (mode < 0 || mode > 777)
     {
         // Put this an NSError+Additions
         // [NSError FTPKitErrorWithString:code:]
@@ -31,6 +31,7 @@
             [self didFailWithError:[NSError FTPKitErrorWithCode:425]];
             return;
         }
+        FKLogDebug(@"%d %i", mode, mode);
         NSString *command = [NSString stringWithFormat:@"SITE CHMOD %i %@", mode, self.path];
         const char *cmd = [command cStringUsingEncoding:NSUTF8StringEncoding];
         char buffer[256];

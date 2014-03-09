@@ -206,7 +206,8 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         if ([self.delegate respondsToSelector:@selector(client:request:didChmodFile:toMode:)])
         {
-            [self.delegate client:self request:request didChmodFile:path toMode:[(FTPChmodRequest *)request mode]];
+            FTPChmodRequest *req = (FTPChmodRequest *)request;
+            [self.delegate client:self request:request didChmodFile:path toMode:req.mode];
         }
         [requests removeObject:request];
     });
