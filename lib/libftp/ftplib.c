@@ -120,7 +120,7 @@ ftp_close(void)
 }
 
 int
-ftp_open(char *server, char *login, char *passwd)
+ftp_open(const char *server, const char *login, const char *passwd)
 {
 	char *host;
 	unsigned short port;
@@ -446,7 +446,7 @@ ftp_putfileunique(char *local_file, char *remote_file,
 
 
 int
-ftp_sendcommand(char *cmd, char *buf, unsigned size)
+ftp_sendcommand(const char *cmd, char *buf, unsigned size)
 {
 	int r = command(cmd);
 	memcpy(buf, lreply, MIN(size,BUFSIZ));;

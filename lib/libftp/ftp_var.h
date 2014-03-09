@@ -86,7 +86,7 @@ Extern int	mflag;		/* flag: if != 0, then active multi command */
 
 Extern int	options;	/* used during socket creation */
 
-char *hookup(char *host, int port);
+char *hookup(const char *host, int port);
 int dologin(const char *luser, const char* passwd);
 int command(const char *fmt, ...);
 

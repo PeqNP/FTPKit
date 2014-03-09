@@ -35,7 +35,7 @@ int ftp_sendport = 0;
   basic API
 */
 
-int ftp_open(char* host, char* login, char* passwd);
+int ftp_open(const char* host, const char* login, const char* passwd);
 int ftp_close(void);
 
 
@@ -75,7 +75,7 @@ int ftp_putfileunique(char* local_name, char* remote_name,
    
    size is limited to BUFSIZ (but it won't be that long anyway) */
 
-int ftp_sendcommand(char *cmd, char *buffer, unsigned size);
+int ftp_sendcommand(const char *cmd, char *buffer, unsigned size);
 
 
 /* low level file transfer functions

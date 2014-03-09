@@ -94,7 +94,7 @@ FILE *cin, *cout;
 static FILE *dataconn(const char *);
 
 char *
-hookup(char *host, int port)
+hookup(const char *host, int port)
 {
 	register struct hostent *hp = 0;
 	int s, tos;
