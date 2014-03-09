@@ -544,6 +544,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/lib/libftp\"",
 				);
+				LINK_WITH_STANDARD_LIBRARIES = NO;
 				MACH_O_TYPE = mh_object;
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -573,6 +574,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/lib/libftp\"",
 				);
+				LINK_WITH_STANDARD_LIBRARIES = NO;
 				MACH_O_TYPE = mh_object;
 				OTHER_LDFLAGS = (
 					"-ObjC",
