@@ -31,13 +31,13 @@
             [self didFailWithError:[NSError FTPKitErrorWithCode:425]];
             return;
         }
-        FKLogDebug(@"%d %i", mode, mode);
         NSString *command = [NSString stringWithFormat:@"SITE CHMOD %i %@", mode, self.path];
+        FKLogDebug(@"command: %@", command);
         const char *cmd = [command cStringUsingEncoding:NSUTF8StringEncoding];
         char buffer[256];
         int ret = ftp_sendcommand(cmd, buffer, 256);
         NSString *response = [NSString stringWithCString:buffer encoding:NSUTF8StringEncoding];
-        NSLog(@"response: %@", response);
+        FKLogDebug(@"response: %d %@", ret, response);
         ftp_close();
         if (ret)
         {
@@ -45,10 +45,7 @@
             return;
         }
         
-#ifdef DEBUG
         FKLogDebug(@"Permissions changed on %@ to %i", self.path, mode);
-#endif
-        
         [self didUpdateStatus:NSLocalizedString(@"CHMOD Done", @"")];
         if ([self.delegate respondsToSelector:@selector(request:didChmodFile:)])
         {
