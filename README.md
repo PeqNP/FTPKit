@@ -1,5 +1,7 @@
 # FTPKit
 
+Version 0.1.0 -- The API design is complete. The logic is not. chmod is also not yet supported.
+
 FTPKit is an Objective-C library providing facilities implementing the client
 side of the File Transfer Protocol (FTP).
 
