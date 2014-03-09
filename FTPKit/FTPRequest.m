@@ -60,6 +60,10 @@
 
 - (void)didFailWithError:(NSError *)error
 {
+#ifdef DEBUG
+    FKLogError(@"Class (%@) didFailWithError (%@)", NSStringFromClass([self class]), error);
+#endif
+    
     [self stop];
 	if ([self.delegate respondsToSelector:@selector(request:didFailWithError:)])
     {
@@ -69,10 +73,6 @@
 
 - (void)didFailWithMessage:(NSString *)message
 {
-#ifdef DEBUG
-    FKLogDebug(@"Class (%@) didFailWithMessage (%@)", NSStringFromClass([self class]), message);
-#endif
-    
     NSError *error = [NSError errorWithDomain:FTPErrorDomain
                                          code:502
                                      userInfo:[NSDictionary dictionaryWithObject:message forKey:NSLocalizedDescriptionKey]];

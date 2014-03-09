@@ -58,7 +58,7 @@
 	if (self.networkStream != nil)
         return;
 	
-    self.remoteUrl = [self.credentials urlForPath:remotePath];
+    self.remoteUrl = [self.credentials urlForPath:[remotePath stringByDeletingLastPathComponent]];
     if (! remoteUrl)
     {
 		[self didFailWithMessage:NSLocalizedString(@"Invalid path", @"")];
@@ -66,7 +66,7 @@
 	}
 	self.remoteUrl = (__bridge_transfer NSURL *)CFURLCreateCopyAppendingPathComponent(NULL,
                                                                            (__bridge CFURLRef)remoteUrl,
-                                                                           (__bridge CFStringRef)[localPath lastPathComponent],
+                                                                           (__bridge CFStringRef)[remotePath lastPathComponent],
                                                                            false);
 	if (! remoteUrl)
     {
