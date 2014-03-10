@@ -18,7 +18,6 @@ for some of the remote functions such as chmod and sending arbitrary commands.
 - Download files
 - Change file mode on files (chmod)
 - All calls are asynchronous
-- Library is fully unit tested
 - Built with ARC
 
 # Tutorial

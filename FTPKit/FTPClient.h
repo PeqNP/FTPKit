@@ -8,11 +8,11 @@
 
 @optional
 
-- (void)client:(FTPClient *)client request:(FTPRequest *)request didChmodFile:(NSString *)path toMode:(int)mode;
-- (void)client:(FTPClient *)client request:(FTPRequest *)request didDeleteFile:(NSString *)path;
+- (void)client:(FTPClient *)client request:(FTPRequest *)request didChmodPath:(NSString *)path toMode:(int)mode;
+- (void)client:(FTPClient *)client request:(FTPRequest *)request didCreateDirectory:(NSString *)path;
+- (void)client:(FTPClient *)client request:(FTPRequest *)request didDeletePath:(NSString *)path;
 - (void)client:(FTPClient *)client request:(FTPRequest *)request didDownloadFile:(NSString *)remotePath to:(NSString *)localPath;
 - (void)client:(FTPClient *)client request:(FTPRequest *)request didListContents:(NSArray *)contents;
-- (void)client:(FTPClient *)client request:(FTPRequest *)request didMakeDirectory:(NSString *)path;
 - (void)client:(FTPClient *)client request:(FTPRequest *)request didUploadFile:(NSString *)localPath to:(NSString *)remotePath;
 
 - (void)client:(FTPClient *)client request:(FTPRequest *)request didUpdateStatus:(NSString *)status;
@@ -127,12 +127,20 @@
 - (FTPRequest *)createDirectoryAtHandle:(FTPHandle *)handle;
 
 /**
- Delete a file or folder at a specified remote path.
+ Delete folder at specified remote path.
+ 
+ @param remotePath The path of the remote directory to delete.
+ @return FTPRequest The request instance.
+ */
+- (FTPRequest *)deleteDirectoryAtPath:(NSString *)remotePath;
+
+/**
+ Delete a file at a specified remote path.
  
  @param remotePath The path to the remote resource to delete.
  @return FTPRequest The request instance.
  */
-- (FTPRequest *)deleteFile:(NSString *)remotePath;
+- (FTPRequest *)deleteFileAtPath:(NSString *)remotePath;
 
 /**
  Delete a remote handle from the server.
@@ -149,7 +157,7 @@
  @param mode File mode to change to.
  @return FTPRequest The request instance.
  */
-- (FTPRequest *)chmodFile:(NSString *)remotePath toMode:(int)mode;
+- (FTPRequest *)chmodPath:(NSString *)remotePath toMode:(int)mode;
 
 /**
  Change file mode of a remote handle.

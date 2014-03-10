@@ -46,7 +46,7 @@
 
 - (FTPRequest *)listContentsAtPath:(NSString *)path showHiddenFiles:(BOOL)showHiddenFiles
 {
-    FTPHandle *hdl = [FTPHandle handleAtPath:path];
+    FTPHandle *hdl = [FTPHandle handleAtPath:path type:FTPHandleTypeDirectory];
     return [self listContentsAtHandle:hdl showHiddenFiles:showHiddenFiles];
 }
 
@@ -62,7 +62,7 @@
 
 - (FTPRequest *)downloadFile:(NSString *)remotePath to:(NSString *)localPath
 {
-    return [self downloadHandle:[FTPHandle handleAtPath:remotePath] to:localPath];
+    return [self downloadHandle:[FTPHandle handleAtPath:remotePath type:FTPHandleTypeFile] to:localPath];
 }
 
 - (FTPRequest *)downloadHandle:(FTPHandle *)handle to:(NSString *)localPath
@@ -87,7 +87,7 @@
 
 - (FTPRequest *)createDirectoryAtPath:(NSString *)remotePath
 {
-    return [self createDirectoryAtHandle:[FTPHandle handleAtPath:remotePath]];
+    return [self createDirectoryAtHandle:[FTPHandle handleAtPath:remotePath type:FTPHandleTypeDirectory]];
 }
 
 - (FTPRequest *)createDirectoryAtHandle:(FTPHandle *)handle
@@ -99,9 +99,14 @@
     return request;
 }
 
-- (FTPRequest *)deleteFile:(NSString *)remotePath
+- (FTPRequest *)deleteDirectoryAtPath:(NSString *)remotePath
 {
-    return [self deleteHandle:[FTPHandle handleAtPath:remotePath]];
+    return [self deleteHandle:[FTPHandle handleAtPath:remotePath type:FTPHandleTypeDirectory]];
+}
+
+- (FTPRequest *)deleteFileAtPath:(NSString *)remotePath
+{
+    return [self deleteHandle:[FTPHandle handleAtPath:remotePath type:FTPHandleTypeFile]];
 }
 
 - (FTPRequest *)deleteHandle:(FTPHandle *)handle
@@ -113,9 +118,9 @@
     return request;
 }
 
-- (FTPRequest *)chmodFile:(NSString *)remotePath toMode:(int)mode
+- (FTPRequest *)chmodPath:(NSString *)remotePath toMode:(int)mode
 {
-    return [self chmodHandle:[FTPHandle handleAtPath:remotePath] toMode:mode];
+    return [self chmodHandle:[FTPHandle handleAtPath:remotePath type:FTPHandleTypeUnknown] toMode:mode];
 }
 
 - (FTPRequest *)chmodHandle:(FTPHandle *)handle toMode:(int)mode
@@ -166,32 +171,32 @@
 - (void)request:(FTPRequest *)request didMakeDirectory:(NSString *)path
 {
     dispatch_async(dispatch_get_main_queue(), ^{
-        if ([self.delegate respondsToSelector:@selector(client:request:didMakeDirectory:)])
+        if ([self.delegate respondsToSelector:@selector(client:request:didCreateDirectory:)])
         {
-            [self.delegate client:self request:request didMakeDirectory:path];
+            [self.delegate client:self request:request didCreateDirectory:path];
         }
         [requests removeObject:request];
     });
 }
 
-- (void)request:(FTPRequest *)request didDeleteFile:(NSString *)path
+- (void)request:(FTPRequest *)request didDeletePath:(NSString *)path
 {
     dispatch_async(dispatch_get_main_queue(), ^{
-        if ([self.delegate respondsToSelector:@selector(client:request:didDeleteFile:)])
+        if ([self.delegate respondsToSelector:@selector(client:request:didDeletePath:)])
         {
-            [self.delegate client:self request:request didDeleteFile:path];
+            [self.delegate client:self request:request didDeletePath:path];
         }
         [requests removeObject:request];
     });
 }
 
-- (void)request:(FTPRequest *)request didChmodFile:(NSString *)path
+- (void)request:(FTPRequest *)request didChmodPath:(NSString *)path
 {
     dispatch_async(dispatch_get_main_queue(), ^{
-        if ([self.delegate respondsToSelector:@selector(client:request:didChmodFile:toMode:)])
+        if ([self.delegate respondsToSelector:@selector(client:request:didChmodPath:toMode:)])
         {
             FTPChmodRequest *req = (FTPChmodRequest *)request;
-            [self.delegate client:self request:request didChmodFile:path toMode:req.mode];
+            [self.delegate client:self request:request didChmodPath:path toMode:req.mode];
         }
         [requests removeObject:request];
     });

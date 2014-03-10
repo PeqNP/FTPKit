@@ -62,6 +62,7 @@
         return;
 	}
     
+    bytesTotal = self.handle.size;
 	bytesDownloaded = 0;
 
 	[self didUpdateStatus:[NSString stringWithFormat:@"GET %@", handle.path]];
@@ -147,8 +148,7 @@
         case NSStreamEventOpenCompleted:
         {
             [self didUpdateStatus:NSLocalizedString(@"Opened connection", @"")];
-            break;
-        }
+        } break;
         case NSStreamEventHasBytesAvailable:
         {
             [self didUpdateStatus:NSLocalizedString(@"Downloading", @"")];
@@ -187,8 +187,7 @@
                     
                 } while (bytesWrittenSoFar != bytesRead);
             }
-            break;
-        }
+        } break;
         case NSStreamEventErrorOccurred:
         {
             CFStreamError err = CFReadStreamGetError((__bridge CFReadStreamRef)self.networkStream);
@@ -200,13 +199,11 @@
             {
                 [self didFailWithError:[aStream streamError]];
             }
-            break;
-        }
+        } break;
         case NSStreamEventEndEncountered:
         {
             [self didFinish];
-            break;
-        }
+        } break;
         case NSStreamEventHasSpaceAvailable: // Does not get called when downloading files.
         default:
             break;

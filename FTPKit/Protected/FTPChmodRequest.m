@@ -22,7 +22,6 @@
     
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0);
     dispatch_async(queue, ^{
-        
         const char *host = [self.credentials.host cStringUsingEncoding:NSUTF8StringEncoding];
         const char *login = [self.credentials.username cStringUsingEncoding:NSUTF8StringEncoding];
         const char *password = [self.credentials.password cStringUsingEncoding:NSUTF8StringEncoding];
@@ -44,12 +43,11 @@
             [self didFailWithError:[NSError FTPKitErrorWithCode:550]];
             return;
         }
-        
         FKLogDebug(@"Permissions changed on %@ to %i", self.handle.path, mode);
         [self didUpdateStatus:NSLocalizedString(@"CHMOD Done", @"")];
-        if ([self.delegate respondsToSelector:@selector(request:didChmodFile:)])
+        if ([self.delegate respondsToSelector:@selector(request:didChmodPath:)])
         {
-            [self.delegate request:self didChmodFile:self.handle.path];
+            [self.delegate request:self didChmodPath:self.handle.path];
         }
     });
 }

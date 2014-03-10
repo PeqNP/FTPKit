@@ -145,8 +145,7 @@
         case NSStreamEventOpenCompleted:
         {
             [self didUpdateStatus:NSLocalizedString(@"Opened connection", @"")];
-            break;
-        }
+        } break;
         case NSStreamEventHasSpaceAvailable:
         {
             [self didUpdateStatus:NSLocalizedString(@"Uploading", @"")];
@@ -187,8 +186,7 @@
                     [self didUpdateProgress:progress];
                 }
             }
-            break;
-        }
+        } break;
         case NSStreamEventErrorOccurred:
         {
             CFStreamError err;
@@ -201,16 +199,13 @@
             {
                 [self didFailWithError:[aStream streamError]];
             }
-            
-            break;
-        }
+        } break;
         case NSStreamEventEndEncountered:
         {
             // We're the one responsible for "ending" the request. Therefore,
             // this will never get executed. It's here for sanity only.
             [self didFinish];
-            break;
-        }
+        } break;
         case NSStreamEventHasBytesAvailable:
         default:
             break;

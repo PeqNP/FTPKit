@@ -12,8 +12,8 @@
  * by the FTPDeleteFileRequest, etc.
  */
 
-- (void)request:(FTPRequest *)request didChmodFile:(NSString *)path;
-- (void)request:(FTPRequest *)request didDeleteFile:(NSString *)path;
+- (void)request:(FTPRequest *)request didChmodPath:(NSString *)path;
+- (void)request:(FTPRequest *)request didDeletePath:(NSString *)path;
 - (void)request:(FTPRequest *)request didDownloadFile:(NSString *)remotePath to:(NSString *)localPath;
 - (void)request:(FTPRequest *)request didList:(NSArray *)handles;
 - (void)request:(FTPRequest *)request didMakeDirectory:(NSString *)path;

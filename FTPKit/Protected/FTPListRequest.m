@@ -178,8 +178,7 @@
         case NSStreamEventOpenCompleted:
         {
             [self didUpdateStatus:NSLocalizedString(@"Opened connection", @"")];
-            break;
-        }
+        } break;
         case NSStreamEventHasBytesAvailable:
         {
             NSInteger bytesRead;
@@ -196,8 +195,7 @@
                 [self.listData appendBytes:buffer length:bytesRead];
                 [self parseListData];
             }
-            break;
-        }
+        } break;
         case NSStreamEventErrorOccurred:
         {
             CFStreamError err = CFReadStreamGetError((__bridge CFReadStreamRef)self.networkStream);
@@ -209,8 +207,7 @@
             {
                 [self didFailWithError:[aStream streamError]];
             }
-            break;
-        }
+        } break;
         case NSStreamEventEndEncountered:
         {
 #ifdef DEBUG
@@ -225,8 +222,7 @@
             {
                 [self.delegate request:self didList:entries];
             }
-            break;
-        }
+        } break;
         case NSStreamEventHasSpaceAvailable:
         default:
 			break;

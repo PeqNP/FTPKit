@@ -39,7 +39,7 @@ typedef enum {
  @param path Full path of remote resource.
  @return instancetype
  */
-+ (instancetype)handleAtPath:(NSString *)path;
++ (instancetype)handleAtPath:(NSString *)path type:(FTPHandleType)type;
 
 /**
  Create handle from CFFTPResource* dictionary attributes.
@@ -56,7 +56,7 @@ typedef enum {
  @param path Full path of remote resource.
  @return instancetype
  */
-- (instancetype)initWithPath:(NSString *)path;
+- (instancetype)initWithPath:(NSString *)path type:(FTPHandleType)type;
 
 /**
  If mode set, returns string representation of file permissions.

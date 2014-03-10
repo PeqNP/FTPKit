@@ -36,12 +36,12 @@ int ftp_open(const char* host, const char* login, const char* passwd);
 int ftp_close(void);
 
 
-int ftp_cd(char* directory);
-int ftp_mkdir(char* directory);
-int ftp_rmdir(char* directory);
+int ftp_cd(const char* directory);
+int ftp_mkdir(const char* directory);
+int ftp_rmdir(const char* directory);
 
-int ftp_rename(char* oldname, char* newname);
-int ftp_delete(char* filename);
+int ftp_rename(const char* oldname, const char* newname);
+int ftp_delete(const char* filename);
 
 int ftp_ls(int long_ls, char* file_or_dir, int (*cons)(char*,unsigned));
 

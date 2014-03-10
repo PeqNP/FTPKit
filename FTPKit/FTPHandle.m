@@ -35,9 +35,9 @@
     return [[self alloc] initWithPath:path attributes:attributes];
 }
 
-+ (instancetype)handleAtPath:(NSString *)path
++ (instancetype)handleAtPath:(NSString *)path type:(FTPHandleType)type
 {
-    return [[self alloc] initWithPath:path];
+    return [[self alloc] initWithPath:path type:type];
 }
 
 - (instancetype)initWithPath:(NSString *)aPath attributes:(NSDictionary *)aAttributes
@@ -66,7 +66,7 @@
 	return self;
 }
 
-- (instancetype)initWithPath:(NSString *)aPath
+- (instancetype)initWithPath:(NSString *)aPath type:(FTPHandleType)aType
 {
     self = [super init];
     if (self)
@@ -78,7 +78,7 @@
         self.name = [aPath lastPathComponent];
         self.owner = nil;
         self.size = 0;
-        self.type = FTPHandleTypeUnknown;
+        self.type = aType;
         self.path = aPath;
     }
     return self;

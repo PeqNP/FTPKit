@@ -1,3 +1,4 @@
+#import "FTPKit.h"
 #import "FTPDeleteFileRequest.h"
 #import "NSError+Additions.h"
 #import "FTPKit+Protected.h"
@@ -8,28 +9,33 @@
 
 - (void)start
 {
-	NSURL *url = [self.credentials urlForPath:self.handle.path];
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0);
     dispatch_async(queue, ^{
-        SInt32 status = 0;
-        // I believe I need to use [NSFileManager removeItemAtUrl:NSURL]. However,
-        // I don't know what the format of the URL should be to do this.
-        BOOL success = CFURLDestroyResource((__bridge CFURLRef)url, &status);
-        if (success)
+        const char *host = [self.credentials.host cStringUsingEncoding:NSUTF8StringEncoding];
+        const char *login = [self.credentials.username cStringUsingEncoding:NSUTF8StringEncoding];
+        const char *password = [self.credentials.password cStringUsingEncoding:NSUTF8StringEncoding];
+        if (ftp_open(host, login, password))
         {
-#ifdef DEBUG
-            FKLogDebug(@"Deleted: %@", self.handle.path);
-#endif
-            
-            [self didUpdateStatus:NSLocalizedString(@"DEL Done", @"")];
-            if ([self.delegate respondsToSelector:@selector(request:didDeleteFile:)])
-            {
-                [self.delegate request:self didDeleteFile:self.handle.path];
-            }
+            [self didFailWithError:[NSError FTPKitErrorWithCode:425]];
+            return;
         }
+        const char *path = [self.handle.path cStringUsingEncoding:NSUTF8StringEncoding];
+        int ret = 0;
+        if (self.handle.type == FTPHandleTypeDirectory)
+            ret = ftp_rmdir(path);
         else
+            ret = ftp_delete(path);
+        ftp_close();
+        if (ret)
         {
-            [self didFailWithError:[NSError FTPKitErrorWithCode:(int)status]];
+            [self didFailWithError:[NSError FTPKitErrorWithCode:550]];
+            return;
+        }
+        FKLogDebug(@"Deleted %@", self.handle.path);
+        [self didUpdateStatus:NSLocalizedString(@"DEL Done", @"")];
+        if ([self.delegate respondsToSelector:@selector(request:didDeletePath:)])
+        {
+            [self.delegate request:self didDeletePath:self.handle.path];
         }
     });
 }

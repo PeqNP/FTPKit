@@ -216,7 +216,7 @@ ftp_open(const char *server, const char *login, const char *passwd)
 /* ZZZ */
 
 int
-ftp_cd(char *directory)
+ftp_cd(const char *directory)
 {
 	int r;
 
@@ -241,13 +241,13 @@ ftp_cd(char *directory)
 }
 
 int
-ftp_delete(char *file)
+ftp_delete(const char *file)
 {
         return (command("DELE %s", file) != COMPLETE);
 }
 
 int
-ftp_rename(char *oldname, char *newname)
+ftp_rename(const char *oldname, const char *newname)
 {
 	int r;
 	r = command("RNFR %s", oldname);
@@ -257,7 +257,7 @@ ftp_rename(char *oldname, char *newname)
 
 
 int
-ftp_mkdir(char *directory)
+ftp_mkdir(const char *directory)
 {
 	int r;
 	r = command("MKD %s", directory);
@@ -270,7 +270,7 @@ ftp_mkdir(char *directory)
 }
 
 int
-ftp_rmdir(char *directory)
+ftp_rmdir(const char *directory)
 {
 	int r;
 	r = command("RMD %s", directory);
