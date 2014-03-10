@@ -53,14 +53,14 @@ for some of the remote functions such as chmod and sending arbitrary commands.
 
 ## Create a new directory
 
-Continuing on from our previous example, below shows you how you can create a remote directory.
+Continuing on from our previous example; below shows how to create a remote directory.
 
     [client createDirectoryAtPath:@"/my_new_folder"];
 
     ...
 
     // Delegate callback will inform you when the request is complete.
-    - (void)client:(FTPClient *)client request:(FTPRequest *)request didMakeDirectory:(NSString *)path
+    - (void)client:(FTPClient *)client request:(FTPRequest *)request didCreateDirectory:(NSString *)path
     {
         // Add file to the list of files you are tracking?
     }
@@ -110,8 +110,7 @@ Continuing on from our previous example, below shows you how you can create a re
 
 ## Cancel a request
 
-Most requests can be cancelled. In the instance where you need to cancel the
-request, do the following:
+Most requests can be cancelled. In the instance where you need to cancel the request, do the following:
 
     // Keep the request object around until we no longer need it.
     FTPRequest *request = [client downloadFile:@"my_remote_movie.mp4" to:@"/my/local/my_movie.mp4"];
@@ -129,9 +128,7 @@ request, do the following:
 
 ## Update status of requests
 
-As requests process, they will periodically notify the delegate of their
-status. Implement the following delegate callbacks to inform your end-user
-of the status.
+As requests process, they will periodically notify the delegate of their status. Implement the following delegate callbacks to inform your end-user of the status.
 
     - (void)client:(FTPClient *)client request:(FTPRequest *)request didUpdateProgress:(float)progress
     {
