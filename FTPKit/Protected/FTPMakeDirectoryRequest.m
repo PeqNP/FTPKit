@@ -17,28 +17,14 @@
 @synthesize directoryURL;
 @synthesize name;
 
-@synthesize path;
 @synthesize remoteUrl;
 
-+ (instancetype)requestWithCredentials:(FTPCredentials *)credentials path:(NSString *)path
+- (instancetype)initWithCredentials:(FTPCredentials *)aCredentials handle:(FTPHandle *)handle
 {
-    return [[FTPMakeDirectoryRequest alloc] initWithCredentials:credentials path:path];
-}
-
-- (instancetype)initWithCredentials:(FTPCredentials *)aCredentials path:(NSString *)aPath
-{
-    self = [super initWithCredentials:aCredentials];
+    self = [super initWithCredentials:aCredentials handle:handle];
     if (self)
     {
         self.networkStream = nil;
-        self.path = aPath;
-        self.remoteUrl = [self.credentials urlForPath:path];
-        
-        // Make sure directory has ending whack.
-        if (! [[remoteUrl absoluteString] hasSuffix:@"/"])
-        {
-            remoteUrl = [NSURL URLWithString:[NSString stringWithFormat:@"%@/", [remoteUrl absoluteString]]];
-        }
     }
     return self;
 }
@@ -76,7 +62,7 @@
         return;
 	}
     
-	[self didUpdateStatus:[NSString stringWithFormat:NSLocalizedString(@"MKD %@", @""), path]];
+	[self didUpdateStatus:[NSString stringWithFormat:NSLocalizedString(@"MKD %@", @""), self.handle.path]];
 	
 	self.networkStream = (__bridge_transfer NSOutputStream *)CFWriteStreamCreateWithFTPURL(NULL, (__bridge CFURLRef)remoteUrl);
     if (! networkStream)
@@ -133,13 +119,13 @@
         case NSStreamEventEndEncountered:
         {
 #ifdef DEBUG
-            FKLogDebug(@"Created dir: %@", path);
+            FKLogDebug(@"Created dir: %@", self.handle.path);
 #endif
             [self stop];
             [self didUpdateStatus:NSLocalizedString(@"MKD Done", @"")];
             if ([self.delegate respondsToSelector:@selector(request:didMakeDirectory:)])
             {
-                [self.delegate request:self didMakeDirectory:path];
+                [self.delegate request:self didMakeDirectory:self.handle.path];
             }
             break;
         }

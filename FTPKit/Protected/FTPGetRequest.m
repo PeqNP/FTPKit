@@ -27,15 +27,9 @@
 @synthesize localPath;
 @synthesize remoteUrl;
 
-+ (instancetype)requestWithCredentials:(FTPCredentials *)credentials downloadFile:(NSString *)remotePath to:(NSString *)localPath
-{
-    FTPHandle *handle = [FTPHandle handleAtPath:remotePath];
-    return [FTPGetRequest requestWithCredentials:credentials downloadHandle:handle to:localPath];
-}
-
 + (instancetype)requestWithCredentials:(FTPCredentials *)credentials downloadHandle:(FTPHandle *)handle to:(NSString *)localPath
 {
-    return [[FTPGetRequest alloc] initWithCredentials:credentials downloadHandle:handle to:localPath];
+    return [[self alloc] initWithCredentials:credentials downloadHandle:handle to:localPath];
 }
 
 - (instancetype)initWithCredentials:(FTPCredentials *)credentials downloadHandle:(FTPHandle *)aHandle to:(NSString *)aLocalPath
@@ -47,7 +41,6 @@
         self.fileStream = nil;
         self.handle = aHandle;
         self.localPath = aLocalPath;
-        self.remoteUrl = [self.credentials urlForPath:handle.path];
     }
     return self;
 }
@@ -62,6 +55,7 @@
 	if (self.networkStream)
         return;
 	
+    self.remoteUrl = [self.credentials urlForPath:handle.path];
 	if (! remoteUrl)
     {
 		[self didFailWithMessage:NSLocalizedString(@"Invalid path", @"")];

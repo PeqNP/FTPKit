@@ -11,14 +11,11 @@
 
 @interface FTPSingleResourceRequest : FTPRequest
 
-@property (nonatomic, readonly) NSString *path;
-@property (nonatomic, readonly) FTPHandle *handle; // @todo
-
-+ (instancetype)requestWithCredentials:(FTPCredentials *)credentials path:(NSString *)path;
+@property (nonatomic, readonly) FTPHandle *handle;
 
 // @todo
 + (instancetype)requestWithCredentials:(FTPCredentials *)credentials handle:(FTPHandle *)handle;
 
-- (instancetype)initWithCredentials:(FTPCredentials *)credentials path:(NSString *)path;
+- (instancetype)initWithCredentials:(FTPCredentials *)credentials handle:(FTPHandle *)handle;
 
 @end

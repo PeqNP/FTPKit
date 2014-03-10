@@ -115,7 +115,7 @@
  @param remotePath Path to remote directory where file should be created.
  @return FTPRequest The request instance.
  */
-- (FTPRequest *)createDirectory:(NSString *)directoryName atPath:(NSString *)remotePath;
+- (FTPRequest *)createDirectoryAtPath:(NSString *)remotePath;
 
 /**
  Create remote directory within the handle's location.
@@ -124,7 +124,7 @@
  @param remotePath Path to remote directory where file should be created.
  @return FTPRequest The request instance.
  */
-- (FTPRequest *)createDirectory:(NSString *)directoryName atHandle:(FTPHandle *)handle;
+- (FTPRequest *)createDirectoryAtHandle:(FTPHandle *)handle;
 
 /**
  Delete a file or folder at a specified remote path.

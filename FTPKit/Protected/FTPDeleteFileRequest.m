@@ -8,7 +8,7 @@
 
 - (void)start
 {
-	NSURL *url = [self.credentials urlForPath:self.path];
+	NSURL *url = [self.credentials urlForPath:self.handle.path];
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0);
     dispatch_async(queue, ^{
         SInt32 status = 0;
@@ -18,13 +18,13 @@
         if (success)
         {
 #ifdef DEBUG
-            FKLogDebug(@"Deleted: %@", self.path);
+            FKLogDebug(@"Deleted: %@", self.handle.path);
 #endif
             
             [self didUpdateStatus:NSLocalizedString(@"DEL Done", @"")];
             if ([self.delegate respondsToSelector:@selector(request:didDeleteFile:)])
             {
-                [self.delegate request:self didDeleteFile:self.path];
+                [self.delegate request:self didDeleteFile:self.handle.path];
             }
         }
         else

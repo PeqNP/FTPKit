@@ -31,7 +31,7 @@
             [self didFailWithError:[NSError FTPKitErrorWithCode:425]];
             return;
         }
-        NSString *command = [NSString stringWithFormat:@"SITE CHMOD %i %@", mode, self.path];
+        NSString *command = [NSString stringWithFormat:@"SITE CHMOD %i %@", mode, self.handle.path];
         FKLogDebug(@"command: %@", command);
         const char *cmd = [command cStringUsingEncoding:NSUTF8StringEncoding];
         char buffer[256];
@@ -45,11 +45,11 @@
             return;
         }
         
-        FKLogDebug(@"Permissions changed on %@ to %i", self.path, mode);
+        FKLogDebug(@"Permissions changed on %@ to %i", self.handle.path, mode);
         [self didUpdateStatus:NSLocalizedString(@"CHMOD Done", @"")];
         if ([self.delegate respondsToSelector:@selector(request:didChmodFile:)])
         {
-            [self.delegate request:self didChmodFile:self.path];
+            [self.delegate request:self didChmodFile:self.handle.path];
         }
     });
 }

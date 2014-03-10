@@ -32,12 +32,12 @@
 
 + (instancetype)handleAtPath:(NSString *)path attributes:(NSDictionary *)attributes
 {
-    return [[FTPHandle alloc] initWithPath:path attributes:attributes];
+    return [[self alloc] initWithPath:path attributes:attributes];
 }
 
 + (instancetype)handleAtPath:(NSString *)path
 {
-    return [[FTPHandle alloc] initWithPath:path];
+    return [[self alloc] initWithPath:path];
 }
 
 - (instancetype)initWithPath:(NSString *)aPath attributes:(NSDictionary *)aAttributes

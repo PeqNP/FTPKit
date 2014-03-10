@@ -44,31 +44,25 @@
 	return [self initWithCredentials:creds];
 }
 
-- (FTPRequest *)listContentsAtPath:(NSString *)path showHiddenFiles:(BOOL)showHiddenItems
+- (FTPRequest *)listContentsAtPath:(NSString *)path showHiddenFiles:(BOOL)showHiddenFiles
 {
-	FTPListRequest *request = [FTPListRequest requestWithCredentials:credentials path:path];
-    request.showHiddenItems = showHiddenItems;
-	request.delegate = self;
-	[requests addObject:request];
-	[request start];
-    return request;
+    FTPHandle *hdl = [FTPHandle handleAtPath:path];
+    return [self listContentsAtHandle:hdl showHiddenFiles:showHiddenFiles];
 }
 
 - (FTPRequest *)listContentsAtHandle:(FTPHandle *)handle showHiddenFiles:(BOOL)showHiddenFiles
 {
-    // @todo
-    return nil;
-}
-
-- (FTPRequest *)downloadFile:(NSString *)remotePath to:(NSString *)localPath
-{
-	FTPGetRequest *request = [FTPGetRequest requestWithCredentials:credentials
-                                                      downloadFile:remotePath
-                                                                to:localPath];
+    FTPListRequest *request = [FTPListRequest requestWithCredentials:credentials handle:handle];
+    request.showHiddenItems = showHiddenFiles;
 	request.delegate = self;
 	[requests addObject:request];
 	[request start];
     return request;
+}
+
+- (FTPRequest *)downloadFile:(NSString *)remotePath to:(NSString *)localPath
+{
+    return [self downloadHandle:[FTPHandle handleAtPath:remotePath] to:localPath];
 }
 
 - (FTPRequest *)downloadHandle:(FTPHandle *)handle to:(NSString *)localPath
@@ -91,52 +85,42 @@
     return request;
 }
 
-- (FTPRequest *)createDirectory:(NSString *)directoryName atPath:(NSString *)remotePath
+- (FTPRequest *)createDirectoryAtPath:(NSString *)remotePath
 {
-    NSString *path = [directoryName hasSuffix:@"/"]
-                   ? [directoryName stringByAppendingPathComponent:remotePath]
-                   : [NSString stringWithFormat:@"%@/%@", remotePath, directoryName];
-	FTPMakeDirectoryRequest* request = [FTPMakeDirectoryRequest requestWithCredentials:credentials path:path];
+    return [self createDirectoryAtHandle:[FTPHandle handleAtPath:remotePath]];
+}
+
+- (FTPRequest *)createDirectoryAtHandle:(FTPHandle *)handle
+{
+	FTPMakeDirectoryRequest* request = [FTPMakeDirectoryRequest requestWithCredentials:credentials handle:handle];
 	request.delegate = self;
 	[requests addObject:request];
 	[request start];
     return request;
 }
 
-- (FTPRequest *)createDirectory:(NSString *)directoryName atHandle:(FTPHandle *)handle
+- (FTPRequest *)deleteFile:(NSString *)remotePath
 {
-    // @todo
-    return nil;
-}
-
-- (FTPRequest *)deleteFile:(NSString *)filePath
-{
-	FTPDeleteFileRequest* request = [FTPDeleteFileRequest requestWithCredentials:credentials path:filePath];
-	request.delegate = self;
-	[requests addObject:request];
-	[request start];
-    return request;
+    return [self deleteHandle:[FTPHandle handleAtPath:remotePath]];
 }
 
 - (FTPRequest *)deleteHandle:(FTPHandle *)handle
 {
-    // @todo
-    return nil;
+	FTPDeleteFileRequest* request = [FTPDeleteFileRequest requestWithCredentials:credentials handle:handle];
+	request.delegate = self;
+	[requests addObject:request];
+	[request start];
+    return request;
 }
 
 - (FTPRequest *)chmodFile:(NSString *)remotePath toMode:(int)mode
 {
-    FTPChmodRequest *request = [FTPChmodRequest requestWithCredentials:credentials path:remotePath];
-    request.mode = mode;
-    request.delegate = self;
-    [requests addObject:request];
-    [request start];
-    return request;
+    return [self chmodHandle:[FTPHandle handleAtPath:remotePath] toMode:mode];
 }
 
 - (FTPRequest *)chmodHandle:(FTPHandle *)handle toMode:(int)mode
 {
-    FTPChmodRequest *request = [FTPChmodRequest requestWithCredentials:credentials path:handle.path];
+    FTPChmodRequest *request = [FTPChmodRequest requestWithCredentials:credentials handle:handle];
     request.mode = mode;
     request.delegate = self;
     [requests addObject:request];

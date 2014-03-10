@@ -40,14 +40,14 @@
 	if (self.networkStream)
         return;
 	
-    self.remoteUrl = [self.credentials urlForPath:self.path];
+    self.remoteUrl = [self.credentials urlForPath:self.handle.path];
     if (! remoteUrl)
     {
 		[self didFailWithMessage:NSLocalizedString(@"Invalid path", @"")];
         return;
 	}
     
-	[self didUpdateStatus:[NSString stringWithFormat:NSLocalizedString(@"LIST %@", @""), self.path]];
+	[self didUpdateStatus:[NSString stringWithFormat:NSLocalizedString(@"LIST %@", @""), self.handle.path]];
 	
 	self.listData = [NSMutableData data];
 	self.entries = [NSMutableArray array];
@@ -132,7 +132,7 @@
             if (thisEntry != NULL)
             {
                 NSDictionary *entry = [self entryByReencodingNameInEntry:(__bridge NSDictionary *)thisEntry encoding:NSUTF8StringEncoding];
-                FTPHandle *ftpHandle = [FTPHandle handleAtPath:self.path attributes:entry];
+                FTPHandle *ftpHandle = [FTPHandle handleAtPath:self.handle.path attributes:entry];
 				if (! [ftpHandle.name hasPrefix:@"."] || showHiddenItems)
                 {
 					[newEntries addObject:ftpHandle];
