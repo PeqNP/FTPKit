@@ -14,8 +14,6 @@
 @property (nonatomic, strong) NSString *localPath;
 @property (nonatomic, strong) NSURL *remoteUrl;
 
-- (void)didFinish;
-
 @end
 
 @implementation FTPGetRequest
@@ -55,6 +53,8 @@
 	if (self.networkStream)
         return;
 	
+    [self didUpdateStatus:[NSString stringWithFormat:@"GET %@", handle.path]];
+	
     self.remoteUrl = [self.credentials urlForPath:handle.path];
 	if (! remoteUrl)
     {
@@ -65,8 +65,6 @@
     bytesTotal = self.handle.size;
 	bytesDownloaded = 0;
 
-	[self didUpdateStatus:[NSString stringWithFormat:@"GET %@", handle.path]];
-	
 	self.fileStream = [NSOutputStream outputStreamToFileAtPath:localPath append:NO];
     if (! fileStream)
     {
@@ -122,20 +120,6 @@
     {
 		[fileStream close];
 		self.fileStream = nil;
-	}
-}
-
-- (void)didFinish
-{
-#ifdef DEBUG
-    FKLogDebug(@"Downloaded: %@ to %@", handle.path, localPath);
-#endif
-    
-	[self stop];
-    [self didUpdateStatus:NSLocalizedString(@"GET Done", @"")];
-	if ([self.delegate respondsToSelector:@selector(request:didDownloadFile:to:)])
-    {
-        [self.delegate request:self didDownloadFile:handle.path to:localPath];
 	}
 }
 
@@ -202,9 +186,14 @@
         } break;
         case NSStreamEventEndEncountered:
         {
-            [self didFinish];
+            [self stop];
+            [self didUpdateStatus:NSLocalizedString(@"GET Done", @"")];
+            if ([self.delegate respondsToSelector:@selector(request:didDownloadFile:to:)])
+            {
+                [self.delegate request:self didDownloadFile:handle.path to:localPath];
+            }
         } break;
-        case NSStreamEventHasSpaceAvailable: // Does not get called when downloading files.
+        case NSStreamEventHasSpaceAvailable:
         default:
             break;
     }

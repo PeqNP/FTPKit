@@ -1,11 +1,3 @@
-//
-//  FTPSingleResourceRequest.m
-//  FTPKit
-//
-//  Created by Eric Chamberlain on 3/7/14.
-//  Copyright (c) 2014 Upstart Illustration LLC. All rights reserved.
-//
-
 #import "FTPSingleResourceRequest.h"
 
 @interface FTPSingleResourceRequest()

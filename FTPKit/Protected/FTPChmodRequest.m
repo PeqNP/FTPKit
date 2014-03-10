@@ -22,6 +22,8 @@
     
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0);
     dispatch_async(queue, ^{
+        NSString *command = [NSString stringWithFormat:@"SITE CHMOD %i %@", mode, self.handle.path];
+        [self didUpdateStatus:command];
         const char *host = [self.credentials.host cStringUsingEncoding:NSUTF8StringEncoding];
         const char *login = [self.credentials.username cStringUsingEncoding:NSUTF8StringEncoding];
         const char *password = [self.credentials.password cStringUsingEncoding:NSUTF8StringEncoding];
@@ -30,8 +32,6 @@
             [self didFailWithError:[NSError FTPKitErrorWithCode:425]];
             return;
         }
-        NSString *command = [NSString stringWithFormat:@"SITE CHMOD %i %@", mode, self.handle.path];
-        FKLogDebug(@"command: %@", command);
         const char *cmd = [command cStringUsingEncoding:NSUTF8StringEncoding];
         char buffer[256];
         int ret = ftp_sendcommand(cmd, buffer, 256);

@@ -3,10 +3,6 @@
 #import "NSError+Additions.h"
 #import "FTPKit+Protected.h"
 
-#include <sys/socket.h>
-#include <sys/dirent.h>
-#include <CFNetwork/CFNetwork.h>
-
 @interface FTPListRequest ()
 
 @property (nonatomic, strong) NSMutableData *listData;
@@ -40,6 +36,8 @@
 	if (self.networkStream)
         return;
 	
+    [self didUpdateStatus:[NSString stringWithFormat:NSLocalizedString(@"LIST %@", @""), self.handle.path]];
+	
     self.remoteUrl = [self.credentials urlForPath:self.handle.path];
     if (! remoteUrl)
     {
@@ -47,8 +45,6 @@
         return;
 	}
     
-	[self didUpdateStatus:[NSString stringWithFormat:NSLocalizedString(@"LIST %@", @""), self.handle.path]];
-	
 	self.listData = [NSMutableData data];
 	self.entries = [NSMutableArray array];
 	
@@ -210,12 +206,6 @@
         } break;
         case NSStreamEventEndEncountered:
         {
-#ifdef DEBUG
-            for (FTPHandle *item in self.entries)
-            {
-                FKLogDebug(@"LIST Item: %@", item);
-            }
-#endif
             [self stop];
             [self didUpdateStatus:NSLocalizedString(@"LIST Done", @"")];
             if ([self.delegate respondsToSelector:@selector(request:didList:)])

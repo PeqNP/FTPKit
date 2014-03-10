@@ -1,10 +1,12 @@
 #import "FTPClient.h"
-#import "FTPListRequest.h"
-#import "FTPGetRequest.h"
-#import "FTPPutRequest.h"
-#import "FTPMakeDirectoryRequest.h"
-#import "FTPDeleteFileRequest.h"
+
 #import "FTPChmodRequest.h"
+#import "FTPDeleteFileRequest.h"
+#import "FTPGetRequest.h"
+#import "FTPListRequest.h"
+#import "FTPMakeDirectoryRequest.h"
+#import "FTPPutRequest.h"
+#import "FTPRenameRequest.h"
 
 @interface FTPClient ()
 @property (nonatomic, strong) FTPCredentials* credentials;
@@ -133,6 +135,15 @@
     return request;
 }
 
+- (FTPRequest *)renamePath:(NSString *)sourcePath to:(NSString *)destPath
+{
+    FTPRenameRequest *request = [FTPRenameRequest requestWithCredentials:credentials sourcePath:sourcePath destPath:destPath];
+    request.delegate = self;
+    [requests addObject:request];
+    [request start];
+    return request;
+}
+
 // FTPRequestDelegate
 
 - (void)request:(FTPRequest *)request didList:(NSArray *)handles
@@ -197,6 +208,17 @@
         {
             FTPChmodRequest *req = (FTPChmodRequest *)request;
             [self.delegate client:self request:request didChmodPath:path toMode:req.mode];
+        }
+        [requests removeObject:request];
+    });
+}
+
+- (void)request:(FTPRequest *)request didRenamePath:(NSString *)sourcePath to:(NSString *)destPath
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if ([self.delegate respondsToSelector:@selector(client:request:didRenamePath:to:)])
+        {
+            [self.delegate client:self request:request didRenamePath:sourcePath to:destPath];
         }
         [requests removeObject:request];
     });

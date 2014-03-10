@@ -58,6 +58,8 @@
 	if (self.networkStream != nil)
         return;
 	
+    [self didUpdateStatus:[NSString stringWithFormat:@"PUT %@", localPath]];
+	
     self.remoteUrl = [self.credentials urlForPath:[remotePath stringByDeletingLastPathComponent]];
     if (! remoteUrl)
     {
@@ -79,12 +81,10 @@
     bytesUploaded = 0;
 	bytesTotal = [[[NSFileManager defaultManager] attributesOfItemAtPath:localPath error:nil] fileSize];
 	
-	[self didUpdateStatus:[NSString stringWithFormat:@"PUT %@", localPath]];
-	
 	self.fileStream = [NSInputStream inputStreamWithFileAtPath:localPath];
     if (! fileStream)
     {
-		[self didFailWithMessage:NSLocalizedString(@"Failed to create read stream", @"")];
+		[self didFailWithMessage:NSLocalizedString(@"Failed to create remote read stream", @"")];
         return;
 	}
 	[fileStream open];
@@ -92,7 +92,7 @@
 	self.networkStream = (__bridge_transfer NSOutputStream *)CFWriteStreamCreateWithFTPURL(NULL, (__bridge CFURLRef)remoteUrl);
     if (! networkStream)
     {
-		[self didFailWithMessage:NSLocalizedString(@"Failed to create write stream", @"")];
+		[self didFailWithMessage:NSLocalizedString(@"Failed to create local write stream", @"")];
         return;
 	}
 	
@@ -124,10 +124,6 @@
 
 - (void)didFinish
 {
-#ifdef DEBUG
-    FKLogDebug(@"Uploaded: %@ to %@", localPath, remotePath);
-#endif
-    
 	[self stop];
     [self didUpdateStatus:NSLocalizedString(@"PUT Done", @"")];
 	if ([self.delegate respondsToSelector:@selector(request:didUploadFile:to:)])

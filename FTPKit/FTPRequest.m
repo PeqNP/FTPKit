@@ -44,6 +44,9 @@
 
 - (void)didUpdateStatus:(NSString *)status
 {
+#ifdef DEBUG
+    FKLogDebug(@"Status: %@", status);
+#endif
 	if ([self.delegate respondsToSelector:@selector(request:didUpdateStatus:)])
     {
 		[self.delegate request:self didUpdateStatus:status];
@@ -60,10 +63,7 @@
 
 - (void)didFailWithError:(NSError *)error
 {
-#ifdef DEBUG
     FKLogError(@"Class (%@) didFailWithError (%@)", NSStringFromClass([self class]), error);
-#endif
-    
     [self stop];
 	if ([self.delegate respondsToSelector:@selector(request:didFailWithError:)])
     {

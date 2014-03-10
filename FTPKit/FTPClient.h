@@ -14,6 +14,7 @@
 - (void)client:(FTPClient *)client request:(FTPRequest *)request didDownloadFile:(NSString *)remotePath to:(NSString *)localPath;
 - (void)client:(FTPClient *)client request:(FTPRequest *)request didListContents:(NSArray *)contents;
 - (void)client:(FTPClient *)client request:(FTPRequest *)request didUploadFile:(NSString *)localPath to:(NSString *)remotePath;
+- (void)client:(FTPClient *)client request:(FTPRequest *)request didRenamePath:(NSString *)sourcePath to:(NSString *)destPath;
 
 - (void)client:(FTPClient *)client request:(FTPRequest *)request didUpdateStatus:(NSString *)status;
 - (void)client:(FTPClient *)client request:(FTPRequest *)request didUpdateProgress:(float)progress;
@@ -167,5 +168,15 @@
  @return FTPRequest The request instance.
  */
 - (FTPRequest *)chmodHandle:(FTPHandle *)handle toMode:(int)mode;
+
+/**
+ Rename a remote path. This method can be used to move a file to a different
+ folder as well (?)
+ 
+ @param sourcePath Source path to rename.
+ @param destPath Destination of renamed file.
+ @return FTPRequest The request instance.
+ */
+- (FTPRequest *)renamePath:(NSString *)sourcePath to:(NSString *)destPath;
 
 @end

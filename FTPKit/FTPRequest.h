@@ -18,6 +18,7 @@
 - (void)request:(FTPRequest *)request didList:(NSArray *)handles;
 - (void)request:(FTPRequest *)request didMakeDirectory:(NSString *)path;
 - (void)request:(FTPRequest *)request didUploadFile:(NSString *)localPath to:(NSString *)remotePath;
+- (void)request:(FTPRequest *)request didRenamePath:(NSString *)sourcePath to:(NSString *)destPath;
 
 /* These methods are used by almost every request type. */
 
