@@ -56,7 +56,7 @@ for some of the remote functions such as chmod and sending arbitrary commands.
 
 Continuing on from our previous example, below shows you how you can create a remote directory.
 
-    [client createDirectory:@"my_folder" atPath:@"/"];
+    [client createDirectoryAtPath:@"/my_new_folder"];
 
     ...
 
@@ -160,14 +160,15 @@ If you add FTPKit to your project as a static library, you will need to set the 
 ## Integration
 
 1. Drag the "FTPKit.xcodeproj" into your project.
-2. Add the required library and frameworks (refer screenshot below).
+2. Add the FTPKit (FTPKit) as a Target Dependency (refer to the screehnshot below)
+3. Add the required library and frameworks (refer screenshot below).
     - Open the "Build Phases" tab
     - Expand Link Binary With Libraries
     - Click the "+" button and add CFNetwork.framework, Foundation.framework and libFTPKit.a
-3. Add linker flags.
+4. Add linker flags.
     - Open the "Build Settings" tab
 	- Find "Other Linker Flags" and set the value to **-ObjC -all_load**
-4. Add the FTPKit header file, **#import \<FTPKit/FTPKit.h\>**, where you want to use the library.
+5. Add the FTPKit header file, **#import \<FTPKit/FTPKit.h\>**, where you want to use the library.
 
 ![][1]
 
