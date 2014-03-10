@@ -170,8 +170,8 @@
 - (FTPRequest *)chmodHandle:(FTPHandle *)handle toMode:(int)mode;
 
 /**
- Rename a remote path. This method can be used to move a file to a different
- folder as well (?)
+ Rename a remote path to something else. This method can be used to move a
+ file to a different directory.
  
  @param sourcePath Source path to rename.
  @param destPath Destination of renamed file.

@@ -1,6 +1,6 @@
 # FTPKit
 
-Version 0.1.0 -- The API design is complete. The logic is not. chmod is also not yet supported.
+Version 0.2.0 -- The API is currently in flux.
 
 FTPKit is an Objective-C library providing facilities implementing the client
 side of the File Transfer Protocol (FTP).
@@ -12,11 +12,11 @@ for some of the remote functions such as chmod and sending arbitrary commands.
 ## Features
 
 - List directory contents
-- Create new remote files and folders
-- Delete remote files and folders
 - Upload files
 - Download files
+- Delete remote files and folders
 - Change file mode on files (chmod)
+- Rename (move) files from one path to another
 - All calls are asynchronous
 - Built with ARC
 
@@ -85,6 +85,17 @@ Continuing on from our previous example, below shows you how you can create a re
         // ...
     }
 
+## Rename a file
+    
+    // You can easily rename (or move) a file from one path to another.
+    [client renamePath:@"/index.html" to:@"/public/index.html"];
+
+    // Delegate callback.
+    - (void)client:(FTPClient *)client request:(FTPRequest *)request didRenamePath:(NSString *)sourcePath to:(NSString *)destPath
+    {
+        // ...
+    }
+
 ## Delete a file
 
     // You can either provide a FTPHandle or a path on the FTP server to delete.
@@ -133,7 +144,7 @@ of the status.
         // This will display the commands executed and general status updates --
         // such as when a connection is opened, complete, etc.
     }
-	
+
 ## Error handling
 
 When request fail they will notify the delegate with the following call:
@@ -151,8 +162,8 @@ This project was developed using Xcode 5.0. It requires a deployment target of i
 
 ## Required Frameworks
 
-- Foundation
 - CFNetwork
+- Foundation
 
 If you add FTPKit to your project as a static library, you will need to set the **-ObjC** and **-all_load** linker flags. Look below for more details.
 
@@ -166,8 +177,12 @@ If you add FTPKit to your project as a static library, you will need to set the 
     - Click the "+" button and add CFNetwork.framework, Foundation.framework and libFTPKit.a
 4. Add linker flags.
     - Open the "Build Settings" tab
-	- Find "Other Linker Flags" and set the value to **-ObjC -all_load**
+    - Find "Other Linker Flags" and set the value to **-ObjC -all_load**
 5. Add the FTPKit header file, **#import \<FTPKit/FTPKit.h\>**, where you want to use the library.
+
+### Notes
+
+The #import \<FTPKit/FTPKit.h\> header may not be recognized until you build the project. After the project builds for the first time the error will go away.
 
 ![][1]
 
