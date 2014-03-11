@@ -6,8 +6,8 @@ FTPKit is an Objective-C library providing facilities implementing the client
 side of the File Transfer Protocol (FTP).
 
 This lib is based off or inspired by the BlackRaccoon, WhiteReaccoon and Apple's SimpleFTP
-example. It utilizes the FTPlib C library, developed by Chistophe Deleuze,
-for some of the remote functions such as chmod and sending arbitrary commands.
+example. It utilizes the ftplib library, developed by Thomas Pfau, for some
+of the remote functions such as chmod and sending arbitrary commands.
 
 ## Features
 
