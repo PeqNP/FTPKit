@@ -28,6 +28,9 @@ NSString *const FTPErrorDomain = @"FTPKit";
 		case 426:
 			message = NSLocalizedString(@"Connection closed, transfer aborted.", @"");
 			break;
+        case 430:
+			message = NSLocalizedString(@"Invalid username or password.", @"");
+			break;
 		case 450:
 			message = NSLocalizedString(@"Requested file action not taken. File unavailable (e.g., file busy).", @"");
 			break;

@@ -3,8 +3,6 @@
 #import "NSError+Additions.h"
 #import "FTPKit+Protected.h"
 
-#import <CFNetwork/CFNetwork.h>
-
 @implementation FTPDeleteFileRequest
 
 - (void)start
@@ -13,21 +11,29 @@
     dispatch_async(queue, ^{
         [self didUpdateStatus:[NSString stringWithFormat:@"DELE %@", self.handle.path]];
         const char *host = [self.credentials.host cStringUsingEncoding:NSUTF8StringEncoding];
-        const char *login = [self.credentials.username cStringUsingEncoding:NSUTF8StringEncoding];
-        const char *password = [self.credentials.password cStringUsingEncoding:NSUTF8StringEncoding];
-        if (ftp_open(host, login, password))
+        const char *user = [self.credentials.username cStringUsingEncoding:NSUTF8StringEncoding];
+        const char *pass = [self.credentials.password cStringUsingEncoding:NSUTF8StringEncoding];
+        netbuf *nControl;
+        int stat = FtpConnect(host, &nControl);
+        if (stat == 0)
         {
             [self didFailWithError:[NSError FTPKitErrorWithCode:425]];
             return;
         }
+        stat = FtpLogin(user, pass, nControl);
+        if (stat == 0)
+        {
+            [self didFailWithError:[NSError FTPKitErrorWithCode:430]];
+            FtpQuit(nControl);
+            return;
+        }
         const char *path = [self.handle.path cStringUsingEncoding:NSUTF8StringEncoding];
-        int ret = 0;
         if (self.handle.type == FTPHandleTypeDirectory)
-            ret = ftp_rmdir(path);
+            stat = FtpRmdir(path, nControl);
         else
-            ret = ftp_delete(path);
-        ftp_close();
-        if (ret)
+            stat = FtpDelete(path, nControl);
+        FtpQuit(nControl);
+        if (stat == 0)
         {
             [self didFailWithError:[NSError FTPKitErrorWithCode:550]];
             return;

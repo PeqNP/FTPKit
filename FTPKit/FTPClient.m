@@ -11,6 +11,9 @@
 @interface FTPClient ()
 @property (nonatomic, strong) FTPCredentials* credentials;
 @property (nonatomic, strong) NSMutableArray *requests;
+
+- (void)addRequest:(FTPRequest *)request;
+
 @end
 
 @implementation FTPClient
@@ -44,6 +47,14 @@
 {
     FTPCredentials *creds = [FTPCredentials credentialsWithHost:host port:port username:username password:password];
 	return [self initWithCredentials:creds];
+}
+
+- (void)addRequest:(FTPRequest *)request
+{
+    @synchronized(self)
+    {
+        
+    }
 }
 
 - (FTPRequest *)listContentsAtPath:(NSString *)path showHiddenFiles:(BOOL)showHiddenFiles

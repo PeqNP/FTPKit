@@ -14,7 +14,7 @@
         const char *host = [self.credentials.host cStringUsingEncoding:NSUTF8StringEncoding];
         const char *login = [self.credentials.username cStringUsingEncoding:NSUTF8StringEncoding];
         const char *password = [self.credentials.password cStringUsingEncoding:NSUTF8StringEncoding];
-        if (ftp_open(host, login, password))
+        /*if (ftp_open(host, login, password))
         {
             [self didFailWithError:[NSError FTPKitErrorWithCode:425]];
             return;
@@ -26,7 +26,7 @@
         {
             [self didFailWithError:[NSError FTPKitErrorWithCode:550]];
             return;
-        }
+        }*/
         [self didUpdateStatus:NSLocalizedString(@"MKD Done", @"")];
         if ([self.delegate respondsToSelector:@selector(request:didMakeDirectory:)])
         {
