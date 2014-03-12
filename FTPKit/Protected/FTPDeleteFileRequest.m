@@ -1,7 +1,8 @@
-#import "FTPKit.h"
+
+#import "ftplib.h"
+
 #import "FTPDeleteFileRequest.h"
 #import "NSError+Additions.h"
-#import "FTPKit+Protected.h"
 
 @implementation FTPDeleteFileRequest
 

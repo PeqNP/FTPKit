@@ -1,4 +1,6 @@
-#import "FTPKit.h"
+
+#import "ftplib.h"
+
 #import "FTPCredentials.h"
 
 @class FTPRequest;

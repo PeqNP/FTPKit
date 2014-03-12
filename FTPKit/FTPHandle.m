@@ -1,4 +1,5 @@
 #import "FTPHandle.h"
+#import "FTPCredentials.h"
 #import "NSString+Additions.h"
 
 #include <sys/socket.h>

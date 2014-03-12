@@ -4,6 +4,8 @@
 
 @class FTPClient;
 
+@protocol FTPRequestDelegate;
+
 @protocol FTPClientDelegate <NSObject>
 
 @optional

@@ -1,7 +1,8 @@
-#import "FTPKit.h"
+
+#import "ftplib.h"
+
 #import "FTPChmodRequest.h"
 #import "NSError+Additions.h"
-#import "FTPKit+Protected.h"
 
 @implementation FTPChmodRequest
 
@@ -34,7 +35,6 @@
             [self didFailWithError:[NSError FTPKitErrorWithCode:550]];
             return;
         }
-        FKLogDebug(@"Permissions changed on %@ to %i", self.handle.path, mode);
         [self didUpdateStatus:NSLocalizedString(@"CHMOD Done", @"")];
         if ([self.delegate respondsToSelector:@selector(request:didChmodPath:)])
         {

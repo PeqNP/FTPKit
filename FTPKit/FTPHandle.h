@@ -1,5 +1,3 @@
-#import "FTPCredentials.h"
-
 typedef enum {
 	FTPHandleTypeUnknown = 0,
 	FTPHandleTypeFIFO = 1,

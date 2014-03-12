@@ -1,7 +1,8 @@
-#import "FTPKit.h"
+
+#import "ftplib.h"
+
 #import "FTPRenameRequest.h"
 #import "NSError+Additions.h"
-#import "FTPKit+Protected.h"
 
 @interface FTPRenameRequest()
 @property (nonatomic, strong) NSString *sourcePath;

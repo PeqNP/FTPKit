@@ -1,5 +1,4 @@
 #import "FTPRequest.h"
-#import "FTPHandle.h"
 #import "FTPCredentials.h"
 
 @interface FTPRenameRequest : FTPRequest

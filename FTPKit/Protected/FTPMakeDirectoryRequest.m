@@ -1,8 +1,8 @@
-#import "FTPKit.h"
+
+#import "ftplib.h"
+
 #import "FTPMakeDirectoryRequest.h"
 #import "NSError+Additions.h"
-#import "NSString+Additions.h"
-#import "FTPKit+Protected.h"
 
 @implementation FTPMakeDirectoryRequest
 

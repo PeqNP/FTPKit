@@ -667,7 +667,7 @@ GLOBALDEF int FtpConnect(const char *host, netbuf **nControl)
         }
         phe = copy_hostent(tphe);
 #endif
-        memcpy((char *)&sin.sin_addr, phe->h_addr, phe->h_length);
+        memcpy((char *)&sin.sin_addr, phe->h_addr_list, phe->h_length);
 #ifndef _REENTRANT
         free_hostent(phe);
 #endif
@@ -1009,7 +1009,7 @@ static int FtpAcceptConnection(netbuf *nData, netbuf *nControl)
     int i;
     struct timeval tv;
     fd_set mask;
-    int rv;
+    int rv = 1;
 
     FD_ZERO(&mask);
     FD_SET(nControl->handle, &mask);
