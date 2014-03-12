@@ -8,7 +8,7 @@
 
 #import "PerformanceTest.h"
 
-#define NUM_TESTS 1000
+#define NUM_TESTS 100
 
 @interface PerformanceTest()
 @property (nonatomic, assign) NSInteger counter;
@@ -35,8 +35,8 @@
     if (_counter == NUM_TESTS)
     {
         _counter = 0;
-        [self.delegate testCaseDidFinish:self];
-        return;
+        //[self.delegate testCaseDidFinish:self];
+        //return;
         [ftp uploadFile:localPath to:@"/copy.tgz"];
     }
     else
