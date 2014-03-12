@@ -667,7 +667,7 @@ GLOBALDEF int FtpConnect(const char *host, netbuf **nControl)
         }
         phe = copy_hostent(tphe);
 #endif
-        memcpy((char *)&sin.sin_addr, phe->h_addr_list, phe->h_length);
+        memcpy((char *)&sin.sin_addr, phe->h_addr_list[0], phe->h_length);
 #ifndef _REENTRANT
         free_hostent(phe);
 #endif
