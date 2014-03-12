@@ -365,21 +365,21 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				072A829418CC23EA001E640B /* FTPPutRequest.m in Sources */,
-				F27BA20B1802FF1800584A9E /* FTPClient.m in Sources */,
-				072A828F18CC23EA001E640B /* FTPChmodRequest.m in Sources */,
-				072A829B18CC2450001E640B /* NSError+Additions.m in Sources */,
-				072A829218CC23EA001E640B /* FTPListRequest.m in Sources */,
-				F27BA2121802FF1800584A9E /* FTPCredentials.m in Sources */,
-				072A829118CC23EA001E640B /* FTPGetRequest.m in Sources */,
-				072A829C18CC2450001E640B /* NSString+Additions.m in Sources */,
-				076BD40C18CE2ACF00517DEE /* FTPRenameRequest.m in Sources */,
 				076BD46318CFB76E00517DEE /* ftplib.c in Sources */,
-				072A829018CC23EA001E640B /* FTPDeleteFileRequest.m in Sources */,
-				072A829318CC23EA001E640B /* FTPMakeDirectoryRequest.m in Sources */,
-				072A829518CC23EA001E640B /* FTPSingleResourceRequest.m in Sources */,
+				F27BA2121802FF1800584A9E /* FTPCredentials.m in Sources */,
 				F27BA20D1802FF1800584A9E /* FTPHandle.m in Sources */,
 				F27BA2231804237400584A9E /* FTPRequest.m in Sources */,
+				F27BA20B1802FF1800584A9E /* FTPClient.m in Sources */,
+				072A829C18CC2450001E640B /* NSString+Additions.m in Sources */,
+				072A829B18CC2450001E640B /* NSError+Additions.m in Sources */,
+				072A829518CC23EA001E640B /* FTPSingleResourceRequest.m in Sources */,
+				072A828F18CC23EA001E640B /* FTPChmodRequest.m in Sources */,
+				072A829018CC23EA001E640B /* FTPDeleteFileRequest.m in Sources */,
+				072A829118CC23EA001E640B /* FTPGetRequest.m in Sources */,
+				072A829218CC23EA001E640B /* FTPListRequest.m in Sources */,
+				072A829318CC23EA001E640B /* FTPMakeDirectoryRequest.m in Sources */,
+				072A829418CC23EA001E640B /* FTPPutRequest.m in Sources */,
+				076BD40C18CE2ACF00517DEE /* FTPRenameRequest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
