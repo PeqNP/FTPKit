@@ -383,8 +383,8 @@ static int readline(char *buf,int max,netbuf *ctl)
         return 0;
     do
     {
-            if (ctl->cavail > 0)
-            {
+        if (ctl->cavail > 0)
+        {
             x = (max >= ctl->cavail) ? ctl->cavail : max-1;
             end = memccpy(bp,ctl->cget,'\n',x);
             if (end != NULL)
@@ -404,20 +404,20 @@ static int readline(char *buf,int max,netbuf *ctl)
                     *bp++ = '\0';
                     --retval;
                 }
-                    break;
+                break;
             }
-            }
-            if (max == 1)
-            {
+        }
+        if (max == 1)
+        {
             *buf = '\0';
             break;
-            }
-            if (ctl->cput == ctl->cget)
-            {
+        }
+        if (ctl->cput == ctl->cget)
+        {
             ctl->cput = ctl->cget = ctl->buf;
             ctl->cavail = 0;
             ctl->cleft = FTPLIB_BUFSIZ;
-            }
+        }
         if (eof)
         {
             if (retval == 0)
@@ -426,13 +426,13 @@ static int readline(char *buf,int max,netbuf *ctl)
         }
         if (!socket_wait(ctl))
             return retval;
-            if ((x = net_read(ctl->handle,ctl->cput,ctl->cleft)) == -1)
-            {
+        if ((x = net_read(ctl->handle,ctl->cput,ctl->cleft)) == -1)
+        {
             if (ftplib_debug)
                 perror("read");
             retval = -1;
             break;
-            }
+        }
         if (x == 0)
             eof = 1;
             ctl->cleft -= x;

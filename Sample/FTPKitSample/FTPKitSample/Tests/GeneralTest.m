@@ -33,6 +33,10 @@
     {
         [client listContentsAtPath:@"/" showHiddenFiles:YES];
     }
+    else
+    {
+        NSLog(@"ERROR");
+    }
 }
 
 - (void)client:(FTPClient *)client request:(FTPRequest *)request didCreateDirectory:(NSString *)path

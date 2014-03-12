@@ -19,12 +19,12 @@
 
 - (void)client:(FTPClient *)client request:(FTPRequest *)request didUpdateStatus:(NSString *)status
 {
-    NSLog(@"Status: %@", status);
+    // @todo
 }
 
 - (void)client:(FTPClient *)client request:(FTPRequest *)request didFailWithError:(NSError *)error
 {
-    NSLog(@"Failed (%@)", error);
+    // @todo
 }
 
 @end
