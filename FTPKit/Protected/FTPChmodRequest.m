@@ -24,25 +24,16 @@
     dispatch_async(queue, ^{
         NSString *command = [NSString stringWithFormat:@"SITE CHMOD %i %@", mode, self.handle.path];
         [self didUpdateStatus:command];
-        /*const char *host = [self.credentials.host cStringUsingEncoding:NSUTF8StringEncoding];
-        const char *login = [self.credentials.username cStringUsingEncoding:NSUTF8StringEncoding];
-        const char *password = [self.credentials.password cStringUsingEncoding:NSUTF8StringEncoding];
-        if (ftp_open(host, login, password))
-        {
-            [self didFailWithError:[NSError FTPKitErrorWithCode:425]];
+        netbuf *conn = [self connect];
+        if (conn == NULL)
             return;
-        }
-        const char *cmd = [command cStringUsingEncoding:NSUTF8StringEncoding];
-        char buffer[256];
-        int ret = ftp_sendcommand(cmd, buffer, 256);
-        NSString *response = [NSString stringWithCString:buffer encoding:NSUTF8StringEncoding];
-        FKLogDebug(@"response: %d %@", ret, response);
-        ftp_close();
-        if (ret)
+        BOOL success = [self sendCommand:command conn:conn];
+        FtpQuit(conn);
+        if (! success)
         {
             [self didFailWithError:[NSError FTPKitErrorWithCode:550]];
             return;
-        }*/
+        }
         FKLogDebug(@"Permissions changed on %@ to %i", self.handle.path, mode);
         [self didUpdateStatus:NSLocalizedString(@"CHMOD Done", @"")];
         if ([self.delegate respondsToSelector:@selector(request:didChmodPath:)])

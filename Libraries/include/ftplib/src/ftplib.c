@@ -798,7 +798,7 @@ GLOBALDEF int FtpOptions(int opt, long val, netbuf *nControl)
  *
  * return 1 if proper response received, 0 otherwise
  */
-static int FtpSendCmd(const char *cmd, char expresp, netbuf *nControl)
+GLOBALDEF int FtpSendCmd(const char *cmd, char expresp, netbuf *nControl)
 {
     char buf[TMP_BUFSIZ];
     if (nControl->dir != FTPLIB_CONTROL)

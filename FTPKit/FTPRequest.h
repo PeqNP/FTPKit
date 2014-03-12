@@ -1,3 +1,4 @@
+#import "FTPKit.h"
 #import "FTPCredentials.h"
 
 @class FTPRequest;
@@ -42,6 +43,8 @@
 
 // Protected methods.
 
+- (netbuf *)connect;
+- (BOOL)sendCommand:(NSString *)command conn:(netbuf *)conn;
 - (void)stop;
 - (void)didUpdateProgress:(float)progress;
 - (void)didUpdateStatus:(NSString*)status;

@@ -92,6 +92,7 @@ GLOBALREF int FtpWrite(const void *buf, int len, netbuf *nData);
 GLOBALREF int FtpClose(netbuf *nData);
 GLOBALREF int FtpSite(const char *cmd, netbuf *nControl);
 GLOBALREF int FtpSysType(char *buf, int max, netbuf *nControl);
+GLOBALREF int FtpSendCmd(const char *cmd, char expresp, netbuf *nControl);
 GLOBALREF int FtpMkdir(const char *path, netbuf *nControl);
 GLOBALREF int FtpChdir(const char *path, netbuf *nControl);
 GLOBALREF int FtpCDUp(netbuf *nControl);

@@ -164,8 +164,8 @@
 		072A82BC18CC4909001E640B /* ftplib */ = {
 			isa = PBXGroup;
 			children = (
-				076BD46118CFB76E00517DEE /* ftplib.c */,
 				076BD46218CFB76E00517DEE /* ftplib.h */,
+				076BD46118CFB76E00517DEE /* ftplib.c */,
 			);
 			name = ftplib;
 			sourceTree = "<group>";

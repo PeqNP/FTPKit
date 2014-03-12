@@ -25,6 +25,36 @@
     // Nothing to do.
 }
 
+- (netbuf *)connect
+{
+    const char *host = [self.credentials.host cStringUsingEncoding:NSUTF8StringEncoding];
+    const char *user = [self.credentials.username cStringUsingEncoding:NSUTF8StringEncoding];
+    const char *pass = [self.credentials.password cStringUsingEncoding:NSUTF8StringEncoding];
+    netbuf *conn;
+    int stat = FtpConnect(host, &conn);
+    if (stat == 0)
+    {
+        [self didFailWithError:[NSError FTPKitErrorWithCode:425]];
+        return NULL;
+    }
+    stat = FtpLogin(user, pass, conn);
+    if (stat == 0)
+    {
+        [self didFailWithError:[NSError FTPKitErrorWithCode:430]];
+        FtpQuit(conn);
+        return NULL;
+    }
+    return conn;
+}
+
+- (BOOL)sendCommand:(NSString *)command conn:(netbuf *)conn
+{
+    const char *cmd = [command cStringUsingEncoding:NSUTF8StringEncoding];
+    if (!FtpSendCmd(cmd, '2', conn))
+        return NO;
+    return YES;
+}
+
 - (void)stop
 {
     // Nothing to do.

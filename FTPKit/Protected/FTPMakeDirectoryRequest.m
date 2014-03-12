@@ -11,22 +11,17 @@
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0);
     dispatch_async(queue, ^{
         [self didUpdateStatus:[NSString stringWithFormat:@"MKD %@", self.handle.path]];
-        const char *host = [self.credentials.host cStringUsingEncoding:NSUTF8StringEncoding];
-        const char *login = [self.credentials.username cStringUsingEncoding:NSUTF8StringEncoding];
-        const char *password = [self.credentials.password cStringUsingEncoding:NSUTF8StringEncoding];
-        /*if (ftp_open(host, login, password))
-        {
-            [self didFailWithError:[NSError FTPKitErrorWithCode:425]];
+        netbuf *conn = [self connect];
+        if (conn == NULL)
             return;
-        }
-        const char *directory = [self.handle.path cStringUsingEncoding:NSUTF8StringEncoding];
-        int ret = ftp_mkdir(directory);
-        ftp_close();
-        if (ret)
+        const char *path = [self.handle.path cStringUsingEncoding:NSUTF8StringEncoding];
+        int stat = FtpMkdir(path, conn);
+        FtpQuit(conn);
+        if (stat == 0)
         {
             [self didFailWithError:[NSError FTPKitErrorWithCode:550]];
             return;
-        }*/
+        }
         [self didUpdateStatus:NSLocalizedString(@"MKD Done", @"")];
         if ([self.delegate respondsToSelector:@selector(request:didMakeDirectory:)])
         {
