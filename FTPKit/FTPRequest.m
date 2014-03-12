@@ -34,7 +34,9 @@
     int stat = FtpConnect(host, &conn);
     if (stat == 0)
     {
-        [self didFailWithError:[NSError FTPKitErrorWithCode:425]];
+        // @fixme We don't get the exact error code from the lib. Use a generic
+        // connection error.
+        [self didFailWithError:[NSError FTPKitErrorWithCode:10060]];
         return NULL;
     }
     stat = FtpLogin(user, pass, conn);

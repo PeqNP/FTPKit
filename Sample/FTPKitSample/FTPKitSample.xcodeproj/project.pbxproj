@@ -24,6 +24,8 @@
 		076BD45118CE39C000517DEE /* TestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 076BD45018CE39C000517DEE /* TestCase.m */; };
 		076BD45D18CE3B6300517DEE /* libFTPKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 076BD45818CE3B5200517DEE /* libFTPKit.a */; };
 		076BD45F18CE3B6B00517DEE /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 076BD45E18CE3B6B00517DEE /* CFNetwork.framework */; };
+		07942E2A18D01B32006BA28E /* HandleTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 07942E2918D01B32006BA28E /* HandleTest.m */; };
+		07942E2E18D01C9A006BA28E /* PerformanceTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 07942E2D18D01C9A006BA28E /* PerformanceTest.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -82,6 +84,10 @@
 		076BD45018CE39C000517DEE /* TestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TestCase.m; path = Tests/TestCase.m; sourceTree = "<group>"; };
 		076BD45218CE3B5200517DEE /* FTPKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FTPKit.xcodeproj; path = ../../FTPKit.xcodeproj; sourceTree = "<group>"; };
 		076BD45E18CE3B6B00517DEE /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
+		07942E2818D01B32006BA28E /* HandleTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HandleTest.h; path = Tests/HandleTest.h; sourceTree = "<group>"; };
+		07942E2918D01B32006BA28E /* HandleTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HandleTest.m; path = Tests/HandleTest.m; sourceTree = "<group>"; };
+		07942E2C18D01C9A006BA28E /* PerformanceTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PerformanceTest.h; path = Tests/PerformanceTest.h; sourceTree = "<group>"; };
+		07942E2D18D01C9A006BA28E /* PerformanceTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PerformanceTest.m; path = Tests/PerformanceTest.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -190,6 +196,10 @@
 			children = (
 				076BD44B18CE396000517DEE /* GeneralTest.h */,
 				076BD44C18CE396000517DEE /* GeneralTest.m */,
+				07942E2818D01B32006BA28E /* HandleTest.h */,
+				07942E2918D01B32006BA28E /* HandleTest.m */,
+				07942E2C18D01C9A006BA28E /* PerformanceTest.h */,
+				07942E2D18D01C9A006BA28E /* PerformanceTest.m */,
 				076BD44F18CE39C000517DEE /* TestCase.h */,
 				076BD45018CE39C000517DEE /* TestCase.m */,
 			);
@@ -325,8 +335,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				076BD42A18CE376D00517DEE /* AppDelegate.m in Sources */,
+				07942E2E18D01C9A006BA28E /* PerformanceTest.m in Sources */,
 				076BD44A18CE382B00517DEE /* MainViewController.m in Sources */,
 				076BD45118CE39C000517DEE /* TestCase.m in Sources */,
+				07942E2A18D01B32006BA28E /* HandleTest.m in Sources */,
 				076BD44D18CE396000517DEE /* GeneralTest.m in Sources */,
 				076BD42618CE376D00517DEE /* main.m in Sources */,
 			);

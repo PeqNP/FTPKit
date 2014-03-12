@@ -58,7 +58,7 @@
 	if (self.networkStream != nil)
         return;
 	
-    [self didUpdateStatus:[NSString stringWithFormat:@"PUT %@", localPath]];
+    [self didUpdateStatus:[NSString stringWithFormat:@"PUT %@ TO %@", [localPath lastPathComponent], remotePath]];
 	
     self.remoteUrl = [self.credentials urlForPath:[remotePath stringByDeletingLastPathComponent]];
     if (! remoteUrl)
@@ -97,9 +97,10 @@
 	}
 	
 	networkStream.delegate = self;
-    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0);
     dispatch_async(queue, ^{
-        [networkStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+        [networkStream scheduleInRunLoop:[NSRunLoop currentRunLoop]
+                                 forMode:NSDefaultRunLoopMode];
         [networkStream open];
         [[NSRunLoop currentRunLoop] run];
     });
@@ -110,7 +111,8 @@
 	if (networkStream)
     {
         [networkStream close];
-        [networkStream removeFromRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+        [networkStream removeFromRunLoop:[NSRunLoop currentRunLoop]
+                                 forMode:NSDefaultRunLoopMode];
         networkStream.delegate = nil;
         self.networkStream = nil;
     }

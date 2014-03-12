@@ -59,7 +59,7 @@
     [networkStream setProperty:(id)kCFBooleanFalse
                         forKey:(NSString *)kCFStreamPropertyFTPAttemptPersistentConnection];
 	networkStream.delegate = self;
-    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0);
     dispatch_async(queue, ^{
         [networkStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
         [networkStream open];

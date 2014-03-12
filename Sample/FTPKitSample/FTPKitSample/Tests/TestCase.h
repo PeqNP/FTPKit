@@ -23,6 +23,7 @@
 @property (nonatomic, weak) id<TestCaseDelegate> delegate;
 @property (nonatomic, strong) FTPClient *ftp;
 
+- (void)connect;
 - (void)run;
 
 @end

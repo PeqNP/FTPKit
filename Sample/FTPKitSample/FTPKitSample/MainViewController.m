@@ -8,6 +8,7 @@
 
 #import "MainViewController.h"
 #import "GeneralTest.h"
+#import "PerformanceTest.h"
 
 @interface MainViewController ()
 @property (nonatomic, strong) TestCase *testCase;
@@ -24,9 +25,14 @@
 	UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     button.frame = CGRectMake(10.0f, 70.0f, 100.0f, 30.0f);
     button.backgroundColor = [UIColor lightGrayColor];
-    [button setTitle:@"General" forState:UIControlStateNormal];
-    [button addTarget:self action:@selector(testGeneral) forControlEvents:UIControlEventTouchUpInside];
+    [button setTitle:@"Start Tests" forState:UIControlStateNormal];
+    [button addTarget:self action:@selector(startTests) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:button];
+}
+
+- (void)startTests
+{
+    [self testGeneral];
 }
 
 - (void)testGeneral
@@ -36,12 +42,26 @@
     [testCase run];
 }
 
+- (void)testPerformance
+{
+    self.testCase = [[PerformanceTest alloc] init];
+    testCase.delegate = self;
+    [testCase run];
+}
+
 // TestCaseDelegate
 
 - (void)testCaseDidFinish:(TestCase *)aTestCase
 {
     NSLog(@"END %@", NSStringFromClass([aTestCase class]));
-    self.testCase = nil;
+    if ([aTestCase isKindOfClass:[GeneralTest class]])
+    {
+        [self testPerformance];
+    }
+    else
+    {
+        self.testCase = nil;
+    }
 }
 
 @end

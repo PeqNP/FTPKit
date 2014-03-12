@@ -7,7 +7,7 @@ NSString *const FTPErrorDomain = @"FTPKit";
 + (NSString *)FTPKitErrorMessageFromCode:(int)errorCode
 {
     // http://en.wikipedia.org/wiki/List_of_FTP_server_return_codes
-	NSString *message = NSLocalizedString(@"Undefined error has occurred", @"");
+	NSString *message = NSLocalizedString(@"Undefined error has occurred.", @"");
 	switch (errorCode)
     {
 		case 331:
@@ -64,8 +64,42 @@ NSString *const FTPErrorDomain = @"FTPKit";
 		case 550:
 			message = NSLocalizedString(@"Requested action not taken. File unavailable (e.g., file not found, no access).", @"");
 			break;
+        case 551:
+			message = NSLocalizedString(@"Requested action aborted. Page type unknown.", @"");
+			break;
 		case 552:
-			message = NSLocalizedString(@"Requested file action aborted, storage allocation exceeded", @"");
+			message = NSLocalizedString(@"Requested file action aborted, storage allocation exceeded.", @"");
+			break;
+        case 553:
+			message = NSLocalizedString(@"Requested action not taken. File name not allowed.", @"");
+			break;
+        case 600:
+			message = NSLocalizedString(@"Replies regarding confidentiality and integrity.", @"");
+			break;
+        case 631:
+			message = NSLocalizedString(@"Integrity protected reply.", @"");
+			break;
+        case 632:
+			message = NSLocalizedString(@"Confidentiality and integrity protected reply.", @"");
+			break;
+        case 633:
+			message = NSLocalizedString(@"Confidentiality protected reply.", @"");
+			break;
+            // 1000 Series Common Winsock Error Codes
+        case 10054:
+			message = NSLocalizedString(@"Connection reset by peer. The connection was forcibly closed by the remote host.", @"");
+			break;
+        case 10060:
+			message = NSLocalizedString(@"Cannot connect to remote server.", @"");
+			break;
+        case 10061:
+			message = NSLocalizedString(@"Cannot connect to remote server. The connection is actively refused by the server.", @"");
+			break;
+        case 10066:
+			message = NSLocalizedString(@"Directory not empty.", @"");
+			break;
+        case 10068:
+			message = NSLocalizedString(@"Too many users, server is full.", @"");
 			break;
 		default:
 			break;

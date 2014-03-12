@@ -90,20 +90,21 @@
     //[self.networkStream setProperty:(id)kCFBooleanFalse
     //                         forKey:(id)kCFStreamPropertyFTPAttemptPersistentConnection];
     //[self.networkStream setProperty:(id)kCFBooleanTrue forKey:(id)kCFStreamPropertyShouldCloseNativeSocket];
-    networkStream.delegate = self;
-    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    self.networkStream.delegate = self;
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0);
     dispatch_async(queue, ^{
-        [networkStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
-        [networkStream open];
+        [self.networkStream scheduleInRunLoop:[NSRunLoop currentRunLoop]
+                                 forMode:NSDefaultRunLoopMode];
+        [self.networkStream open];
         [[NSRunLoop currentRunLoop] run];
     });
 }
 
 - (void)stop
 {
-	if (networkStream)
+	if (self.networkStream)
     {
-        [networkStream close];
+        [self.networkStream close];
         /*
          * From Apple's docs at: https://developer.apple.com/library/mac/documentation/Cocoa/Reference/Foundation/Classes/NSStream_Class/Reference/Reference.html#//apple_ref/occ/instm/NSStream/close
          *
@@ -112,8 +113,9 @@
          * the stream has been scheduled on a run loop, closing the stream
          * implicitly removes the stream from the run loop.
          */
-        [networkStream removeFromRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
-        networkStream.delegate = nil;
+        [self.networkStream removeFromRunLoop:[NSRunLoop currentRunLoop]
+                                 forMode:NSDefaultRunLoopMode];
+        self.networkStream.delegate = nil;
         self.networkStream = nil;
     }
     

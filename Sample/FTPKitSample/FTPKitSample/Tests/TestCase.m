@@ -12,6 +12,12 @@
 
 @synthesize ftp;
 
+- (void)connect
+{
+    self.ftp = [FTPClient clientWithHost:@"localhost" port:21 username:@"unittest" password:@"unitpass"];
+    ftp.delegate = self;
+}
+
 - (void)run
 {
     // Nothing to do.
