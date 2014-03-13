@@ -8,6 +8,7 @@
 
 #import "MainViewController.h"
 #import "GeneralTest.h"
+#import "HandleTest.h"
 #import "PerformanceTest.h"
 
 @interface MainViewController ()
@@ -33,11 +34,19 @@
 - (void)startTests
 {
     [self testGeneral];
+    //[self testHandle];
 }
 
 - (void)testGeneral
 {
     self.testCase = [[GeneralTest alloc] init];
+    testCase.delegate = self;
+    [testCase run];
+}
+
+- (void)testHandle
+{
+    self.testCase = [[HandleTest alloc] init];
     testCase.delegate = self;
     [testCase run];
 }
@@ -57,6 +66,10 @@
     if ([aTestCase isKindOfClass:[GeneralTest class]])
     {
         [self testPerformance];
+    }
+    else if ([aTestCase isKindOfClass:[PerformanceTest class]])
+    {
+        [self testHandle];
     }
     else
     {

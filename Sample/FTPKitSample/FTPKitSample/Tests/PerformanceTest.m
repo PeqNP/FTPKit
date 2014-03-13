@@ -8,7 +8,7 @@
 
 #import "PerformanceTest.h"
 
-#define NUM_TESTS 100
+#define NUM_TESTS 50
 
 @interface PerformanceTest()
 @property (nonatomic, assign) NSInteger counter;
