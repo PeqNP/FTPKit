@@ -1,0 +1,33 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<html>
+<head>
+<title>FtpNlst</title>
+<link rel="stylesheet" type="text/css" href="doc.css">
+</head>
+<body>
+<h1>FtpNlst</h1>
+<p>Retrieves a terse directory listing.</p>
+<h2>SYNOPSIS</h2>
+<pre>
+#include &lt;ftplib.h&gt;
+int FtpNlst(const char *output, const char *path, netbuf *nControl);
+</pre>
+<h2>PARAMETERS</h2>
+<dl>
+<dt><b>output</b></dt>
+<dd>Specifies the name of a file to receive the directory listing.  If
+specified as NULL the directory listing will be written to
+stdout.</dd>
+<dt><b>path</b></dt>
+<dd>Specifies an argument to 'ls' on the remote system.</dd>
+<dt><b>nControl</b></dt>
+<dd>A handle returned by <a href="FtpConnect.html">FtpConnect()</a>.</dd>
+</dl>
+<h2>DESCRIPTION</h2>
+<p>Performs a short form directory listing of the specified path on
+the remote system. The results are written to the specified
+file.</p>
+<h2>RETURN VALUE</h2>
+<p>Returns 1 if successful or 0 on error.</p>
+</body>
+</html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<html>
+<head>
+<title>FtpRead</title>
+<link rel="stylesheet" type="text/css" href="doc.css">
+</head>
+<body>
+<h1>FtpRead</h1>
+<p>Read data from a remote file or directory.</p>
+<h2>SYNOPSIS</h2>
+<pre>
+#include &lt;ftplib.h&gt;
+int FtpRead(void *buf, int max, netbuf *nData);
+</pre>
+<h2>PARAMETERS</h2>
+<dl>
+<dt><b>buf</b></dt>
+<dd>Specifies the address of a buffer where received data will be
+written.</dd>
+<dt><b>max</b></dt>
+<dd>Specifies the size of the user's buffer.</dd>
+<dt><b>nData</b></dt>
+<dd>A handle returned by <a href="FtpAccess.html">FtpAccess()</a>.</dd>
+</dl>
+<h2>DESCRIPTION</h2>
+<p>FtpRead copies up to max bytes of data from the specified data
+connection and returns it to the user's buffer. If the data
+connection was opened in ascii mode, no more than one line of data
+will be returned.</p>
+<h2>RETURN VALUE</h2>
+<p>Returns the number of bytes written to the user's buffer or -1
+on error or end of file.</p>
+</body>
+</html>

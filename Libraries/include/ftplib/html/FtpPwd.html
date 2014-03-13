@@ -1,0 +1,30 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<html>
+<head>
+<title>FtpPwd</title>
+<link rel="stylesheet" type="text/css" href="doc.css">
+</head>
+<body>
+<h1>FtpPwd</h1>
+<p>Determine current working directory on server.</p>
+<h2>SYNOPSIS</h2>
+<pre>
+#include &lt;ftplib.h&gt;
+int FtpPwd(char *path, int max, netbuf *nControl);
+</pre>
+<h2>PARAMETERS</h2>
+<dl>
+<dt><b>path</b></dt>
+<dd>A pointer to a buffer where the result should be returned.</dd>
+<dt><b>max</b></dt>
+<dd>Specifies the size of the user's buffer.</dd>
+<dt><b>nControl</b></dt>
+<dd>A handle returned by <a href="FtpConnect">FtpConnect()</a>.</dd>
+</dl>
+<h2>DESCRIPTION</h2>
+<p>FtpPwd() attempts to determine the current default directory at
+the server and return it to the user's buffer.</p>
+<h2>RETURN VALUE</h2>
+<p>Returns 1 if successful or 0 on error.</p>
+</body>
+</html>

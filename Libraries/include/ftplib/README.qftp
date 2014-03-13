@@ -1,0 +1,41 @@
+qftp is a simple program which demonstrates the use of ftplib.
+
+qftp performs directories or file transfers using the ftp protocol based
+on the command it was invoked with and command line arguments.  qftp
+can be invoked through a softlink which indicates which operation it
+should perform.
+
+To install, copy qftp to a directory in your path.  Execute the following
+commands in that directory:
+
+	ln -s qftp ftpdir
+	ln -s qftp ftpget
+	ln -s qftp ftpsend
+	ln -s qftp ftprm
+	ln -s qftp ftplist
+
+Then, invoke qftp by using the commands ftpdir, ftpget, ftpsend, ftprm or
+ftplist.
+
+qftp processes the command line in order.  The first argument should be
+the name of the system you wish to converse with.  If you need to specify
+login information, that should be specified next with '-l' and '-p'.  On
+UNIX systems, if you specify a username with '-l' and don't specify a
+password with '-p', qftp will prompt for a password.  It is a good idea
+to do it this way as it keeps the password off the command line and out
+of 'ps' and other displays.
+
+When working through a proxy firewall, specify the firewall machine's
+name as the host.  Specify the real host's name with the -l and -p
+parameters.  For example:
+
+	ftpget firewall -l anonymous@real.host.com -p user@myhost.org
+
+The exit status from qftp can be used to determine whether the transfer
+worked or not.  Exit status 2 means a command line syntax error.  3
+indicates a failure while attempting to translate the system name into an
+IP address.  4 indicates a failure attempting to connect to the remote
+machine.  5 indicates a login failure.  6 indicates a remote command
+error.  7 indicates a system call error.
+
+See the HTML documentation in the html subdirectory for more details.

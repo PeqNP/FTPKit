@@ -1,0 +1,31 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<html>
+<head>
+<title>FtpLastResponse</title>
+<link rel="stylesheet" type="text/css" href="doc.css">
+</head>
+<body>
+<h1>FtpLastResponse</h1>
+<p>Retrieve the last response sent by the server.</p>
+<h2>SYNOPSIS</h2>
+<pre>
+#include &lt;ftplib.h&gt;
+char *FtpLastResponse(netbuf *nControl);
+</pre>
+<h2>PARAMETERS</h2>
+<dl>
+<dt><b>nControl</b></dt>
+<dd>A pointer to a control handle returned by
+<a href="FtpConnect.html">FtpConnect()</a>.</dd>
+</dl>
+<h2>DESCRIPTION</h2>
+<p>FtpLastResponse() returns a pointer to the last response string
+sent by the server. This can be parsed by the user program to
+determine more information about the last request or can be
+displayed along with an error message.</p>
+<h2>RETURN VALUE</h2>
+<p>If nControl is a valid control handle, FtpLastResponse() returns
+a pointer to the last server response string. Otherwise, NULL is
+returned.</p>
+</body>
+</html>

@@ -1,0 +1,27 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<html>
+<head>
+<title>FtpClearCallback</title>
+<link rel="stylesheet" type="text/css" href="doc.css">
+</head>
+<body>
+<h1>FtpClearCallback</h1>
+<p>Clears callback settings.</p>
+<h2>SYNOPSIS</h2>
+<pre>
+#include &lt;ftplib.h&gt;
+int FtpClearCallback(netbuf *nControl);
+</pre>
+<h2>PARAMETERS</h2>
+<dl>
+<dt><b>nControl</b></dt>
+<dd>A handle returned by <a href="FtpConnect.html">FtpConnect()</a>
+or <a href="FtpAccess.html">FtpAccess()</a>.</dd>
+</dl>
+<h2>DESCRIPTION</h2>
+<p>FtpClearCallback() clears all callback options on a connection.</p>
+<h2>RETURN VALUE</h2>
+<p>Returns 1 if a valid option was specified and the value is
+legal. Otherwise, returns 0.</p>
+</body>
+</html>

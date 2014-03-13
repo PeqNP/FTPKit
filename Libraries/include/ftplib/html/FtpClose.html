@@ -1,0 +1,32 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<html>
+<head>
+<title>FtpClose</title>
+<link rel="stylesheet" type="text/css" href="doc.css">
+</head>
+<body>
+<h1>FtpClose</h1>
+<p>Close a connection.</p>
+<h2>SYNOPSIS</h2>
+<pre>
+#include &lt;ftplib.h&gt;
+int FtpClose(netbuf *nData);
+</pre>
+<h2>PARAMETERS</h2>
+<dl>
+<dt><b>nData</b></dt>
+<dd>A handle returned by <a href="FtpAccess.html">FtpAccess()</a>
+or <a href="FtpConnect.html">FtpConnect()</a>.</dd>
+</dl>
+<h2>DESCRIPTION</h2>
+<p>Closes the connection specified by 'nData' and frees associated
+resources. If the connection is a command connection, any
+associated data connection is also closed and the command
+connection is closed without sending any commands.</p>
+<p>FtpClose() destroys the connection object and any associated
+data connection object. Do not use either connection after calling
+FtpClose().</p>
+<h2>RETURN VALUE</h2>
+<p>Returns 1 if successful or 0 on error.</p>
+</body>
+</html>

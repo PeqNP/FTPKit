@@ -1,13 +1,13 @@
 # FTPKit
 
-Version 0.2.0 -- The API is currently in flux.
+Version 1.0.0
 
 FTPKit is an Objective-C library providing facilities implementing the client
 side of the File Transfer Protocol (FTP).
 
 This lib is based off or inspired by the BlackRaccoon, WhiteReaccoon and Apple's SimpleFTP
-example. It utilizes the ftplib library, developed by Thomas Pfau, for some
-of the remote functions such as chmod and sending arbitrary commands.
+example. It utilizes the ftplib library, developed by Thomas Pfau, for most of
+the remote actions.
 
 ## Features
 
@@ -100,17 +100,22 @@ Continuing on from our previous example; below shows how to create a remote dire
 
     // You can either provide a FTPHandle or a path on the FTP server to delete.
     // The FTPHandle will have been returned from the listDirectory* method.
-    [client deleteFile:@"/path/deleteme.html"];
+    [client deleteFileAtPath:@"/path/deleteme.html"];
+
+    ...
+
+    [client deleteDirectoryAtPath:@"/my_folder"];
 
     // Delegate callback.
-    - (void)client:(FTPClient *)client request:(FTPRequest *)request didDeleteFile:(NSString *)path
+    - (void)client:(FTPClient *)client request:(FTPRequest *)request didDeletePath:(NSString *)path
     {
         // ...
     }
 
 ## Cancel a request
 
-Most requests can be cancelled. In the instance where you need to cancel the request, do the following:
+Currently there are no requests that can be cancelled. This will change once the
+underlying lib has been updated. However, the API for this has been complete.
 
     // Keep the request object around until we no longer need it.
     FTPRequest *request = [client downloadFile:@"my_remote_movie.mp4" to:@"/my/local/my_movie.mp4"];
@@ -144,7 +149,7 @@ As requests process, they will periodically notify the delegate of their status.
 
 ## Error handling
 
-When request fail they will notify the delegate with the following call:
+When requests fail they will notify the delegate with the following call:
 
     - (void)client:(FTPClient *)client request:(FTPRequest *)request didFailWithError:(NSError *)error
     {

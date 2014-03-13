@@ -1,0 +1,37 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<html>
+<head>
+<title>FtpDir</title>
+<link rel="stylesheet" type="text/css" href="doc.css">
+</head>
+<body>
+<h1>FtpDir</h1>
+<p>Retrieves a verbose directory listing.</p>
+<h2>SYNOPSIS</h2>
+<pre>
+#include &lt;ftplib.h&gt;
+int FtpDir(const char *outputfile, const char *path, netbuf *nControl);
+</pre>
+<h2>PARAMETERS</h2>
+<dl>
+<dt><b>outputfile</b></dt>
+<dd>Name of a local file to receive the directory listing.  If
+specified as NULL, the directory listing is written to stdout.</dd>
+<dt><b>path</b></dt>
+<dd>File specification to pass to remote 'ls'.</dd>
+<dt><b>nControl</b></dt>
+<dd>A handle returned by <a href=
+"FtpConnect.html">FtpConnect()</a>.</dd>
+</dl>
+<h2>DESCRIPTION</h2>
+<p>Sends a LIST command to the server with the specified path. The
+response to this is usually a long format directory listing which
+will be written to the file named in outputfile. If outputfile is
+specified as NULL, the list will be written to stdout.</p>
+<p>The format of the listing is dependent on the type of the remote
+system. The system type can be determined from
+<a href="FtpSysType.html">FtpSysType()</a>.</p>
+<h2>RETURN VALUE</h2>
+<p>Returns 1 if successful or 0 on error.</p>
+</body>
+</html>

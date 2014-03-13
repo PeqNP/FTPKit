@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<html>
+<head>
+<title>FtpOptions</title>
+<link rel="stylesheet" type="text/css" href="doc.css">
+</head>
+<body>
+<h1>FtpOptions</h1>
+<p>Set connection options.</p>
+<h2>SYNOPSIS</h2>
+<pre>
+#include &lt;ftplib.h&gt;
+int FtpOptions(int opt, long val, netbuf *nControl);
+</pre>
+<h2>PARAMETERS</h2>
+<dl>
+<dt><b>opt</b></dt>
+<dd>Specifies the option to change. Valid options are
+FTPLIB_CONNMODE, FTPLIB_CALLBACK, FTPLIB_IDLETIME,
+FTPLIB_CALLBACKARG, and FTPLIB_CALLBACKBYTES.</dd>
+<dt><b>val</b></dt>
+<dd>Specifies the new value for the option. The value may need to
+by cast to a long.</dd>
+<dt><b>nControl</b></dt>
+<dd>A handle returned by <a href="FtpConnect.html">FtpConnect()</a>
+or <a href="FtpAccess.html">FtpAccess()</a>.</dd>
+</dl>
+<h2>DESCRIPTION</h2>
+<p>FtpOptions() changes the options for a connection handle. A data
+connection inherits the options assigned to the control connection
+it is created from. Callbacks are only called on file data
+connections.</p>
+<p>New programs should
+call <a href="FtpSetCallback.html">FtpSetCallback()</a>
+and <a href="FtpClearCallback.html">FtpClearCallback()</a> to change
+callback options.</p>
+<p>The following options and values are recognized.</p>
+<dl>
+<dt>FTPLIB_CONNMODE</dt>
+<dd>Specifies the connection mode. Either FTPLIB_PASSIVE or
+FTPLIB_PORT.</dd>
+<dt>FTPLIB_CALLBACK (deprecated)</dt>
+<dd>Specifies the address of a user callback routine.</dd>
+<dt>FTPLIB_IDLETIME (deprecated)</dt>
+<dd>Specifies the socket idle time in milliseconds that triggers
+calling the user's callback routine.</dd>
+<dt>FTPLIB_CALLBACKARG (deprecated)</dt>
+<dd>Specifies an argument to pass to the user's callback
+routine.</dd>
+<dt>FTPLIB_CALLBACKBYTES (deprecated)</dt>
+<dd>Specifies the number of bytes to transfer between calls to the
+user's callback routine.</dd>
+</dl>
+<p>The connection mode tells ftplib if it should use PASV or PORT
+to establish data connections. The default is specified as a build
+option.</p>
+<p>See <a href="FtpSetCallback.html">FtpSetCallback()</a> for a
+description of using callbacks.</p>
+<h2>RETURN VALUE</h2>
+<p>Returns 1 if a valid option was specified and the value is
+legal. Otherwise, returns 0.</p>
+</body>
+</html>

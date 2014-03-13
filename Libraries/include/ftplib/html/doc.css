@@ -1,0 +1,29 @@
+body {
+ font-family: Georgia, "Times New Roman", serif;
+ font-size: 0.9em;
+ background-color: #F8F8F8;
+ color: #000000;
+}
+h1, h2, h3 {
+ font-family: Verdana, Tahoma, "Lucida Grande", Arial, sans-serif;
+ margin-bottom: .5em;
+}
+pre, code {
+ font-family: "Lucida Console", monospace;
+ font-size: smaller;
+}
+table, pre, p, li, dt {
+ margin-left: 2em;
+ margin-right: 2em;
+}
+dt {
+ font-weight: bolder;
+}
+dd {
+ margin-left: 4em;
+ margin-right: 2em;
+}
+td {
+ padding-left: 1em;
+ padding-right: 1em;
+}

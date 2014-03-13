@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<html>
+<head>
+<title>FtpSetCallback</title>
+<link rel="stylesheet" type="text/css" href="doc.css">
+</head>
+<body>
+<h1>FtpSetCallback</h1>
+<p>Establishes a callback function.</p>
+<h2>SYNOPSIS</h2>
+<pre>
+#include &lt;ftplib.h&gt;
+int FtpCallback(FtpCallbackOptions *opt, netbuf *nControl);
+</pre>
+<p>FtpCallbackOptions is declared as follows.</p>
+<pre>
+typedef struct FtpCallbackOptions {
+    FtpCallback cbFunc;		/* function to call */
+    void *cbArg;		/* argument to pass to function */
+    unsigned int bytesXferred;	/* callback if this number of bytes transferred */
+    unsigned int idleTime;	/* callback if this many milliseconds have elapsed */
+} FtpCallbackOptions;
+</pre>
+<h2>PARAMETERS</h2>
+<dl>
+<dt><b>opt</b></dt>
+<dd>The address of a structure that contains a pointer to the callback
+  function and the criteria for calling it.</dd>
+<dt><b>nControl</b></dt>
+<dd>A handle returned by <a href="FtpConnect.html">FtpConnect()</a>
+or <a href="FtpAccess.html">FtpAccess()</a>.</dd>
+</dl>
+<h2>DESCRIPTION</h2>
+<p>FtpSetCallback() establishes a callback functions and tells FTPlib
+  when to call it. A data connection inherits the options assigned to
+  the control connection it is created from. Callbacks are only called
+  on file data connections.</p>
+<p>The fields in FtpCallbackStruct are described below.</p>
+<dl>
+<dt>cbFunc</dt>
+<dd>Specifies the address of a user callback routine.</dd>
+<dt>cbArg</dt>
+<dd>Specifies an argument to pass to the user's callback
+routine.</dd>
+<dt>idleTime</dt>
+<dd>Specifies the socket idle time in milliseconds that triggers
+calling the user's callback routine.</dd>
+<dt>bytesXferred</dt>
+<dd>Specifies the number of bytes to transfer between calls to the
+user's callback routine.</dd>
+</dl>
+<p>The user's callback routine is specified as:</p>
+<pre>
+typedef int (*FtpCallback)(netbuf *nControl, int xfered, void *arg);
+</pre>
+<b>nControl</b> is the data connection in use. <b>xfered</b> specifies
+how many bytes of data have been transferred on the
+connection. <b>arg</b> is the value passed in the FtpCallbackOptions
+field cbArg.
+<p>The user can request to be called back on either of two
+events.</p>
+<p>If the routine should be called when the data socket is idle for
+some period of time, pass the number of milliseconds of inactivity
+that should trigger a callback in the idleTime field.</p>
+<p>If the routine should be called when a certain amount of data has
+been transferred, specify a non-zero value in bytesXferred.  This
+value represents the minimum number of bytes to transfer between
+callbacks. When using this option, ftplib keeps track of the number of
+bytes transferred and calls the user once the specified number of
+bytes or more has been transferred. It then resets the count to 0 and
+starts again.</p>
+<p>If the user wishes to continue the transfer, the callback
+routine should return true (non-zero). It can abort the transfer by
+return zero.</p>
+<h2>RETURN VALUE</h2>
+<p>Returns 1 for success or 0 for failure.</p>
+</body>
+</html>
