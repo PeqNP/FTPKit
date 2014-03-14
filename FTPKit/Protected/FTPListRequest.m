@@ -1,11 +1,8 @@
+
 #import "FTPListRequest.h"
 #import "FTPHandle.h"
 #import "NSError+Additions.h"
 #import "FTPKit+Protected.h"
-
-#include <sys/socket.h>
-#include <sys/dirent.h>
-#include <CFNetwork/CFNetwork.h>
 
 @interface FTPListRequest ()
 
@@ -40,15 +37,15 @@
 	if (self.networkStream)
         return;
 	
-    self.remoteUrl = [self.credentials urlForPath:self.path];
+    [self didUpdateStatus:[NSString stringWithFormat:NSLocalizedString(@"LIST %@", @""), self.handle.path]];
+	
+    self.remoteUrl = [self.credentials urlForPath:self.handle.path];
     if (! remoteUrl)
     {
 		[self didFailWithMessage:NSLocalizedString(@"Invalid path", @"")];
         return;
 	}
     
-	[self didUpdateStatus:[NSString stringWithFormat:NSLocalizedString(@"LIST %@", @""), self.path]];
-	
 	self.listData = [NSMutableData data];
 	self.entries = [NSMutableArray array];
 	
@@ -62,7 +59,7 @@
     [networkStream setProperty:(id)kCFBooleanFalse
                         forKey:(NSString *)kCFStreamPropertyFTPAttemptPersistentConnection];
 	networkStream.delegate = self;
-    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0);
     dispatch_async(queue, ^{
         [networkStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
         [networkStream open];
@@ -132,7 +129,7 @@
             if (thisEntry != NULL)
             {
                 NSDictionary *entry = [self entryByReencodingNameInEntry:(__bridge NSDictionary *)thisEntry encoding:NSUTF8StringEncoding];
-                FTPHandle *ftpHandle = [FTPHandle handleAtPath:self.path attributes:entry];
+                FTPHandle *ftpHandle = [FTPHandle handleAtPath:self.handle.path attributes:entry];
 				if (! [ftpHandle.name hasPrefix:@"."] || showHiddenItems)
                 {
 					[newEntries addObject:ftpHandle];
@@ -178,8 +175,7 @@
         case NSStreamEventOpenCompleted:
         {
             [self didUpdateStatus:NSLocalizedString(@"Opened connection", @"")];
-            break;
-        }
+        } break;
         case NSStreamEventHasBytesAvailable:
         {
             NSInteger bytesRead;
@@ -196,8 +192,7 @@
                 [self.listData appendBytes:buffer length:bytesRead];
                 [self parseListData];
             }
-            break;
-        }
+        } break;
         case NSStreamEventErrorOccurred:
         {
             CFStreamError err = CFReadStreamGetError((__bridge CFReadStreamRef)self.networkStream);
@@ -209,24 +204,16 @@
             {
                 [self didFailWithError:[aStream streamError]];
             }
-            break;
-        }
+        } break;
         case NSStreamEventEndEncountered:
         {
-#ifdef DEBUG
-            for (FTPHandle *item in self.entries)
-            {
-                FKLogDebug(@"LIST Item: %@", item);
-            }
-#endif
             [self stop];
             [self didUpdateStatus:NSLocalizedString(@"LIST Done", @"")];
             if ([self.delegate respondsToSelector:@selector(request:didList:)])
             {
                 [self.delegate request:self didList:entries];
             }
-            break;
-        }
+        } break;
         case NSStreamEventHasSpaceAvailable:
         default:
 			break;

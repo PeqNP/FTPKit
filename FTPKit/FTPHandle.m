@@ -1,4 +1,5 @@
 #import "FTPHandle.h"
+#import "FTPCredentials.h"
 #import "NSString+Additions.h"
 
 #include <sys/socket.h>
@@ -32,12 +33,12 @@
 
 + (instancetype)handleAtPath:(NSString *)path attributes:(NSDictionary *)attributes
 {
-    return [[FTPHandle alloc] initWithPath:path attributes:attributes];
+    return [[self alloc] initWithPath:path attributes:attributes];
 }
 
-+ (instancetype)handleAtPath:(NSString *)path
++ (instancetype)handleAtPath:(NSString *)path type:(FTPHandleType)type
 {
-    return [[FTPHandle alloc] initWithPath:path];
+    return [[self alloc] initWithPath:path type:type];
 }
 
 - (instancetype)initWithPath:(NSString *)aPath attributes:(NSDictionary *)aAttributes
@@ -66,7 +67,7 @@
 	return self;
 }
 
-- (instancetype)initWithPath:(NSString *)aPath
+- (instancetype)initWithPath:(NSString *)aPath type:(FTPHandleType)aType
 {
     self = [super init];
     if (self)
@@ -78,7 +79,7 @@
         self.name = [aPath lastPathComponent];
         self.owner = nil;
         self.size = 0;
-        self.type = FTPHandleTypeUnknown;
+        self.type = aType;
         self.path = aPath;
     }
     return self;

@@ -1,0 +1,24 @@
+To build FTPlib on linux, type 'make'.  This should produce a shared
+library and a static library.  It should also create the qftp
+executable.  'make install' should install into /usr/local.  To
+install elsewhere, modify the Makefile.
+
+To build on MAC, type 'make static'.  This should build a static link
+library and qftp.static.
+
+The provided Makefile may work on other unix-like systems although it
+will most likely require some modifications.
+
+To build on OpenVMS, some extra files are provided.  DESCRIP.MMS can
+be used with MMS or MMK.  Options files are provied for VAX, Alpha and
+Itanium systems.
+
+This release was not tested on Microsoft Windows.  Previous releases
+have built without any problems and I don't believe any significant
+changes have ocurred that should cause this release to fail.  To build
+on Windows using Visual Studio, create a library project for FTPlib
+and a command line executable project qftp.  Add a dependency from
+qftp to FTPlib.  'Build All' should create working files.
+
+Also not tested but the provided Makefile will probably work with
+Cygwin.

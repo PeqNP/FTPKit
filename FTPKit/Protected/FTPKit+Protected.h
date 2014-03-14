@@ -2,6 +2,7 @@
 #define FTPKit_FTPKit_Protected_h
 
 #define kFTPKitRequestBufferSize 32768
+#define kFTPKitTempBufferSize 1024
 
 //#define FKLog(level, msg) NSLog(@"FTPKit: (%@) %@", level, msg)
 #define FKLogDebug(frmt, ...) NSLog(@"FTPKit: (Debug) %@", [NSString stringWithFormat:frmt, ##__VA_ARGS__])

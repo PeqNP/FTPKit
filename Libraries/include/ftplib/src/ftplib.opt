@@ -1,0 +1,8 @@
+ident=V4.0
+gsmatch=lequal,4,0
+
+ftplib.obj
+ftplib_vector.obj
+
+collect=transfer_vectors,ftplib_vector
+universal=ftplib_debug

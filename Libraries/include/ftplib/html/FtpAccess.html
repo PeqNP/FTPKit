@@ -1,0 +1,42 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<html>
+<head>
+<title>FtpAccess</title>
+<link rel="stylesheet" type="text/css" href="doc.css">
+</head>
+<body>
+<h1>FtpAccess</h1>
+<p>Open a file or directory on the remote system.</p>
+<h2>SYNOPSIS</h2>
+<pre>
+#include &lt;ftplib.h&gt;
+int FtpAccess(const char *path, int typ, int mode, netbuf *nControl,
+    netbuf **nData);
+</pre>
+<h2>PARAMETERS</h2>
+<dl>
+<dt><b>path</b></dt>
+<dd>Specifies the name of the remote file or directory to
+open.</dd>
+<dt><b>typ</b></dt>
+<dd>Specifies the type of transfer to be performed. FTPLIB_DIR
+performs a terse directory. FTPLIB_DIR_VERBOSE performs a verbose
+directory. FTPLIB_FILE_READ opens a remote file for reading.
+FTPLIB_FILE_WRITE creates a remote file and readies it for
+writing.</dd>
+<dt><b>mode</b></dt>
+<dd>Specifies the transfer mode as FTPLIB_ASCII or
+FTPLIB_IMAGE.</dd>
+<dt><b>nControl</b></dt>
+<dd>A handle returned by <a href="FtpConnect.html">FtpConnect()</a>.</dd>
+<dt><b>nData</b></dt>
+<dd>Specifies the address to store a pointer to the created data
+handle.</dd>
+</dl>
+<h2>DESCRIPTION</h2>
+<p>FtpAccess() opens a remote file or directory and returns a
+handle for the calling program to use to transfer data.</p>
+<h2>RETURN VALUE</h2>
+<p>Returns 1 if successful or 0 on error.</p>
+</body>
+</html>

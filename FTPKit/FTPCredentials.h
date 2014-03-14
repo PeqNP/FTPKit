@@ -1,4 +1,3 @@
-#import <Foundation/Foundation.h>
 
 @interface FTPCredentials : NSObject
 
@@ -34,6 +33,7 @@
  path to the resource.
  
  @param path Path to remote resource. The path should never contain schema, etc.
+ @return NSURL URL for path.
  */
 - (NSURL *)urlForPath:(NSString *)path;
 

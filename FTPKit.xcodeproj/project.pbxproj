@@ -17,22 +17,25 @@
 		072A829B18CC2450001E640B /* NSError+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 072A829818CC2450001E640B /* NSError+Additions.m */; };
 		072A829C18CC2450001E640B /* NSString+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 072A829A18CC2450001E640B /* NSString+Additions.m */; };
 		074A7B5218CAC98F00A03068 /* libFTPKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F27BA1CE1802FE7E00584A9E /* libFTPKit.a */; };
+		076BD40018CD18CC00517DEE /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F27BA1D11802FE7E00584A9E /* Foundation.framework */; };
+		076BD40118CD18D200517DEE /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F27BA2151802FFAE00584A9E /* CFNetwork.framework */; };
+		076BD40518CD198D00517DEE /* FTPCredentials.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = F27BA2051802FF1800584A9E /* FTPCredentials.h */; };
+		076BD40618CD199100517DEE /* FTPHandle.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = F27BA1FB1802FF1800584A9E /* FTPHandle.h */; };
+		076BD40718CD199700517DEE /* FTPRequest.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = F27BA2211804237400584A9E /* FTPRequest.h */; };
+		076BD40C18CE2ACF00517DEE /* FTPRenameRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 076BD40B18CE2ACF00517DEE /* FTPRenameRequest.m */; };
+		076BD46318CFB76E00517DEE /* ftplib.c in Sources */ = {isa = PBXBuildFile; fileRef = 076BD46118CFB76E00517DEE /* ftplib.c */; };
+		07942E2618D014E5006BA28E /* ftplib.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 076BD46218CFB76E00517DEE /* ftplib.h */; };
+		07B145B318CD1489006AD84A /* FTPKit.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = F27BA1D61802FE7E00584A9E /* FTPKit.h */; };
+		07B145B418CD148D006AD84A /* FTPClient.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = F27BA1F71802FF1800584A9E /* FTPClient.h */; };
 		07F23C4A18CA4C43002BDF93 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07F23C4918CA4C43002BDF93 /* XCTest.framework */; };
 		07F23C4B18CA4C43002BDF93 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F27BA1D11802FE7E00584A9E /* Foundation.framework */; };
 		07F23C4D18CA4C43002BDF93 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07F23C4C18CA4C43002BDF93 /* UIKit.framework */; };
 		07F23C5318CA4C43002BDF93 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 07F23C5118CA4C43002BDF93 /* InfoPlist.strings */; };
 		07F23C5518CA4C43002BDF93 /* FTPKit_Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 07F23C5418CA4C43002BDF93 /* FTPKit_Tests.m */; };
-		F27BA1D21802FE7E00584A9E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F27BA1D11802FE7E00584A9E /* Foundation.framework */; };
-		F27BA1D71802FE7E00584A9E /* FTPKit.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = F27BA1D61802FE7E00584A9E /* FTPKit.h */; };
 		F27BA20B1802FF1800584A9E /* FTPClient.m in Sources */ = {isa = PBXBuildFile; fileRef = F27BA1F81802FF1800584A9E /* FTPClient.m */; };
 		F27BA20D1802FF1800584A9E /* FTPHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = F27BA1FC1802FF1800584A9E /* FTPHandle.m */; };
 		F27BA2121802FF1800584A9E /* FTPCredentials.m in Sources */ = {isa = PBXBuildFile; fileRef = F27BA2061802FF1800584A9E /* FTPCredentials.m */; };
-		F27BA2161802FFAE00584A9E /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F27BA2151802FFAE00584A9E /* CFNetwork.framework */; };
 		F27BA2231804237400584A9E /* FTPRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = F27BA2221804237400584A9E /* FTPRequest.m */; };
-		F2A8617E1807F4D5001A7D31 /* FTPClient.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = F27BA1F71802FF1800584A9E /* FTPClient.h */; };
-		F2A8617F1807F4DE001A7D31 /* FTPRequest.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = F27BA2211804237400584A9E /* FTPRequest.h */; };
-		F2A861801807F4DE001A7D31 /* FTPCredentials.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = F27BA2051802FF1800584A9E /* FTPCredentials.h */; };
-		F2A861811807F4DE001A7D31 /* FTPHandle.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = F27BA1FB1802FF1800584A9E /* FTPHandle.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -46,17 +49,18 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		F27BA1CC1802FE7E00584A9E /* CopyFiles */ = {
+		07B145B218CD1480006AD84A /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
-			dstPath = "include/$(PRODUCT_NAME)";
+			dstPath = "include/${PRODUCT_NAME}";
 			dstSubfolderSpec = 16;
 			files = (
-				F2A8617F1807F4DE001A7D31 /* FTPRequest.h in CopyFiles */,
-				F2A861801807F4DE001A7D31 /* FTPCredentials.h in CopyFiles */,
-				F2A861811807F4DE001A7D31 /* FTPHandle.h in CopyFiles */,
-				F2A8617E1807F4D5001A7D31 /* FTPClient.h in CopyFiles */,
-				F27BA1D71802FE7E00584A9E /* FTPKit.h in CopyFiles */,
+				07942E2618D014E5006BA28E /* ftplib.h in CopyFiles */,
+				07B145B318CD1489006AD84A /* FTPKit.h in CopyFiles */,
+				07B145B418CD148D006AD84A /* FTPClient.h in CopyFiles */,
+				076BD40518CD198D00517DEE /* FTPCredentials.h in CopyFiles */,
+				076BD40618CD199100517DEE /* FTPHandle.h in CopyFiles */,
+				076BD40718CD199700517DEE /* FTPRequest.h in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -81,6 +85,10 @@
 		072A829818CC2450001E640B /* NSError+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSError+Additions.m"; path = "Categories/NSError+Additions.m"; sourceTree = "<group>"; };
 		072A829918CC2450001E640B /* NSString+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSString+Additions.h"; path = "Categories/NSString+Additions.h"; sourceTree = "<group>"; };
 		072A829A18CC2450001E640B /* NSString+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSString+Additions.m"; path = "Categories/NSString+Additions.m"; sourceTree = "<group>"; };
+		076BD40A18CE2ACF00517DEE /* FTPRenameRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FTPRenameRequest.h; path = Protected/FTPRenameRequest.h; sourceTree = "<group>"; };
+		076BD40B18CE2ACF00517DEE /* FTPRenameRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FTPRenameRequest.m; path = Protected/FTPRenameRequest.m; sourceTree = "<group>"; };
+		076BD46118CFB76E00517DEE /* ftplib.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = ftplib.c; path = Libraries/include/ftplib/src/ftplib.c; sourceTree = SOURCE_ROOT; };
+		076BD46218CFB76E00517DEE /* ftplib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ftplib.h; path = Libraries/include/ftplib/src/ftplib.h; sourceTree = SOURCE_ROOT; };
 		07F23C4318CA33FC002BDF93 /* FTPKit+Protected.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "FTPKit+Protected.h"; path = "Protected/FTPKit+Protected.h"; sourceTree = "<group>"; };
 		07F23C4818CA4C43002BDF93 /* FTPKit Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "FTPKit Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		07F23C4918CA4C43002BDF93 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
@@ -120,8 +128,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F27BA2161802FFAE00584A9E /* CFNetwork.framework in Frameworks */,
-				F27BA1D21802FE7E00584A9E /* Foundation.framework in Frameworks */,
+				076BD40118CD18D200517DEE /* CFNetwork.framework in Frameworks */,
+				076BD40018CD18CC00517DEE /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -137,6 +145,31 @@
 				072A829A18CC2450001E640B /* NSString+Additions.m */,
 			);
 			name = Categories;
+			sourceTree = "<group>";
+		};
+		072A82BA18CC48DE001E640B /* Libraries */ = {
+			isa = PBXGroup;
+			children = (
+				072A82BC18CC4909001E640B /* ftplib */,
+				072A82BB18CC48FB001E640B /* libs */,
+			);
+			name = Libraries;
+			sourceTree = "<group>";
+		};
+		072A82BB18CC48FB001E640B /* libs */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = libs;
+			sourceTree = "<group>";
+		};
+		072A82BC18CC4909001E640B /* ftplib */ = {
+			isa = PBXGroup;
+			children = (
+				076BD46218CFB76E00517DEE /* ftplib.h */,
+				076BD46118CFB76E00517DEE /* ftplib.c */,
+			);
+			name = ftplib;
 			sourceTree = "<group>";
 		};
 		07F23C4E18CA4C43002BDF93 /* FTPKit Tests */ = {
@@ -161,7 +194,7 @@
 		F27BA1C51802FE7E00584A9E = {
 			isa = PBXGroup;
 			children = (
-				F27BA1D31802FE7E00584A9E /* Classes */,
+				F27BA1D31802FE7E00584A9E /* FTPKit */,
 				07F23C4E18CA4C43002BDF93 /* FTPKit Tests */,
 				F27BA1D01802FE7E00584A9E /* Frameworks */,
 				F27BA1CF1802FE7E00584A9E /* Products */,
@@ -188,23 +221,23 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		F27BA1D31802FE7E00584A9E /* Classes */ = {
+		F27BA1D31802FE7E00584A9E /* FTPKit */ = {
 			isa = PBXGroup;
 			children = (
 				F27BA1D61802FE7E00584A9E /* FTPKit.h */,
 				F27BA1F71802FF1800584A9E /* FTPClient.h */,
 				F27BA1F81802FF1800584A9E /* FTPClient.m */,
-				F27BA2211804237400584A9E /* FTPRequest.h */,
-				F27BA2221804237400584A9E /* FTPRequest.m */,
 				F27BA2051802FF1800584A9E /* FTPCredentials.h */,
 				F27BA2061802FF1800584A9E /* FTPCredentials.m */,
 				F27BA1FB1802FF1800584A9E /* FTPHandle.h */,
 				F27BA1FC1802FF1800584A9E /* FTPHandle.m */,
+				F27BA2211804237400584A9E /* FTPRequest.h */,
+				F27BA2221804237400584A9E /* FTPRequest.m */,
 				072A829618CC2442001E640B /* Categories */,
 				F27BA2171803009800584A9E /* Protected */,
+				072A82BA18CC48DE001E640B /* Libraries */,
 				F27BA1D41802FE7E00584A9E /* Supporting Files */,
 			);
-			name = Classes;
 			path = FTPKit;
 			sourceTree = "<group>";
 		};
@@ -232,6 +265,8 @@
 				072A828A18CC23E9001E640B /* FTPMakeDirectoryRequest.m */,
 				072A828B18CC23E9001E640B /* FTPPutRequest.h */,
 				072A828C18CC23E9001E640B /* FTPPutRequest.m */,
+				076BD40A18CE2ACF00517DEE /* FTPRenameRequest.h */,
+				076BD40B18CE2ACF00517DEE /* FTPRenameRequest.m */,
 				072A828D18CC23E9001E640B /* FTPSingleResourceRequest.h */,
 				072A828E18CC23EA001E640B /* FTPSingleResourceRequest.m */,
 			);
@@ -265,7 +300,7 @@
 			buildPhases = (
 				F27BA1CA1802FE7E00584A9E /* Sources */,
 				F27BA1CB1802FE7E00584A9E /* Frameworks */,
-				F27BA1CC1802FE7E00584A9E /* CopyFiles */,
+				07B145B218CD1480006AD84A /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -282,7 +317,7 @@
 		F27BA1C61802FE7E00584A9E /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0500;
+				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = "Upstart Illustration LLC";
 				TargetAttributes = {
 					07F23C4718CA4C43002BDF93 = {
@@ -332,19 +367,21 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				072A829418CC23EA001E640B /* FTPPutRequest.m in Sources */,
-				F27BA20B1802FF1800584A9E /* FTPClient.m in Sources */,
-				072A828F18CC23EA001E640B /* FTPChmodRequest.m in Sources */,
-				072A829B18CC2450001E640B /* NSError+Additions.m in Sources */,
-				072A829218CC23EA001E640B /* FTPListRequest.m in Sources */,
+				076BD46318CFB76E00517DEE /* ftplib.c in Sources */,
 				F27BA2121802FF1800584A9E /* FTPCredentials.m in Sources */,
-				072A829118CC23EA001E640B /* FTPGetRequest.m in Sources */,
-				072A829C18CC2450001E640B /* NSString+Additions.m in Sources */,
-				072A829018CC23EA001E640B /* FTPDeleteFileRequest.m in Sources */,
-				072A829318CC23EA001E640B /* FTPMakeDirectoryRequest.m in Sources */,
-				072A829518CC23EA001E640B /* FTPSingleResourceRequest.m in Sources */,
 				F27BA20D1802FF1800584A9E /* FTPHandle.m in Sources */,
 				F27BA2231804237400584A9E /* FTPRequest.m in Sources */,
+				F27BA20B1802FF1800584A9E /* FTPClient.m in Sources */,
+				072A829C18CC2450001E640B /* NSString+Additions.m in Sources */,
+				072A829B18CC2450001E640B /* NSError+Additions.m in Sources */,
+				072A829518CC23EA001E640B /* FTPSingleResourceRequest.m in Sources */,
+				072A828F18CC23EA001E640B /* FTPChmodRequest.m in Sources */,
+				072A829018CC23EA001E640B /* FTPDeleteFileRequest.m in Sources */,
+				072A829118CC23EA001E640B /* FTPGetRequest.m in Sources */,
+				072A829218CC23EA001E640B /* FTPListRequest.m in Sources */,
+				072A829318CC23EA001E640B /* FTPMakeDirectoryRequest.m in Sources */,
+				072A829418CC23EA001E640B /* FTPPutRequest.m in Sources */,
+				076BD40C18CE2ACF00517DEE /* FTPRenameRequest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -373,7 +410,6 @@
 		07F23C5918CA4C43002BDF93 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
@@ -395,7 +431,6 @@
 		07F23C5A18CA4C43002BDF93 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
@@ -414,7 +449,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -456,7 +490,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -491,29 +524,55 @@
 		F27BA1F21802FE7E00584A9E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CURRENT_PROJECT_VERSION = 1.0.0;
+				DEAD_CODE_STRIPPING = YES;
 				DSTROOT = /tmp/FTPKit.dst;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "FTPKit/FTPKit-Prefix.pch";
+				INSTALL_PATH = /usr/local/lib;
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				LINK_WITH_STANDARD_LIBRARIES = YES;
+				MACH_O_TYPE = staticlib;
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-ObjC";
+				PRIVATE_HEADERS_FOLDER_PATH = /usr/local/include;
 				PRODUCT_NAME = FTPKit;
+				PUBLIC_HEADERS_FOLDER_PATH = /usr/local/include;
+				SEPARATE_STRIP = YES;
 				SKIP_INSTALL = YES;
+				STRIP_STYLE = debugging;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				WRAPPER_EXTENSION = "";
 			};
 			name = Debug;
 		};
 		F27BA1F31802FE7E00584A9E /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CURRENT_PROJECT_VERSION = 1.0.0;
+				DEAD_CODE_STRIPPING = YES;
 				DSTROOT = /tmp/FTPKit.dst;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "FTPKit/FTPKit-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = NDEBUG;
+				INSTALL_PATH = /usr/local/lib;
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				LINK_WITH_STANDARD_LIBRARIES = YES;
+				MACH_O_TYPE = staticlib;
+				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "-ObjC";
+				PRIVATE_HEADERS_FOLDER_PATH = /usr/local/include;
 				PRODUCT_NAME = FTPKit;
+				PUBLIC_HEADERS_FOLDER_PATH = /usr/local/include;
+				SEPARATE_STRIP = YES;
 				SKIP_INSTALL = YES;
+				STRIP_STYLE = debugging;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				WRAPPER_EXTENSION = "";
 			};
 			name = Release;
 		};

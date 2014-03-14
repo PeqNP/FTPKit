@@ -27,9 +27,23 @@
     [super tearDown];
 }
 
+- (void)testNSError
+{
+    
+}
+
+- (void)testNSURL
+{
+    
+}
+
 - (void)testFtp
 {
     FTPClient * ftp = [[FTPClient alloc] initWithHost:@"localhost" port:21 username:@"unittest" password:@"unitpass"];
+    
+    /* For now I am using the FTPKitSample project to test FTP functions. This
+       will be changed once I am able to setup an asynchronous testing
+       framework. */
     
     // Create 'test1.txt' file to upload. Contents are 'testing 1'.
     // Upload file 'test1.txt'.

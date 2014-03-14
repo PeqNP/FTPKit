@@ -1,11 +1,8 @@
+
+#import "ftplib.h"
+
 #import "FTPChmodRequest.h"
 #import "NSError+Additions.h"
-#import "FTPKit+Protected.h"
-
-#import <sys/socket.h>
-#import <sys/types.h>
-#import <netinet/in.h>
-#import <netdb.h>
 
 @implementation FTPChmodRequest
 
@@ -15,7 +12,9 @@
 {
     if (mode < 0 || mode > 777)
     {
-        NSDictionary *userInfo = [NSDictionary dictionaryWithObject:NSLocalizedString(@"File mode value must be between 0 and 777.", @"")
+        // Put this an NSError+Additions
+        // [NSError FTPKitErrorWithString:code:]
+        NSDictionary *userInfo = [NSDictionary dictionaryWithObject:NSLocalizedString(@"File mode value must be between 0 and 0777.", @"")
                                                              forKey:NSLocalizedDescriptionKey];
         NSError *error = [[NSError alloc] initWithDomain:FTPErrorDomain code:0 userInfo:userInfo];
         [self didFailWithError:error];
@@ -24,26 +23,22 @@
     
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0);
     dispatch_async(queue, ^{
-        
-        BOOL success = YES;
-        
-        // @todo
-        
-        if (success)
+        NSString *command = [NSString stringWithFormat:@"SITE CHMOD %i %@", mode, self.handle.path];
+        [self didUpdateStatus:command];
+        netbuf *conn = [self connect];
+        if (conn == NULL)
+            return;
+        BOOL success = [self sendCommand:command conn:conn];
+        FtpQuit(conn);
+        if (! success)
         {
-#ifdef DEBUG
-            FKLogDebug(@"Permissions changed on %@ to %d", self.path, mode);
-#endif
-            
-            [self didUpdateStatus:NSLocalizedString(@"CHMOD Done", @"")];
-            if ([self.delegate respondsToSelector:@selector(request:didChmodFile:)])
-            {
-                [self.delegate request:self didChmodFile:self.path];
-            }
+            [self didFailWithError:[NSError FTPKitErrorWithCode:550]];
+            return;
         }
-        else
+        [self didUpdateStatus:NSLocalizedString(@"CHMOD Done", @"")];
+        if ([self.delegate respondsToSelector:@selector(request:didChmodPath:)])
         {
-            [self didFailWithError:[NSError FTPKitErrorWithCode:0]];
+            [self.delegate request:self didChmodPath:self.handle.path];
         }
     });
 }

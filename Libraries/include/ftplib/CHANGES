@@ -1,0 +1,178 @@
+The obligatory revision history...
+
+Changes from V3.1-1 to V4.0
+
+1) License changed from GPL/LGPL to Artistic License 2.0.
+
+2) Many bugs reported over the years have been addressed.
+
+3) The reentrant versions of gethostbyname and getservbyname are used
+if available.
+
+4) Internal buffers are larger which should allow for longer
+filenames.
+
+5) The library will not output anything to stdout or stderr unless
+ftplib_debug is defined.
+
+6) Some additional arguments are declared const.
+
+7) The second argument to FtpSize is the address of an integer to
+receive the size of the remote file.  The type of this argument has
+been changed from int to unsigned int.  A new function, FtpSizeLong,
+returns the remote file's size as an unsigned long long.
+
+8) The second argument to the callback function has been changed from
+an int to an unsigned long long.  This value contains the number of
+bytes transferred so far.
+
+9) The library version 1 interface compatability macros have been
+removed from the header file.  If your application needs them, extract
+them from the old header file.
+
+10) The usage information in qftp.c has been corrected.
+
+11) qftp now accepts a '-s <cmd>' option to send <cmd> as a SITE
+command.
+
+12) qftp progress reports now use floating point calculation so that
+large numbers don't cause overflows.  If the remote server does not
+support the SIZE command, qftp will update every 32KB.
+
+13) A new type-safe method is provided to establish a callback
+function.  Put the details of when the function should be called into
+a FtpCallbackOptions structure and pass it to FtpSetCallback().  To
+remove a callback, call FtpClearCallback().
+
+14) Updated html documentation.
+
+Changes from V3.1 to V3.1-1
+
+1) Delay setting the control handle pointer in the data handle until
+after the transfer request has received a positive acknowledgement.
+This should resolve problems calling FtpClose() on the data handle
+when the transfer is rejected.
+
+2) Fix error handling in FtpRead() and FtpWrite().
+
+3) Return status of transfer from FtpXfer() instead of status of
+FtpClose().
+
+4) Allow FtpClose() to be called on a control handle.  This should be
+used instead of FtpQuit() in cases where a transfer was interrupted.
+FtpQuit() would attempt to send a 'QUIT' command and wait for a
+response but this would be out of sync after an interrupt.
+
+5) The idle callback routine was not being set in the data handle if
+the user didn't set FTPLIB_IDLETIME.  Fixed this so it would get set
+up if either this or FTPLIB_CALLBACKBYTES was set.
+
+6) Open local files in binary mode when appropriate.  This is
+necessary on some systems like NT and VMS.
+
+7) Added a wildcard mode to qftp for wildcard retrieves.  Argument
+after '-w' is treated as a remote wildcard file specification.
+
+Changes from 12/2/97 (V3) to .... (V3.1)
+
+1) Added FtpPwd(), FtpSysType(), FtpCDUp(), FtpSize() and FtpModDate().
+
+2) Fixed bug in FtpClose() - It wasn't waiting for the '226 Transfer
+Complete' since it didn't have access to the control connection.  A
+pointer to it is now kept in the data connection.
+
+3) Fixed bug in FtpClose() - The data connection wasn't being freed.  This
+could have resulted in memory leaks.
+
+4) Allow runtime selection of connection mode (PORT/PASV) with default set
+at compile time.
+
+5) Added support for a user callback routine which can get called after a
+user specified number of bytes are transferred or after waiting for data
+on a socket for a user specified time period.
+
+6) Add FtpOptions() which allows changing connection options.  Options
+include connection mode, callback routine, and parameters regarding when
+the user's callback routine gets called.
+
+7) Added checks to make sure strcpy()/sprintf()/etc. wouldn't write past
+end of buffers.
+
+8) Modified build procedure to create a shared library.
+
+9) Added install option to makefile which installs under /usr/local.
+
+10) Modified qftp to use new interface.
+
+11) Modified qftp to log progress every 10% of file or every time data
+is delayd by 1 second if -v setting is not zero.
+
+12) Modified qftp to use fgets() instead of gets().
+
+------------------------------------------------------------------------
+
+Changes from 3/15/97 to 12/2/97
+
+1) FtpLastResponse() returns NULL if passed a NULL pointer.
+
+2) Added 'const' keyword on appropriate function arguments.
+
+3) First attempt to translate passed host string as an IP address in dot
+   notation by passing it to inet_addr().  If this fails, pass the string
+   to gethostbyname().  Apparently, some versions of gethostbyname() will
+   parse the translation of a dot notation address for you.  One user
+   reports he knows of at least one that does not.  In any case, it's the
+   right thing to do.
+
+4) Added protection from double inclusion to header file.  Also added
+   'extern "C"' for C++.
+
+5) Made sure qftp was passed two arguments before examining the second
+   one.
+
+6) Made sure all commands to the server were in upper case.  I've been
+   told that some servers require this.
+
+7) Attempt to handle login to accounts with no passwords.
+
+8) Added common data transfer routines so that ascii mode transfers would
+   be handled properly in all cases.  Also, exposed these routines for
+   user programs to call.  There's now FtpAccess() to open a remote file
+   or directory, FtpRead() and FtpWrite() to pass data, and FtpClose() to
+   terminate the data connection.
+
+9) Added 'list' command to qftp to perform a terse directory (names
+   only).  This could be piped into another copy of qftp to retrieve the
+   files.
+
+10) ftplib.c and ftplib.h are now covered by the LGPL instead of the GPL.
+   Feel free to send me a complementary copy of anything you develop
+   commercially with my libraries.  All other programs are still covered
+   by the GPL.
+
+11) Added ability to specify a different port number than the default by
+   appending a colon and the desired port number to the remote host name
+   (e.g., remote.host.name:500 would connect to port remote.host.name on
+   port 500).
+
+------------------------------------------------------------------------
+
+Changes from 8/31/96 version to 3/15/97 version
+
+1) Added copyright information to sources.
+
+2) Changed from 'port' to 'pasv' which I'm told will allow the routines
+   to work from behind a firewall.  It's also a lot simpler and cleaner
+   than all that code to setup and accept a connect from the server.
+
+3) Added delete (ftprm) support to qftp.c.
+
+4) Modified qftp to allow use without a softlink by passing the ftp
+   command as the first argument.
+
+5) Added netbuf argument to all calls to eliminate static storage and
+   allow multiple simultaneous connections.
+
+6) Renamed routines from ftp*() to Ftp*() to avoid problems with existing
+   programs.  Added macros in libftp.h to support old interface.  Renamed
+   ftpOpen() to FtpConnect().

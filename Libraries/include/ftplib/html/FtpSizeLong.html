@@ -1,0 +1,40 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<html>
+<head>
+<title>FtpSizeLong</title>
+<link rel="stylesheet" type="text/css" href="doc.css">
+</head>
+<body>
+<h1>FtpSizeLong</h1>
+<p>Determine size of remote file.</p>
+<h2>SYNOPSIS</h2>
+<pre>
+#include &lt;ftplib.h&gt;
+int FtpSize(char *path, unsigned long long *size, char mode, netbuf *nControl);
+</pre>
+<h2>PARAMETERS</h2>
+<dl>
+<dt><b>path</b></dt>
+<dd>Name of a file on the remote server.</dd>
+<dt><b>size</b></dt>
+<dd>A pointer to an unsigned 64 bit integer where the size will be returned.</dd>
+<dt><b>mode</b></dt>
+<dd>Specifies the transfer mode as FTPLIB_ASCII or
+FTPLIB_IMAGE.</dd>
+<dt><b>nControl</b></dt>
+<dd>A handle returned by <a href="FtpConnect">FtpConnect()</a>.</dd>
+</dl>
+<h2>DESCRIPTION</h2>
+<p>FtpSize() attempts to determine the size of a remote file.</p>
+<h2>RETURN VALUE</h2>
+<p>If a good response is received and the size is successfully
+parsed out of the result, 1 is returned. Otherwise, 0 is
+returned.</p>
+<p>Some servers may not support the SIZE command. If this request
+fails, the size may be available in the response to a RETR
+(<a href="FtpOpen.html">FtpOpen()</a> with
+typ=FTPLIB_FILE_READ).</p>
+<p>This function is identical to <a href="FtpSize.html">FtpSize()</a>
+except for the type of the returned value.</p>
+</body>
+</html>

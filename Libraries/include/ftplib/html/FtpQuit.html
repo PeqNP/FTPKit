@@ -1,0 +1,28 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<html>
+<head>
+<title>FtpQuit</title>
+<link rel="stylesheet" type="text/css" href="doc.css">
+</head>
+<body>
+<h1>FtpQuit</h1>
+<p>Sends a QUIT command and closes the connection to the server.</p>
+<h2>SYNOPSIS</h2>
+<pre>
+#include &lt;ftplib.h&gt;
+void FtpQuit(netbuf *nControl);
+</pre>
+<h2>PARAMETERS</h2>
+<dl>
+<dt><b>nControl</b></dt>
+<dd>A handle returned by <a href="FtpConnect.html">FtpConnect()</a>.</dd>
+</dl>
+<h2>DESCRIPTION</h2>
+<p>FtpQuit() sends a QUIT command to the server and waits for a
+response.  It closes the connection to the remote server and frees any
+resources associated with the connection.  The connection should not
+be used after calling FtpQuit().</p>
+<h2>RETURN VALUE</h2>
+<p>None.</p>
+</body>
+</html>

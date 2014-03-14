@@ -1,24 +1,23 @@
 # FTPKit
 
-Version 0.1.0 -- The API design is complete. The logic is not. chmod is also not yet supported.
+Version 1.0.0b
 
 FTPKit is an Objective-C library providing facilities implementing the client
 side of the File Transfer Protocol (FTP).
 
 This lib is based off or inspired by the BlackRaccoon, WhiteReaccoon and Apple's SimpleFTP
-example. It utilizes the FTPlib C library, developed by Chistophe Deleuze,
-for some of the remote functions such as chmod and sending arbitrary commands.
+example. It utilizes the ftplib library, developed by Thomas Pfau, for most of
+the remote actions.
 
 ## Features
 
 - List directory contents
-- Create new remote files and folders
-- Delete remote files and folders
 - Upload files
 - Download files
+- Delete remote files and folders
 - Change file mode on files (chmod)
+- Rename (move) files from one path to another
 - All calls are asynchronous
-- Library is fully unit tested
 - Built with ARC
 
 # Tutorial
@@ -54,14 +53,14 @@ for some of the remote functions such as chmod and sending arbitrary commands.
 
 ## Create a new directory
 
-Continuing on from our previous example, below shows you how you can create a remote directory.
+Continuing on from our previous example; below shows how to create a remote directory.
 
-    [client createDirectory:@"my_folder" atPath:@"/"];
+    [client createDirectoryAtPath:@"/my_new_folder"];
 
     ...
 
     // Delegate callback will inform you when the request is complete.
-    - (void)client:(FTPClient *)client request:(FTPRequest *)request didMakeDirectory:(NSString *)path
+    - (void)client:(FTPClient *)client request:(FTPRequest *)request didCreateDirectory:(NSString *)path
     {
         // Add file to the list of files you are tracking?
     }
@@ -86,22 +85,37 @@ Continuing on from our previous example, below shows you how you can create a re
         // ...
     }
 
+## Rename a file
+    
+    // You can easily rename (or move) a file from one path to another.
+    [client renamePath:@"/index.html" to:@"/public/index.html"];
+
+    // Delegate callback.
+    - (void)client:(FTPClient *)client request:(FTPRequest *)request didRenamePath:(NSString *)sourcePath to:(NSString *)destPath
+    {
+        // ...
+    }
+
 ## Delete a file
 
     // You can either provide a FTPHandle or a path on the FTP server to delete.
     // The FTPHandle will have been returned from the listDirectory* method.
-    [client deleteFile:@"/path/deleteme.html"];
+    [client deleteFileAtPath:@"/path/deleteme.html"];
+
+    ...
+
+    [client deleteDirectoryAtPath:@"/my_folder"];
 
     // Delegate callback.
-    - (void)client:(FTPClient *)client request:(FTPRequest *)request didDeleteFile:(NSString *)path
+    - (void)client:(FTPClient *)client request:(FTPRequest *)request didDeletePath:(NSString *)path
     {
         // ...
     }
 
 ## Cancel a request
 
-Most requests can be cancelled. In the instance where you need to cancel the
-request, do the following:
+Currently there are no requests that can be cancelled. This will change once the
+underlying lib has been updated. However, the API for this has been complete.
 
     // Keep the request object around until we no longer need it.
     FTPRequest *request = [client downloadFile:@"my_remote_movie.mp4" to:@"/my/local/my_movie.mp4"];
@@ -119,9 +133,7 @@ request, do the following:
 
 ## Update status of requests
 
-As requests process, they will periodically notify the delegate of their
-status. Implement the following delegate callbacks to inform your end-user
-of the status.
+As requests process, they will periodically notify the delegate of their status. Implement the following delegate callbacks to inform your end-user of the status.
 
     - (void)client:(FTPClient *)client request:(FTPRequest *)request didUpdateProgress:(float)progress
     {
@@ -134,10 +146,10 @@ of the status.
         // This will display the commands executed and general status updates --
         // such as when a connection is opened, complete, etc.
     }
-	
+
 ## Error handling
 
-When request fail they will notify the delegate with the following call:
+When requests fail they will notify the delegate with the following call:
 
     - (void)client:(FTPClient *)client request:(FTPRequest *)request didFailWithError:(NSError *)error
     {
@@ -152,22 +164,27 @@ This project was developed using Xcode 5.0. It requires a deployment target of i
 
 ## Required Frameworks
 
-- Foundation
 - CFNetwork
+- Foundation
 
 If you add FTPKit to your project as a static library, you will need to set the **-ObjC** and **-all_load** linker flags. Look below for more details.
 
 ## Integration
 
 1. Drag the "FTPKit.xcodeproj" into your project.
-2. Add the required library and frameworks (refer screenshot below).
+2. Add the FTPKit (FTPKit) as a Target Dependency (refer to the screehnshot below)
+3. Add the required library and frameworks (refer screenshot below).
     - Open the "Build Phases" tab
     - Expand Link Binary With Libraries
     - Click the "+" button and add CFNetwork.framework, Foundation.framework and libFTPKit.a
-3. Add linker flags.
+4. Add linker flags.
     - Open the "Build Settings" tab
-	- Find "Other Linker Flags" and set the value to **-ObjC -all_load**
-4. Add the FTPKit header file, **#import <FTPKit/FTPKit.h>**, where you want to use the library.
+    - Find "Other Linker Flags" and set the value to **-ObjC -all_load**
+5. Add the FTPKit header file, **#import \<FTPKit/FTPKit.h\>**, where you want to use the library.
+
+### Notes
+
+The #import \<FTPKit/FTPKit.h\> header may not be recognized until you build the project. After the project builds for the first time the error will go away.
 
 ![][1]
 

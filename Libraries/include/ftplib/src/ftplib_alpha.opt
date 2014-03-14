@@ -1,0 +1,35 @@
+ident=V4.0
+gsmatch=lequal,4,0
+
+ftplib_alpha.obj
+
+symbol_vector=(-
+	FTPACCESS=procedure,-
+	FTPCHDIR=procedure,-
+	FTPCLOSE=procedure,-
+	FTPCONNECT=procedure,-
+	FTPDELETE=procedure,-
+	FTPDIR=procedure,-
+	FTPGET=procedure,-
+	FTPINIT=procedure,-
+	FTPLASTRESPONSE=procedure,-
+	FTPLIB_DEBUG=data,-
+	FTPLOGIN=procedure,-
+	FTPMKDIR=procedure,-
+	FTPNLST=procedure,-
+	FTPPUT=procedure,-
+	FTPQUIT=procedure,-
+	FTPREAD=procedure,-
+	FTPRENAME=procedure,-
+	FTPRMDIR=procedure,-
+	FTPSITE=procedure,-
+	FTPWRITE=procedure,-
+	FTPPWD=procedure,-
+	FTPSYSTYPE=procedure,-
+	FTPCDUP=procedure,-
+	FTPSIZE=procedure,-
+	FTPMODDATE=procedure,-
+	FTPOPTIONS=procedure,-
+	FTPSIZELONG=procedure,-
+	FTPSETCALLBACK=procedure,-
+	FTPCLEARCALLBACK=procedure)

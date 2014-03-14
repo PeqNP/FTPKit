@@ -25,6 +25,38 @@
     // Nothing to do.
 }
 
+- (netbuf *)connect
+{
+    const char *host = [self.credentials.host cStringUsingEncoding:NSUTF8StringEncoding];
+    const char *user = [self.credentials.username cStringUsingEncoding:NSUTF8StringEncoding];
+    const char *pass = [self.credentials.password cStringUsingEncoding:NSUTF8StringEncoding];
+    netbuf *conn;
+    int stat = FtpConnect(host, &conn);
+    if (stat == 0)
+    {
+        // @fixme We don't get the exact error code from the lib. Use a generic
+        // connection error.
+        [self didFailWithError:[NSError FTPKitErrorWithCode:10060]];
+        return NULL;
+    }
+    stat = FtpLogin(user, pass, conn);
+    if (stat == 0)
+    {
+        [self didFailWithError:[NSError FTPKitErrorWithCode:430]];
+        FtpQuit(conn);
+        return NULL;
+    }
+    return conn;
+}
+
+- (BOOL)sendCommand:(NSString *)command conn:(netbuf *)conn
+{
+    const char *cmd = [command cStringUsingEncoding:NSUTF8StringEncoding];
+    if (!FtpSendCmd(cmd, '2', conn))
+        return NO;
+    return YES;
+}
+
 - (void)stop
 {
     // Nothing to do.
@@ -44,6 +76,9 @@
 
 - (void)didUpdateStatus:(NSString *)status
 {
+#ifdef DEBUG
+    FKLogDebug(@"Status: %@", status);
+#endif
 	if ([self.delegate respondsToSelector:@selector(request:didUpdateStatus:)])
     {
 		[self.delegate request:self didUpdateStatus:status];
@@ -60,6 +95,7 @@
 
 - (void)didFailWithError:(NSError *)error
 {
+    FKLogError(@"Class (%@) didFailWithError (%@)", NSStringFromClass([self class]), error);
     [self stop];
 	if ([self.delegate respondsToSelector:@selector(request:didFailWithError:)])
     {
@@ -69,10 +105,6 @@
 
 - (void)didFailWithMessage:(NSString *)message
 {
-#ifdef DEBUG
-    FKLogDebug(@"Class (%@) didFailWithMessage (%@)", NSStringFromClass([self class]), message);
-#endif
-    
     NSError *error = [NSError errorWithDomain:FTPErrorDomain
                                          code:502
                                      userInfo:[NSDictionary dictionaryWithObject:message forKey:NSLocalizedDescriptionKey]];

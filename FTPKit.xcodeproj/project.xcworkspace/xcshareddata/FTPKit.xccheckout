@@ -5,36 +5,36 @@
 	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
 	<false/>
 	<key>IDESourceControlProjectIdentifier</key>
-	<string>3EE470D5-B4E2-4D19-A1B0-D11F26C8E571</string>
+	<string>7316512E-B6AB-44D7-BCEA-9B89472258DA</string>
 	<key>IDESourceControlProjectName</key>
 	<string>FTPKit</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>BE094C94-DE73-42E4-AE0B-9952536068F9</key>
-		<string>ssh://github.com/themaste/BufferEditor.git</string>
+		<key>871D73CC-FB92-4909-9191-96DA50441FF9</key>
+		<string>ssh://github.com/themaste/FTPKit.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>Buffer/Frameworks/FTPKit/src/FTPKit.xcodeproj/project.xcworkspace</string>
+	<string>FTPKit.xcodeproj/project.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>BE094C94-DE73-42E4-AE0B-9952536068F9</key>
-		<string>../../../../../..</string>
+		<key>871D73CC-FB92-4909-9191-96DA50441FF9</key>
+		<string>../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
-	<string>ssh://github.com/themaste/BufferEditor.git</string>
+	<string>ssh://github.com/themaste/FTPKit.git</string>
 	<key>IDESourceControlProjectVersion</key>
 	<integer>110</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>BE094C94-DE73-42E4-AE0B-9952536068F9</string>
+	<string>871D73CC-FB92-4909-9191-96DA50441FF9</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>BE094C94-DE73-42E4-AE0B-9952536068F9</string>
+			<string>871D73CC-FB92-4909-9191-96DA50441FF9</string>
 			<key>IDESourceControlWCCName</key>
-			<string>BufferEditor</string>
+			<string>FTPKit</string>
 		</dict>
 	</array>
 </dict>

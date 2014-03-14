@@ -1,0 +1,36 @@
+	.title	ftplib_vector
+	.macro	xfer	rtn
+	.align	quad
+	.transfer rtn
+	.mask	rtn
+	jmp	rtn+2
+	.endm
+	.psect	ftplib_vector,quad
+	xfer	FTPACCESS
+	xfer	FTPCHDIR
+	xfer	FTPCLOSE
+	xfer	FTPCONNECT
+	xfer	FTPDELETE
+	xfer	FTPDIR
+	xfer	FTPGET
+	xfer	FTPINIT
+	xfer	FTPLASTRESPONSE
+	xfer	FTPLOGIN
+	xfer	FTPMKDIR
+	xfer	FTPNLST
+	xfer	FTPPUT
+	xfer	FTPQUIT
+	xfer	FTPREAD
+	xfer	FTPRENAME
+	xfer	FTPRMDIR
+	xfer	FTPSITE
+	xfer	FTPWRITE
+	xfer	FTPPWD
+	xfer	FTPSYSTYPE
+	xfer	FTPCDUP
+	xfer	FTPSIZE
+	xfer	FTPMODDATE
+	xfer	FTPOPTIONS
+	xfer	FTPSETCALLBACK
+	xfer	FTPCLEARCALLBACK
+	.end

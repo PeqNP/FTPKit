@@ -1,0 +1,35 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<html>
+<head>
+<title>FtpConnect</title>
+<link rel="stylesheet" type="text/css" href="doc.css">
+</head>
+<body>
+<h1>FtpConnect</h1>
+<p>Connect to an FTP server.</p>
+<h2>SYNOPSIS</h2>
+<pre>
+#include &lt;ftplib.h&gt;
+int FtpConnect(const char *host, netbuf **nControl);
+</pre>
+<h2>PARAMETERS</h2>
+<dl>
+<dt><b>host</b></dt>
+<dd>The name of the host machine to connect to and optionally an
+alternate port number to use.</dd>
+<dt><b>nControl</b></dt>
+<dd>The address where the pointer to the newly created control
+handle should be stored.</dd>
+</dl>
+<h2>DESCRIPTION</h2>
+<p>FtpConnect() establishes a connection to the FTP server on the
+specified machine and returns a handle which can be used to
+initiate data transfers. The host name should be specified as
+&lt;host&gt; or &lt;host&gt;:&lt;port&gt;. &lt;host&gt; may be
+either a host name or ip address. &lt;port&gt; may be either a
+service name or a port number.</p>
+<h2>RETURN VALUE</h2>
+<p>If the connection to the remote server if successful,
+FtpConnect() returns 1. Otherwise, 0 is returned.</p>
+</body>
+</html>
