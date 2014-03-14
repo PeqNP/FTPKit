@@ -1,6 +1,6 @@
 # FTPKit
 
-Version 1.0.0
+Version 1.0.0b
 
 FTPKit is an Objective-C library providing facilities implementing the client
 side of the File Transfer Protocol (FTP).
