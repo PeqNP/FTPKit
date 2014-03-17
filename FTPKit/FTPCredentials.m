@@ -26,7 +26,7 @@
 	if (self)
     {
         self.host = aHost;
-        self.port = aPort;
+        self.port = aPort < 1 ? 21 : aPort;
         self.username = aUsername;
         self.password = aPassword;
 	}
