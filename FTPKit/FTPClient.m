@@ -81,58 +81,69 @@
     // @todo
 }
 
+- (BOOL)downloadFile:(NSString *)remotePath to:(NSString *)localPath progress:(BOOL (^)(NSUInteger, NSUInteger))progress
+{
+    return [self downloadHandle:[FTPHandle handleAtPath:remotePath type:FTPHandleTypeFile] to:localPath progress:progress];
+}
+
 - (void)downloadFile:(NSString *)remotePath to:(NSString *)localPath progress:(BOOL (^)(NSUInteger, NSUInteger))progress success:(void (^)(void))success failure:(void (^)(NSError *))failure
 {
     [self downloadHandle:[FTPHandle handleAtPath:remotePath type:FTPHandleTypeFile]  to:localPath progress:progress success:success failure:failure];
 }
 
+- (BOOL)downloadHandle:(FTPHandle *)handle to:(NSString *)localPath progress:(BOOL (^)(NSUInteger, NSUInteger))progress
+{
+    netbuf *conn = [self connect];
+    if (conn == NULL)
+        return NO;
+    const char *output = [localPath cStringUsingEncoding:NSUTF8StringEncoding];
+    const char *path = [handle.path cStringUsingEncoding:NSUTF8StringEncoding];
+    // @todo Send w/ appropriate mode. FTPLIB_ASCII | FTPLIB_BINARY
+    int stat = FtpGet(output, path, FTPLIB_BINARY, conn);
+    // @todo Use 'progress' block.
+    FtpQuit(conn);
+    if (stat == 0)
+        return NO;
+    return YES;
+}
+
 - (void)downloadHandle:(FTPHandle *)handle to:(NSString *)localPath progress:(BOOL (^)(NSUInteger, NSUInteger))progress success:(void (^)(void))success failure:(void (^)(NSError *))failure
 {
     dispatch_async(_queue, ^{
-        netbuf *conn = [self connect];
-        if (conn == NULL) {
-            if (failure)
-                failure(_lastError);
-            return;
-        }
-        const char *output = [localPath cStringUsingEncoding:NSUTF8StringEncoding];
-        const char *path = [handle.path cStringUsingEncoding:NSUTF8StringEncoding];
-        // @todo Send w/ appropriate mode. FTPLIB_ASCII | FTPLIB_BINARY
-        int stat = FtpGet(output, path, FTPLIB_BINARY, conn);
-        // @todo Use 'progress' block.
-        FtpQuit(conn);
-        if (stat == 0) {
-            if (failure)
-                failure(_lastError);
-            return;
-        }
-        if (success)
+        BOOL ret = [self downloadHandle:handle to:localPath progress:progress];
+        if (ret && success) {
             success();
+        } else if (! ret && failure) {
+            failure(_lastError);
+        }
     });
+}
+
+- (BOOL)uploadFile:(NSString *)localPath to:(NSString *)remotePath progress:(BOOL (^)(NSUInteger, NSUInteger))progress
+{
+    netbuf *conn = [self connect];
+    if (conn == NULL)
+        return NO;
+    const char *input = [localPath cStringUsingEncoding:NSUTF8StringEncoding];
+    const char *path = [remotePath cStringUsingEncoding:NSUTF8StringEncoding];
+    // @todo Send w/ appropriate mode. FTPLIB_ASCII | FTPLIB_BINARY
+    int stat = FtpPut(input, path, FTPLIB_BINARY, conn);
+    // @todo Use 'progress' block.
+    FtpQuit(conn);
+    if (stat == 0)
+        return NO;
+    return YES;
 }
 
 - (void)uploadFile:(NSString *)localPath to:(NSString *)remotePath progress:(BOOL (^)(NSUInteger, NSUInteger))progress success:(void (^)(void))success failure:(void (^)(NSError *))failure
 {
     dispatch_async(_queue, ^{
-        netbuf *conn = [self connect];
-        if (conn == NULL) {
-            if (failure)
-                failure(_lastError);
-            return;
-        }
-        const char *input = [localPath cStringUsingEncoding:NSUTF8StringEncoding];
-        const char *path = [remotePath cStringUsingEncoding:NSUTF8StringEncoding];
-        // @todo Send w/ appropriate mode. FTPLIB_ASCII | FTPLIB_BINARY
-        int stat = FtpPut(input, path, FTPLIB_BINARY, conn);
-        // @todo Use 'progress' block.
-        FtpQuit(conn);
-        if (stat == 0) {
-            if (failure)
-                failure(_lastError);
-            return;
-        }
-        if (success)
+        BOOL ret = [self uploadFile:localPath to:remotePath progress:progress];
+        if (ret && success) {
             success();
+        } else if (! ret && failure) {
+            failure(_lastError);
+        }
     });
 }
 

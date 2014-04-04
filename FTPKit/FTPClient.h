@@ -104,7 +104,21 @@
                      failure:(void (^)(NSError *error))failure;
 
 /**
- Asynchronously download remote file path to local path.
+ Download remote file path to local path.
+ 
+ @param fileName Full path of remote file to download.
+ @param localPath Local path to download file to.
+ @param progress Calls after data has been received to remote server.
+        Return NO to cancel the operation.
+ @return YES on success. NO on failure.
+ */
+- (BOOL)downloadFile:(NSString *)remotePath to:(NSString *)localPath
+            progress:(BOOL (^)(NSUInteger received, NSUInteger totalBytes))progress;
+
+/**
+ Refer to downloadFile:to:progress:
+ 
+ This adds the ability to perform the operation asynchronously.
  
  @param fileName Full path of remote file to download.
  @param localPath Local path to download file to.
@@ -119,7 +133,21 @@
              failure:(void (^)(NSError *error))failure;
 
 /**
- Asynchronously download handle at specific location.
+ Download handle at specific location.
+ 
+ @param handle Handle to download. Handles are produced by listDirectory* and friends.
+ @param localPath Local path to download file to.
+ @param progress Calls after data has been received to remote server.
+        Return NO to cancel the operation.
+ @return YES on success. NO on failure.
+ */
+- (BOOL)downloadHandle:(FTPHandle *)handle to:(NSString *)localPath
+              progress:(BOOL (^)(NSUInteger received, NSUInteger totalBytes))progress;
+
+/**
+ Refer to downloadHandle:to:progress:
+ 
+ This adds the ability to perform the operation asynchronously.
  
  @param handle Handle to download. Handles are produced by listDirectory* and friends.
  @param localPath Local path to download file to.
@@ -134,7 +162,21 @@
                failure:(void (^)(NSError *error))failure;
 
 /**
- Asynchronously upload file to specific directory on remote server.
+ Upload file to specific directory on remote server.
+ 
+ @param localPath Path of local file to upload.
+ @param toPath Remote path where file will be uploaded to.
+ @param progress Calls after data has been sent to remote server.
+        Return NO to cancel the operation.
+ @return YES on success. NO on failure.
+ */
+- (BOOL)uploadFile:(NSString *)localPath to:(NSString *)remotePath
+          progress:(BOOL (^)(NSUInteger sent, NSUInteger totalBytes))progress;
+
+/**
+ Refer to uploadFile:to:progress:
+ 
+ This adds the ability to perform the operation asynchronously.
  
  @param localPath Path of local file to upload.
  @param toPath Remote path where file will be uploaded to.

@@ -9,8 +9,8 @@
 #import <XCTest/XCTest.h>
 #import "FTPKit.h"
 
-@interface FTPKit_Tests : XCTestCase <FTPClientDelegate>
-@property (nonatomic, copy) void (^testBlock)(FTPClient *client, FTPRequest *request, BOOL failed);
+@interface FTPKit_Tests : XCTestCase
+
 @end
 
 @implementation FTPKit_Tests
@@ -41,65 +41,47 @@
 {
     FTPClient * ftp = [[FTPClient alloc] initWithHost:@"localhost" port:21 username:@"unittest" password:@"unitpass"];
     
-    /* For now I am using the FTPKitSample project to test FTP functions. This
-       will be changed once I am able to setup an asynchronous testing
-       framework. */
-    
     // Create 'test1.txt' file to upload. Contents are 'testing 1'.
-    // Upload file 'test1.txt'.
-    // Create 'test1' folder.
-    // Create file 'test2.xt' in 'test1' folder. Contents are 'testing 2'.
-    // Download 'test1.txt'. Ensure contents are 'testing 1'.
-    // Download 'test2.txt'. Ensure contents are 'testing 2'.
-    // List folder 'test1'. Should contain 'test[1|2].txt'
-    // chmod permissions to 0777 on file 'test1.txt'
-    // Delete folder 'test1' - it should fail as files still exist in the folder.
-    // Delete 'test1.txt'
-    // Delete 'test2.txt'
-    // Delete folder 'test1'
+    NSURL *localUrl = [[[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject] URLByAppendingPathComponent:@"ftplib.tgz"];
+    // Download 'ftplib.tgz'
+    [ftp downloadFile:@"/ftplib.tgz" to:localUrl.path progress:NULL];
     
-    // Test listing directory contents where there is no whack on the end of
-    // the path.
+    // Upload 'ftplib.tgz' as 'copy.tgz'
+    [ftp uploadFile:localUrl.path to:@"/copy.tgz" progress:NULL];
     
-    // Move file 'test1.txt' into 'test1' folder.
-    // Change
+    // chmod 'copy.tgz' to 777
+    [ftp chmodPath:@"/copy.tgz" toMode:777];
+    
+    // Create directory 'test'
+    [ftp createDirectoryAtPath:@"/test"];
+    
+    // chmod 'test' to 777
+    [ftp chmodPath:@"/test" toMode:777];
+    
+    // List contents of 'test'
+    NSArray *contents = [ftp listContentsAtPath:@"/test" showHiddenFiles:YES];
+    
+    // - Make sure there are no contents.
+    XCTAssertEqual(0, contents.count, @"There should be no contents");
+    
+    // Move 'copy.tgz' to 'test' directory
+    [ftp renamePath:@"/copy.tgz" to:@"/test/copy.tgz"];
+    
+    // Create '/test/test2' directory
+    [ftp createDirectoryAtPath:@"/test/test2"];
+    
+    // List contents of 'test'
+    contents = [ftp listContentsAtPath:@"/test" showHiddenFiles:YES];
+    
+    // - Should have 'copy.tgz' (a file) and 'test2' (a directory)
+    // @todo make sure they are the files we requested, including the correct type.
+    XCTAssertEqual(2, contents.count, @"");
+    
+    // Delete 'test'. It should fail as there are contents in the directory.
+    
+    // Delete 'test2', 'copy.tgz' and then 'test'. All operations should succeed.
     
     //XCTFail(@"No implementation for \"%s\"", __PRETTY_FUNCTION__);
-}
-
-- (void)client:(FTPClient *)client request:(FTPRequest *)request didMakeDirectory:(NSURL *)directoryURL
-{
-    
-}
-
-- (void)client:(FTPClient *)client request:(FTPRequest *)request didUploadFile:(NSString *)sourcePath toDestination:(NSURL *)destinationURL
-{
-    
-}
-
-- (void)client:(FTPClient *)client request:(FTPRequest *)request didListItems:(NSArray *)items
-{
-    
-}
-
-- (void)client:(FTPClient *)client request:(FTPRequest *)request didChmodFile:(NSURL *)fileURL toMode:(int)mode
-{
-    
-}
-
-- (void)client:(FTPClient *)client request:(FTPRequest *)request didDownloadFile:(NSURL *)sourceURL toDestination:(NSString *)destinationPath
-{
-    
-}
-
-- (void)client:(FTPClient *)client request:(FTPRequest *)request didDeleteFile:(NSURL *)fileURL
-{
-    
-}
-
-- (void)client:(FTPClient *)client request:(FTPRequest *)request didFailWithError:(NSError *)error
-{
-    
 }
 
 @end
