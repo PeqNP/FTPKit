@@ -9,4 +9,6 @@
 
 - (instancetype)initWithCredentials:(FTPCredentials *)credentials downloadHandle:(FTPHandle *)handle to:(NSString *)localPath;
 
+- (BOOL)start;
+
 @end

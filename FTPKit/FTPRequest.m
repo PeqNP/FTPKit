@@ -4,6 +4,7 @@
 
 @interface FTPRequest ()
 @property (nonatomic, strong) FTPCredentials *credentials;
+@property (nonatomic, strong) NSError *error;
 @end
 
 @implementation FTPRequest
@@ -66,10 +67,6 @@
 {
     [self stop];
     [self didUpdateStatus:NSLocalizedString(@"Request Canceled", @"")];
-	if ([self.delegate respondsToSelector:@selector(requestDidCancel:)])
-    {
-		[self.delegate requestDidCancel:self];
-	}
 }
 
 // Protected methods.
@@ -96,11 +93,8 @@
 - (void)didFailWithError:(NSError *)error
 {
     FKLogError(@"Class (%@) didFailWithError (%@)", NSStringFromClass([self class]), error);
+    self.error = error;
     [self stop];
-	if ([self.delegate respondsToSelector:@selector(request:didFailWithError:)])
-    {
-		[self.delegate request:self didFailWithError:error];
-	}
 }
 
 - (void)didFailWithMessage:(NSString *)message

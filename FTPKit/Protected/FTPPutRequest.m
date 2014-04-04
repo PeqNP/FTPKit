@@ -29,30 +29,27 @@
     return self;
 }
 
-- (void)start
+- (BOOL)start
 {
-    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0);
-    dispatch_async(queue, ^{
-        [self didUpdateStatus:[NSString stringWithFormat:@"PUT %@", [localPath lastPathComponent]]];
-        netbuf *conn = [self connect];
-        if (conn == NULL)
-            return;
-        const char *input = [localPath cStringUsingEncoding:NSUTF8StringEncoding];
-        const char *path = [remotePath cStringUsingEncoding:NSUTF8StringEncoding];
-        // @todo Send w/ appropriate mode. FTPLIB_ASCII | FTPLIB_BINARY
-        int stat = FtpPut(input, path, FTPLIB_BINARY, conn);
-        FtpQuit(conn);
-        if (stat == 0)
-        {
-            [self didFailWithError:[NSError FTPKitErrorWithCode:550]];
-            return;
-        }
-        [self didUpdateStatus:NSLocalizedString(@"PUT Done", @"")];
-        if ([self.delegate respondsToSelector:@selector(request:didUploadFile:to:)])
-        {
-            [self.delegate request:self didUploadFile:localPath to:remotePath];
-        }
-    });
+    [self didUpdateStatus:[NSString stringWithFormat:@"PUT %@", [localPath lastPathComponent]]];
+    netbuf *conn = [self connect];
+    if (conn == NULL)
+    {
+        [self didFailWithError:[NSError FTPKitErrorWithCode:10060]];
+        return NO;
+    }
+    const char *input = [localPath cStringUsingEncoding:NSUTF8StringEncoding];
+    const char *path = [remotePath cStringUsingEncoding:NSUTF8StringEncoding];
+    // @todo Send w/ appropriate mode. FTPLIB_ASCII | FTPLIB_BINARY
+    int stat = FtpPut(input, path, FTPLIB_BINARY, conn);
+    FtpQuit(conn);
+    if (stat == 0)
+    {
+        [self didFailWithError:[NSError FTPKitErrorWithCode:550]];
+        return NO;
+    }
+    [self didUpdateStatus:NSLocalizedString(@"PUT Done", @"")];
+    return YES;
 }
 
 @end

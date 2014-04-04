@@ -7,4 +7,6 @@
 
 - (instancetype)initWithCredentials:(FTPCredentials *)credentials sourcePath:(NSString *)sourcePath destPath:(NSString *)destPath;
 
+- (BOOL)start;
+
 @end

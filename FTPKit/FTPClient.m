@@ -1,5 +1,6 @@
 #import "FTPClient.h"
 
+#import "NSError+Additions.h"
 #import "FTPChmodRequest.h"
 #import "FTPDeleteFileRequest.h"
 #import "FTPGetRequest.h"
@@ -9,16 +10,39 @@
 #import "FTPRenameRequest.h"
 
 @interface FTPClient ()
+
+/** Credentials used to login to the server. */
 @property (nonatomic, strong) FTPCredentials* credentials;
+
+/** Queued requests. */
 @property (nonatomic, strong) NSMutableArray *requests;
 
-- (void)addRequest:(FTPRequest *)request;
+/** Queue used to enforce requests to process in synchronous order. */
+@property (nonatomic, strong) dispatch_queue_t queue;
+
+/** The last error encountered. */
+@property (nonatomic, strong) NSError *lastError;
+
+/**
+ Create connection to FTP server.
+ 
+ @return netbuf The connection to the FTP server on success. NULL otherwise.
+ */
+- (netbuf *)connect;
+
+/**
+ Send arbitrary command to the FTP server.
+ 
+ @param command Command to send to the FTP server.
+ @param netbuf Connection to FTP server.
+ @return BOOL YES on success. NO otherwise.
+ */
+- (BOOL)sendCommand:(NSString *)command conn:(netbuf *)conn;
 
 @end
 
 @implementation FTPClient
 
-@synthesize delegate;
 @synthesize credentials;
 @synthesize requests;
 
@@ -39,6 +63,7 @@
     {
 		self.credentials = aLocation;
         self.requests = [[NSMutableArray alloc] init];
+        self.queue = dispatch_queue_create("NMSFTPQueue", DISPATCH_QUEUE_SERIAL);
 	}
 	return self;
 }
@@ -49,232 +74,205 @@
 	return [self initWithCredentials:creds];
 }
 
-- (void)addRequest:(FTPRequest *)request
-{
-    @synchronized(self)
-    {
-        
-    }
-}
-
-- (FTPRequest *)listContentsAtPath:(NSString *)path showHiddenFiles:(BOOL)showHiddenFiles
+- (NSArray *)listContentsAtPath:(NSString *)path showHiddenFiles:(BOOL)showHiddenFiles
 {
     FTPHandle *hdl = [FTPHandle handleAtPath:path type:FTPHandleTypeDirectory];
     return [self listContentsAtHandle:hdl showHiddenFiles:showHiddenFiles];
 }
 
-- (FTPRequest *)listContentsAtHandle:(FTPHandle *)handle showHiddenFiles:(BOOL)showHiddenFiles
+- (void)listContentsAtPath:(NSString *)path showHiddenFiles:(BOOL)showHiddenFiles success:(void (^)(NSArray *))success failure:(void (^)(NSError *))failure
 {
-    FTPListRequest *request = [FTPListRequest requestWithCredentials:credentials handle:handle];
-    request.showHiddenItems = showHiddenFiles;
-	request.delegate = self;
-	[requests addObject:request];
-	[request start];
-    return request;
+    FTPHandle *hdl = [FTPHandle handleAtPath:path type:FTPHandleTypeDirectory];
+    [self listContentsAtHandle:hdl showHiddenFiles:showHiddenFiles success:success failure:failure];
 }
 
-- (FTPRequest *)downloadFile:(NSString *)remotePath to:(NSString *)localPath
+- (NSArray *)listContentsAtHandle:(FTPHandle *)handle showHiddenFiles:(BOOL)showHiddenFiles
 {
-    return [self downloadHandle:[FTPHandle handleAtPath:remotePath type:FTPHandleTypeFile] to:localPath];
+    // @todo FTPListRequest
+    return nil;
 }
 
-- (FTPRequest *)downloadHandle:(FTPHandle *)handle to:(NSString *)localPath
+- (void)listContentsAtHandle:(FTPHandle *)handle showHiddenFiles:(BOOL)showHiddenFiles success:(void (^)(NSArray *))success failure:(void (^)(NSError *))failure
 {
-    FTPGetRequest *request = [FTPGetRequest requestWithCredentials:credentials
-                                                    downloadHandle:handle
-                                                                to:localPath];
-	request.delegate = self;
-	[requests addObject:request];
-	[request start];
-    return request;
+    // @todo
 }
 
-- (FTPRequest *)uploadFile:(NSString *)localPath to:(NSString *)remotePath
+- (void)downloadFile:(NSString *)remotePath to:(NSString *)localPath progress:(BOOL (^)(NSUInteger, NSUInteger))progress success:(void (^)(void))success failure:(void (^)(NSError *))failure
 {
-	FTPPutRequest* request = [FTPPutRequest requestWithCredentials:credentials uploadFile:localPath to:remotePath];
-	request.delegate = self;
-	[requests addObject:request];
-	[request start];
-    return request;
+    [self downloadHandle:[FTPHandle handleAtPath:remotePath type:FTPHandleTypeFile]  to:localPath progress:progress success:success failure:failure];
 }
 
-- (FTPRequest *)createDirectoryAtPath:(NSString *)remotePath
+- (void)downloadHandle:(FTPHandle *)handle to:(NSString *)localPath progress:(BOOL (^)(NSUInteger, NSUInteger))progress success:(void (^)(void))success failure:(void (^)(NSError *))failure
+{
+    // @todo FTPGetRequest
+}
+
+- (void)uploadFile:(NSString *)localPath to:(NSString *)remotePath progress:(BOOL (^)(NSUInteger, NSUInteger))progress success:(void (^)(void))success failure:(void (^)(NSError *))failure
+{
+	// @todo FTPPutRequest
+}
+
+- (BOOL)createDirectoryAtPath:(NSString *)remotePath
 {
     return [self createDirectoryAtHandle:[FTPHandle handleAtPath:remotePath type:FTPHandleTypeDirectory]];
 }
 
-- (FTPRequest *)createDirectoryAtHandle:(FTPHandle *)handle
+- (void)createDirectoryAtPath:(NSString *)remotePath success:(void (^)(void))success failure:(void (^)(NSError *))failure
 {
-	FTPMakeDirectoryRequest* request = [FTPMakeDirectoryRequest requestWithCredentials:credentials handle:handle];
-	request.delegate = self;
-	[requests addObject:request];
-	[request start];
-    return request;
+    [self createDirectoryAtHandle:[FTPHandle handleAtPath:remotePath type:FTPHandleTypeDirectory] success:success failure:failure];
 }
 
-- (FTPRequest *)deleteDirectoryAtPath:(NSString *)remotePath
+- (BOOL)createDirectoryAtHandle:(FTPHandle *)handle
+{
+    // @todo FTPMakeDirectoryRequest
+    return YES;
+}
+
+- (void)createDirectoryAtHandle:(FTPHandle *)handle success:(void (^)(void))success failure:(void (^)(NSError *))failure
+{
+	// @todo
+}
+
+- (BOOL)deleteDirectoryAtPath:(NSString *)remotePath
 {
     return [self deleteHandle:[FTPHandle handleAtPath:remotePath type:FTPHandleTypeDirectory]];
 }
 
-- (FTPRequest *)deleteFileAtPath:(NSString *)remotePath
+- (void)deleteDirectoryAtPath:(NSString *)remotePath success:(void (^)(void))success failure:(void (^)(NSError *))failure
+{
+    [self deleteHandle:[FTPHandle handleAtPath:remotePath type:FTPHandleTypeDirectory] success:success failure:failure];
+}
+
+- (BOOL)deleteFileAtPath:(NSString *)remotePath
 {
     return [self deleteHandle:[FTPHandle handleAtPath:remotePath type:FTPHandleTypeFile]];
 }
 
-- (FTPRequest *)deleteHandle:(FTPHandle *)handle
+- (void)deleteFileAtPath:(NSString *)remotePath success:(void (^)(void))success failure:(void (^)(NSError *))failure
 {
-	FTPDeleteFileRequest* request = [FTPDeleteFileRequest requestWithCredentials:credentials handle:handle];
-	request.delegate = self;
-	[requests addObject:request];
-	[request start];
-    return request;
+    [self deleteHandle:[FTPHandle handleAtPath:remotePath type:FTPHandleTypeFile] success:success failure:failure];
 }
 
-- (FTPRequest *)chmodPath:(NSString *)remotePath toMode:(int)mode
+- (BOOL)deleteHandle:(FTPHandle *)handle
+{
+    // @todo FTPDeleteFileRequest
+	return YES;
+}
+
+- (void)deleteHandle:(FTPHandle *)handle success:(void (^)(void))success failure:(void (^)(NSError *))failure
+{
+    // @todo
+}
+
+- (BOOL)chmodPath:(NSString *)remotePath toMode:(int)mode
 {
     return [self chmodHandle:[FTPHandle handleAtPath:remotePath type:FTPHandleTypeUnknown] toMode:mode];
 }
 
-- (FTPRequest *)chmodHandle:(FTPHandle *)handle toMode:(int)mode
+- (void)chmodPath:(NSString *)remotePath toMode:(int)mode success:(void (^)(void))success failure:(void (^)(NSError *))failure
 {
-    FTPChmodRequest *request = [FTPChmodRequest requestWithCredentials:credentials handle:handle];
-    request.mode = mode;
-    request.delegate = self;
-    [requests addObject:request];
-    [request start];
-    return request;
+    [self chmodHandle:[FTPHandle handleAtPath:remotePath type:FTPHandleTypeUnknown] toMode:mode success:success failure:failure];
 }
 
-- (FTPRequest *)renamePath:(NSString *)sourcePath to:(NSString *)destPath
+- (BOOL)chmodHandle:(FTPHandle *)handle toMode:(int)mode
 {
-    FTPRenameRequest *request = [FTPRenameRequest requestWithCredentials:credentials sourcePath:sourcePath destPath:destPath];
-    request.delegate = self;
-    [requests addObject:request];
-    [request start];
-    return request;
+    if (mode < 0 || mode > 777)
+    {
+        // Put this an NSError+Additions
+        // [NSError FTPKitErrorWithString:code:]
+        NSDictionary *userInfo = [NSDictionary dictionaryWithObject:NSLocalizedString(@"File mode value must be between 0 and 0777.", @"")
+                                                             forKey:NSLocalizedDescriptionKey];
+        self.lastError = [[NSError alloc] initWithDomain:FTPErrorDomain code:0 userInfo:userInfo];
+        return NO;
+    }
+    NSString *command = [NSString stringWithFormat:@"SITE CHMOD %i %@", mode, handle.path];
+    netbuf *conn = [self connect];
+    if (conn == NULL)
+    {
+        self.lastError = [NSError FTPKitErrorWithCode:10060];
+        return NO;
+    }
+    BOOL success = [self sendCommand:command conn:conn];
+    FtpQuit(conn);
+    if (! success)
+    {
+        self.lastError = [NSError FTPKitErrorWithCode:550];
+        return NO;
+    }
+    return YES;
 }
 
-// FTPRequestDelegate
-
-- (void)request:(FTPRequest *)request didList:(NSArray *)handles
+- (void)chmodHandle:(FTPHandle *)handle toMode:(int)mode success:(void (^)(void))success failure:(void (^)(NSError *))failure
 {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        if ([self.delegate respondsToSelector:@selector(client:request:didListContents:)])
+    dispatch_async(_queue, ^{
+        BOOL ret = [self chmodHandle:handle toMode:mode];
+        if (ret && success)
         {
-            [self.delegate client:self request:request didListContents:handles];
+            success();
         }
-        [requests removeObject:request];
-    });
-}
-
-- (void)request:(FTPRequest *)request didDownloadFile:(NSString *)remotePath to:(NSString *)localPath
-{
-    dispatch_async(dispatch_get_main_queue(), ^{
-        if ([self.delegate respondsToSelector:@selector(client:request:didDownloadFile:to:)])
+        else
         {
-            [self.delegate client:self request:request didDownloadFile:remotePath to:localPath];
-        }
-        [requests removeObject:request];
-    });
-}
-
-- (void)request:(FTPRequest*)request didUploadFile:(NSString *)localPath to:(NSString *)remotePath
-{
-    dispatch_async(dispatch_get_main_queue(), ^{
-        if ([self.delegate respondsToSelector:@selector(client:request:didUploadFile:to:)])
-        {
-            [self.delegate client:self request:request didUploadFile:localPath to:remotePath];
-        }
-        [requests removeObject:request];
-    });
-}
-
-- (void)request:(FTPRequest *)request didMakeDirectory:(NSString *)path
-{
-    dispatch_async(dispatch_get_main_queue(), ^{
-        if ([self.delegate respondsToSelector:@selector(client:request:didCreateDirectory:)])
-        {
-            [self.delegate client:self request:request didCreateDirectory:path];
-        }
-        [requests removeObject:request];
-    });
-}
-
-- (void)request:(FTPRequest *)request didDeletePath:(NSString *)path
-{
-    dispatch_async(dispatch_get_main_queue(), ^{
-        if ([self.delegate respondsToSelector:@selector(client:request:didDeletePath:)])
-        {
-            [self.delegate client:self request:request didDeletePath:path];
-        }
-        [requests removeObject:request];
-    });
-}
-
-- (void)request:(FTPRequest *)request didChmodPath:(NSString *)path
-{
-    dispatch_async(dispatch_get_main_queue(), ^{
-        if ([self.delegate respondsToSelector:@selector(client:request:didChmodPath:toMode:)])
-        {
-            FTPChmodRequest *req = (FTPChmodRequest *)request;
-            [self.delegate client:self request:request didChmodPath:path toMode:req.mode];
-        }
-        [requests removeObject:request];
-    });
-}
-
-- (void)request:(FTPRequest *)request didRenamePath:(NSString *)sourcePath to:(NSString *)destPath
-{
-    dispatch_async(dispatch_get_main_queue(), ^{
-        if ([self.delegate respondsToSelector:@selector(client:request:didRenamePath:to:)])
-        {
-            [self.delegate client:self request:request didRenamePath:sourcePath to:destPath];
-        }
-        [requests removeObject:request];
-    });
-}
-
-- (void)request:(FTPRequest *)request didUpdateStatus:(NSString *)status
-{
-    dispatch_async(dispatch_get_main_queue(), ^{
-        if ([self.delegate respondsToSelector:@selector(client:request:didUpdateStatus:)])
-        {
-            [self.delegate client:self request:request didUpdateStatus:status];
+            failure(_lastError);
         }
     });
 }
 
-- (void)request:(FTPRequest *)request didUpdateProgress:(float)progress
+- (BOOL)renamePath:(NSString *)sourcePath to:(NSString *)destPath
 {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        if ([self.delegate respondsToSelector:@selector(client:request:didUpdateProgress:)])
-        {
-            [self.delegate client:self request:request didUpdateProgress:progress];
-        }
-    });
+    // @todo FTPRenameRequest
+    return YES;
 }
 
-- (void)request:(FTPRequest *)request didFailWithError:(NSError *)error
+- (void)renamePath:(NSString *)sourcePath to:(NSString *)destPath success:(void (^)(void))success failure:(void (^)(NSError *))failure
 {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        if ([self.delegate respondsToSelector:@selector(client:request:didFailWithError:)])
-        {
-            [self.delegate client:self request:request didFailWithError:error];
-        }
-        [requests removeObject:request];
-    });
+    // @todo
 }
 
-- (void)requestDidCancel:(FTPRequest *)request
+/** Private Methods */
+
+- (netbuf *)connect
 {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        if ([self.delegate respondsToSelector:@selector(client:requestDidCancel:)])
-        {
-            [self.delegate client:self requestDidCancel:request];
-        }
-        [requests removeObject:request];
-    });
+    const char *host = [self.credentials.host cStringUsingEncoding:NSUTF8StringEncoding];
+    const char *user = [self.credentials.username cStringUsingEncoding:NSUTF8StringEncoding];
+    const char *pass = [self.credentials.password cStringUsingEncoding:NSUTF8StringEncoding];
+    netbuf *conn;
+    int stat = FtpConnect(host, &conn);
+    if (stat == 0)
+    {
+        // @fixme We don't get the exact error code from the lib. Use a generic
+        // connection error.
+        self.lastError = [NSError FTPKitErrorWithCode:10060];
+        return NULL;
+    }
+    stat = FtpLogin(user, pass, conn);
+    if (stat == 0)
+    {
+        self.lastError = [NSError FTPKitErrorWithCode:430];
+        FtpQuit(conn);
+        return NULL;
+    }
+    return conn;
 }
+
+- (BOOL)sendCommand:(NSString *)command conn:(netbuf *)conn
+{
+    const char *cmd = [command cStringUsingEncoding:NSUTF8StringEncoding];
+    if (!FtpSendCmd(cmd, '2', conn))
+    {
+        self.lastError = [NSError FTPKitErrorWithCode:451];
+        return NO;
+    }
+    return YES;
+}
+
+/**
+- (void)didFailWithMessage:(NSString *)message
+{
+    NSError *error = [NSError errorWithDomain:FTPErrorDomain
+                                         code:502
+                                     userInfo:[NSDictionary dictionaryWithObject:message forKey:NSLocalizedDescriptionKey]];
+    [self didFailWithError:error];
+}
+ */
 
 @end

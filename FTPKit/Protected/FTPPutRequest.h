@@ -8,4 +8,6 @@
 
 - (instancetype)initWithCredentials:(FTPCredentials *)credentials uploadFile:(NSString *)localPath to:(NSString *)remotePath;
 
+- (BOOL)start;
+
 @end

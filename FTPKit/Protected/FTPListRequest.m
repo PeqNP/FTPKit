@@ -32,10 +32,10 @@
     [self stop];
 }
 
-- (void)start
+- (NSArray *)start
 {
 	if (self.networkStream)
-        return;
+        return nil;
 	
     [self didUpdateStatus:[NSString stringWithFormat:NSLocalizedString(@"LIST %@", @""), self.handle.path]];
 	
@@ -43,7 +43,7 @@
     if (! remoteUrl)
     {
 		[self didFailWithMessage:NSLocalizedString(@"Invalid path", @"")];
-        return;
+        return nil;
 	}
     
 	self.listData = [NSMutableData data];
@@ -53,18 +53,16 @@
 	if (! networkStream)
     {
         [self didFailWithMessage:NSLocalizedString(@"Failed to create read stream", @"")];
-        return;
+        return nil;
     }
 	
     [networkStream setProperty:(id)kCFBooleanFalse
                         forKey:(NSString *)kCFStreamPropertyFTPAttemptPersistentConnection];
 	networkStream.delegate = self;
-    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0);
-    dispatch_async(queue, ^{
-        [networkStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
-        [networkStream open];
-        [[NSRunLoop currentRunLoop] run];
-    });
+    [networkStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+    [networkStream open];
+    [[NSRunLoop currentRunLoop] run];
+    return nil;
 }
 
 - (void)stop

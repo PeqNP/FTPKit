@@ -8,7 +8,7 @@
 
 @synthesize mode;
 
-- (void)start
+- (BOOL)start
 {
     if (mode < 0 || mode > 777)
     {
@@ -18,29 +18,25 @@
                                                              forKey:NSLocalizedDescriptionKey];
         NSError *error = [[NSError alloc] initWithDomain:FTPErrorDomain code:0 userInfo:userInfo];
         [self didFailWithError:error];
-        return;
+        return NO;
     }
-    
-    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0);
-    dispatch_async(queue, ^{
-        NSString *command = [NSString stringWithFormat:@"SITE CHMOD %i %@", mode, self.handle.path];
-        [self didUpdateStatus:command];
-        netbuf *conn = [self connect];
-        if (conn == NULL)
-            return;
-        BOOL success = [self sendCommand:command conn:conn];
-        FtpQuit(conn);
-        if (! success)
-        {
-            [self didFailWithError:[NSError FTPKitErrorWithCode:550]];
-            return;
-        }
-        [self didUpdateStatus:NSLocalizedString(@"CHMOD Done", @"")];
-        if ([self.delegate respondsToSelector:@selector(request:didChmodPath:)])
-        {
-            [self.delegate request:self didChmodPath:self.handle.path];
-        }
-    });
+    NSString *command = [NSString stringWithFormat:@"SITE CHMOD %i %@", mode, self.handle.path];
+    [self didUpdateStatus:command];
+    netbuf *conn = [self connect];
+    if (conn == NULL)
+    {
+        [self didFailWithError:[NSError FTPKitErrorWithCode:10060]];
+        return NO;
+    }
+    BOOL success = [self sendCommand:command conn:conn];
+    FtpQuit(conn);
+    if (! success)
+    {
+        [self didFailWithError:[NSError FTPKitErrorWithCode:550]];
+        return NO;
+    }
+    [self didUpdateStatus:NSLocalizedString(@"CHMOD Done", @"")];
+    return YES;
 }
 
 @end
