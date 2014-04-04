@@ -15,7 +15,7 @@
  @param password User's password.
  @return FTPCredentials
  */
-+ (FTPCredentials *)credentialsWithHost:(NSString *)host port:(int)port username:(NSString *)username password:(NSString *)password;
++ (instancetype)credentialsWithHost:(NSString *)host port:(int)port username:(NSString *)username password:(NSString *)password;
 
 /**
  Create credentials used for login.

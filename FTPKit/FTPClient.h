@@ -7,6 +7,7 @@
 
 @interface FTPClient : NSObject
 
+/** Credentials used to login to the server. */
 @property (nonatomic, readonly) FTPCredentials* credentials;
 
 /**
@@ -23,7 +24,7 @@
  @param FTPLocation The location's credentials
  @return FTPClient
  */
-+ (FTPClient *)clientWithCredentials:(FTPCredentials *)credentials;
++ (instancetype)clientWithCredentials:(FTPCredentials *)credentials;
 
 /**
  Factory method to create FTPClient instance.
@@ -34,7 +35,7 @@
  @param password Password of user.
  @return FTPClient
  */
-+ (FTPClient *)clientWithHost:(NSString *)host port:(int)port username:(NSString *)username password:(NSString* )password;
++ (instancetype)clientWithHost:(NSString *)host port:(int)port username:(NSString *)username password:(NSString* )password;
 
 /**
  Create an instance of FTPClient.

@@ -10,14 +10,9 @@
 
 @implementation FTPCredentials
 
-@synthesize host;
-@synthesize port;
-@synthesize username;
-@synthesize password;
-
-+ (FTPCredentials *)credentialsWithHost:(NSString *)aHost port:(int)aPort username:(NSString *)aUsername password:(NSString *)aPassword
++ (instancetype)credentialsWithHost:(NSString *)aHost port:(int)aPort username:(NSString *)aUsername password:(NSString *)aPassword
 {
-	return [[FTPCredentials alloc] initWithHost:aHost port:aPort username:aUsername password:aPassword];
+	return [[self alloc] initWithHost:aHost port:aPort username:aUsername password:aPassword];
 }
 
 - (id)initWithHost:(NSString *)aHost port:(int)aPort username:(NSString *)aUsername password:(NSString *)aPassword
@@ -36,7 +31,7 @@
 - (NSURL *)urlForPath:(NSString *)path
 {
     // @todo encode username and password?
-    NSString *scheme = [NSString stringWithFormat:@"ftp://%@:%@@%@:%d", username, password, host, port];
+    NSString *scheme = [NSString stringWithFormat:@"ftp://%@:%@@%@:%d", _username, _password, _host, _port];
     NSString *decoded = [path FTPKitURLDecodedString];
     NSString *encoded = [decoded isEqualToString:path] ? [path FTPKitURLEncodedString] : path;
     NSURL *url = [NSURL URLWithString:[scheme stringByAppendingString:encoded]];
