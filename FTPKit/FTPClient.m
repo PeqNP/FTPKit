@@ -45,8 +45,7 @@
 - (instancetype)initWithCredentials:(FTPCredentials *)aLocation
 {
     self = [super init];
-	if (self)
-    {
+	if (self) {
 		self.credentials = aLocation;
         self.queue = dispatch_queue_create("NMSFTPQueue", DISPATCH_QUEUE_SERIAL);
 	}
@@ -116,8 +115,7 @@
 {
     dispatch_async(_queue, ^{
         netbuf *conn = [self connect];
-        if (conn == NULL)
-        {
+        if (conn == NULL) {
             if (failure)
                 failure(_lastError);
             return;
@@ -128,8 +126,7 @@
         int stat = FtpPut(input, path, FTPLIB_BINARY, conn);
         // @todo Use 'progress' block.
         FtpQuit(conn);
-        if (stat == 0)
-        {
+        if (stat == 0) {
             if (failure)
                 failure(_lastError);
             return;

@@ -44,8 +44,7 @@
 - (instancetype)initWithPath:(NSString *)aPath attributes:(NSDictionary *)aAttributes
 {
     self = [super init];
-	if (self)
-    {
+	if (self) {
         self.modified = [aAttributes objectForKey:(id)kCFFTPResourceModDate];
 		self.group = [aAttributes objectForKey:(id)kCFFTPResourceGroup];
 		self.link = [aAttributes objectForKey:(id)kCFFTPResourceLink];
@@ -55,12 +54,9 @@
 		self.size = [[aAttributes objectForKey:(id)kCFFTPResourceSize] unsignedLongLongValue];
 		self.type = [[aAttributes objectForKey:(id)kCFFTPResourceType] intValue];
         
-        if ([aPath hasPrefix:@"/"])
-        {
+        if ([aPath hasPrefix:@"/"]) {
             self.path = [aPath stringByAppendingPathComponent:name];
-        }
-        else
-        {
+        } else {
             self.path = [NSString stringWithFormat:@"%@/%@", aPath, name];
         }
 	}
@@ -70,8 +66,7 @@
 - (instancetype)initWithPath:(NSString *)aPath type:(FTPHandleType)aType
 {
     self = [super init];
-    if (self)
-    {
+    if (self) {
         self.modified = [NSDate date];
         self.group = nil;
         self.link = nil;

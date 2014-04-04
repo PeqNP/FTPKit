@@ -18,8 +18,7 @@
 - (id)initWithHost:(NSString *)aHost port:(int)aPort username:(NSString *)aUsername password:(NSString *)aPassword
 {
     self = [super init];
-	if (self)
-    {
+	if (self) {
         self.host = aHost;
         self.port = aPort < 1 ? 21 : aPort;
         self.username = aUsername;
