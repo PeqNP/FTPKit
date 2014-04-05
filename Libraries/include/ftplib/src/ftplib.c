@@ -1425,7 +1425,7 @@ static int FtpXfer(const char *localfile, const char *path,
     }
     else
     {
-            while ((l = FtpRead(dbuf, FTPLIB_BUFSIZ, nData)) > 0)
+        while ((l = FtpRead(dbuf, FTPLIB_BUFSIZ, nData)) > 0)
         {
             if (fwrite(dbuf, 1, l, local) == 0)
             {

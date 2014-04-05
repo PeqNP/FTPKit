@@ -8,6 +8,7 @@
 
 #import <XCTest/XCTest.h>
 #import "FTPKit.h"
+#import "FTPKit+Protected.h"
 
 @interface FTPKit_Tests : XCTestCase
 
@@ -40,7 +41,11 @@
 - (void)testFtp
 {
     FTPClient * ftp = [[FTPClient alloc] initWithHost:@"localhost" port:21 username:@"unittest" password:@"unitpass"];
-    
+    NSArray *contents = [ftp listContentsAtPath:@"/test" showHiddenFiles:YES];
+    for (FTPHandle *handle in contents) {
+        FKLogDebug(@"name (%@) size (%llu)", handle.name, handle.size);
+    }
+    return;
     // Create 'test1.txt' file to upload. Contents are 'testing 1'.
     NSURL *localUrl = [[[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject] URLByAppendingPathComponent:@"ftplib.tgz"];
     // Download 'ftplib.tgz'
@@ -59,7 +64,7 @@
     [ftp chmodPath:@"/test" toMode:777];
     
     // List contents of 'test'
-    NSArray *contents = [ftp listContentsAtPath:@"/test" showHiddenFiles:YES];
+    contents = [ftp listContentsAtPath:@"/test" showHiddenFiles:YES];
     
     // - Make sure there are no contents.
     XCTAssertEqual(0, contents.count, @"There should be no contents");

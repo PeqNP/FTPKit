@@ -1,4 +1,5 @@
 #import "ftplib.h"
+#import "FTPKit+Protected.h"
 #import "FTPClient.h"
 #import "NSError+Additions.h"
 
@@ -27,6 +28,27 @@
  @return BOOL YES on success. NO otherwise.
  */
 - (BOOL)sendCommand:(NSString *)command conn:(netbuf *)conn;
+
+/**
+ Returns a URL that can be used to write temporary data to.
+ 
+ Make sure to remove the file after you are done using it!
+ 
+ @return String to temporary path.
+ */
+- (NSString *)temporaryUrl;
+
+- (NSDictionary *)entryByReencodingNameInEntry:(NSDictionary *)entry encoding:(NSStringEncoding)newEncoding;
+
+/**
+ Parse data returned from FTP LIST command.
+ 
+ @param data Bytes returned from server containing directory listing.
+ @param handle Parent directory handle.
+ @param showHiddenFiles Ignores hiddent files if YES. Otherwise returns all files.
+ @return List of FTPHandle objects.
+ */
+- (NSArray *)parseListData:(NSData *)data handle:(FTPHandle *)handle showHiddentFiles:(BOOL)showHiddenFiles;
 
 @end
 
@@ -72,13 +94,37 @@
 
 - (NSArray *)listContentsAtHandle:(FTPHandle *)handle showHiddenFiles:(BOOL)showHiddenFiles
 {
-    // @todo FTPListRequest
-    return nil;
+    netbuf *conn = [self connect];
+    if (conn == NULL)
+        return nil;
+    const char *path = [handle.path cStringUsingEncoding:NSUTF8StringEncoding];
+    NSString *tmpPath = [self temporaryUrl];
+    const char *output = [tmpPath cStringUsingEncoding:NSUTF8StringEncoding];
+    int stat = FtpDir(output, path, conn);
+    FtpQuit(conn);
+    if (stat == 0)
+        return nil;
+    NSError *error = nil;
+    NSData *data = [NSData dataWithContentsOfFile:tmpPath options:NSDataReadingUncached error:&error];
+    if (error) {
+        FKLogError(@"Error: %@", error.localizedDescription);
+        self.lastError = error;
+        return nil;
+    }
+    NSArray *files = [self parseListData:data handle:handle showHiddentFiles:showHiddenFiles];
+    return files; // If files == nil, method will set the lastError.
 }
 
 - (void)listContentsAtHandle:(FTPHandle *)handle showHiddenFiles:(BOOL)showHiddenFiles success:(void (^)(NSArray *))success failure:(void (^)(NSError *))failure
 {
-    // @todo
+    dispatch_async(_queue, ^{
+        NSArray *contents = [self listContentsAtHandle:handle showHiddenFiles:showHiddenFiles];
+        if (contents && success) {
+            success(contents);
+        } else if (! contents && failure) {
+            failure(_lastError);
+        }
+    });
 }
 
 - (BOOL)downloadFile:(NSString *)remotePath to:(NSString *)localPath progress:(BOOL (^)(NSUInteger, NSUInteger))progress
@@ -331,6 +377,85 @@
         return NO;
     }
     return YES;
+}
+
+- (void)didFailWithMessage:(NSString *)message
+{
+    self.lastError = [NSError errorWithDomain:FTPErrorDomain
+                                         code:502
+                                     userInfo:[NSDictionary dictionaryWithObject:message forKey:NSLocalizedDescriptionKey]];
+}
+
+- (NSString *)temporaryUrl
+{
+    // Do not use NSURL. It will not allow you to read the file contents.
+    NSString *path = [NSTemporaryDirectory() stringByAppendingPathComponent:@"FTPKit.list"];
+    FKLogDebug(@"path: %@", path);
+    return path;
+}
+
+- (NSDictionary *)entryByReencodingNameInEntry:(NSDictionary *)entry encoding:(NSStringEncoding)newEncoding
+{
+    // Convert to the preferred encoding. By default CF encodes the string
+    // as MacRoman.
+    NSString *newName = nil;
+    NSString *name = [entry objectForKey:(id)kCFFTPResourceName];
+    if (name != nil) {
+        NSData *data = [name dataUsingEncoding:NSMacOSRomanStringEncoding];
+        if (data != nil) {
+            newName = [[NSString alloc] initWithData:data encoding:newEncoding];
+        }
+    }
+    
+    // If the above failed, just return the entry unmodified.  If it succeeded,
+    // make a copy of the entry and replace the name with the new name that we
+    // calculated.
+    NSDictionary *result = nil;
+    if (! newName) {
+        result = (NSDictionary *)entry;
+    } else {
+        NSMutableDictionary *newEntry = [NSMutableDictionary dictionaryWithDictionary:entry];
+        [newEntry setObject:newName forKey:(id)kCFFTPResourceName];
+        result = newEntry;
+    }
+    return result;
+}
+
+- (NSArray *)parseListData:(NSData *)data handle:(FTPHandle *)handle showHiddentFiles:(BOOL)showHiddenFiles
+{
+    NSMutableArray *files = [NSMutableArray array];
+    NSUInteger offset = 0;
+    do {
+        CFDictionaryRef thisEntry = NULL;
+        CFIndex bytes = CFFTPCreateParsedResourceListing(NULL, &((const uint8_t *) data.bytes)[offset], data.length - offset, &thisEntry);
+        if (bytes > 0) {
+            if (thisEntry != NULL) {
+                NSDictionary *entry = [self entryByReencodingNameInEntry:(__bridge NSDictionary *)thisEntry encoding:NSUTF8StringEncoding];
+                FTPHandle *ftpHandle = [FTPHandle handleAtPath:handle.path attributes:entry];
+				if (! [ftpHandle.name hasPrefix:@"."] || showHiddenFiles) {
+					[files addObject:ftpHandle];
+				}
+            }
+            offset += bytes;
+        }
+        
+        if (thisEntry != NULL) {
+            CFRelease(thisEntry);
+        }
+        
+        if (bytes == 0) {
+            break;
+        } else if (bytes < 0) {
+            [self didFailWithMessage:NSLocalizedString(@"Failed to parse directory listing", @"")];
+            return nil;
+        }
+    } while (YES);
+    
+    if (offset != data.length) {
+        FKLogWarn(@"Some bytes not read!");
+    }
+    
+    return files;
 }
 
 @end
