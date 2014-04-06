@@ -165,9 +165,13 @@
     dispatch_async(_queue, ^{
         NSArray *contents = [self listContentsAtHandle:handle showHiddenFiles:showHiddenFiles];
         if (contents && success) {
-            success(contents);
+            dispatch_async(dispatch_get_main_queue(), ^{
+                success(contents);
+            });
         } else if (! contents && failure) {
-            failure(_lastError);
+            dispatch_async(dispatch_get_main_queue(), ^{
+                failure(_lastError);
+            });
         }
     });
 }
@@ -206,9 +210,13 @@
     dispatch_async(_queue, ^{
         BOOL ret = [self downloadHandle:handle to:localPath progress:progress];
         if (ret && success) {
-            success();
+            dispatch_async(dispatch_get_main_queue(), ^{
+                success();
+            });
         } else if (! ret && failure) {
-            failure(_lastError);
+            dispatch_async(dispatch_get_main_queue(), ^{
+                failure(_lastError);
+            });
         }
     });
 }
@@ -237,9 +245,13 @@
     dispatch_async(_queue, ^{
         BOOL ret = [self uploadFile:localPath to:remotePath progress:progress];
         if (ret && success) {
-            success();
+            dispatch_async(dispatch_get_main_queue(), ^{
+                success();
+            });
         } else if (! ret && failure) {
-            failure(_lastError);
+            dispatch_async(dispatch_get_main_queue(), ^{
+                failure(_lastError);
+            });
         }
     });
 }
@@ -275,9 +287,13 @@
 	dispatch_async(_queue, ^{
         BOOL ret = [self createDirectoryAtHandle:handle];
         if (ret && success) {
-            success();
+            dispatch_async(dispatch_get_main_queue(), ^{
+                success();
+            });
         } else if (! ret && failure) {
-            failure(_lastError);
+            dispatch_async(dispatch_get_main_queue(), ^{
+                failure(_lastError);
+            });
         }
     });
 }
@@ -327,9 +343,13 @@
     dispatch_async(_queue, ^{
         BOOL ret = [self deleteHandle:handle];
         if (ret && success) {
-            success();
+            dispatch_async(dispatch_get_main_queue(), ^{
+                success();
+            });
         } else if (! ret && failure) {
-            failure(_lastError);
+            dispatch_async(dispatch_get_main_queue(), ^{
+                failure(_lastError);
+            });
         }
     });
 }
@@ -371,9 +391,13 @@
     dispatch_async(_queue, ^{
         BOOL ret = [self chmodHandle:handle toMode:mode];
         if (ret && success) {
-            success();
+            dispatch_async(dispatch_get_main_queue(), ^{
+                success();
+            });
         } else if (! ret && failure) {
-            failure(_lastError);
+            dispatch_async(dispatch_get_main_queue(), ^{
+                failure(_lastError);
+            });
         }
     });
 }
@@ -400,9 +424,13 @@
     dispatch_async(_queue, ^{
         BOOL ret = [self renamePath:sourcePath to:destPath];
         if (ret && success) {
-            success();
+            dispatch_async(dispatch_get_main_queue(), ^{
+                success();
+            });
         } else if (! ret && failure) {
-            failure(_lastError);
+            dispatch_async(dispatch_get_main_queue(), ^{
+                failure(_lastError);
+            });
         }
     });
 }
@@ -431,9 +459,13 @@
     dispatch_async(_queue, ^{
         BOOL ret = [self copyPath:sourcePath to:destPath];
         if (ret && success) {
-            success();
+            dispatch_async(dispatch_get_main_queue(), ^{
+                success();
+            });
         } else if (! ret && failure) {
-            failure(_lastError);
+            dispatch_async(dispatch_get_main_queue(), ^{
+                failure(_lastError);
+            });
         }
     });
 }
