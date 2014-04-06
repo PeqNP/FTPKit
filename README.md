@@ -99,7 +99,7 @@ Please note that the `progress:` parameter has not yet been implemented.
 ## Upload a file
     
     // Upload index.html to the /public/ directory on the FTP server.
-    BOOL success = [client uploadFile:@"index.html" to:@"/public/"];
+    BOOL success = [client uploadFile:@"index.html" to:@"/public/index.html"];
     if (! success) {
         // Display an error...
     }
@@ -107,7 +107,7 @@ Please note that the `progress:` parameter has not yet been implemented.
     ...
 
     // Or, make the call asynchronous;
-    [client uploadFile:@"/Users/me/index.html" to:@"/index.html" progress:NULL success:^(void) {
+    [client uploadFile:@"index.html" to:@"/public/index.html" progress:NULL success:^(void) {
         // Success!
     } failure:^(NSError *error) {
         // Display an error...
