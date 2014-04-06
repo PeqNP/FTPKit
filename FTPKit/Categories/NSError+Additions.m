@@ -8,8 +8,7 @@ NSString *const FTPErrorDomain = @"FTPKit";
 {
     // http://en.wikipedia.org/wiki/List_of_FTP_server_return_codes
 	NSString *message = NSLocalizedString(@"Undefined error has occurred.", @"");
-	switch (errorCode)
-    {
+	switch (errorCode) {
 		case 331:
 			message = NSLocalizedString(@"User name okay, need password.", @"");
 			break;

@@ -1,35 +1,22 @@
 #import "FTPHandle.h"
 #import "FTPCredentials.h"
-#import "FTPRequest.h"
 
 @class FTPClient;
 
 @protocol FTPRequestDelegate;
 
-@protocol FTPClientDelegate <NSObject>
+@interface FTPClient : NSObject
 
-@optional
-
-- (void)client:(FTPClient *)client request:(FTPRequest *)request didChmodPath:(NSString *)path toMode:(int)mode;
-- (void)client:(FTPClient *)client request:(FTPRequest *)request didCreateDirectory:(NSString *)path;
-- (void)client:(FTPClient *)client request:(FTPRequest *)request didDeletePath:(NSString *)path;
-- (void)client:(FTPClient *)client request:(FTPRequest *)request didDownloadFile:(NSString *)remotePath to:(NSString *)localPath;
-- (void)client:(FTPClient *)client request:(FTPRequest *)request didListContents:(NSArray *)contents;
-- (void)client:(FTPClient *)client request:(FTPRequest *)request didUploadFile:(NSString *)localPath to:(NSString *)remotePath;
-- (void)client:(FTPClient *)client request:(FTPRequest *)request didRenamePath:(NSString *)sourcePath to:(NSString *)destPath;
-
-- (void)client:(FTPClient *)client request:(FTPRequest *)request didUpdateStatus:(NSString *)status;
-- (void)client:(FTPClient *)client request:(FTPRequest *)request didUpdateProgress:(float)progress;
-- (void)client:(FTPClient *)client request:(FTPRequest *)request didFailWithError:(NSError *)error;
-- (void)client:(FTPClient *)client requestDidCancel:(FTPRequest *)request;
-
-@end
-
-@interface FTPClient : NSObject <FTPRequestDelegate>
-
-@property (nonatomic, weak) id<FTPClientDelegate> delegate;
+/** Credentials used to login to the server. */
 @property (nonatomic, readonly) FTPCredentials* credentials;
-@property (nonatomic, readonly) NSString *currentDirectory;
+
+/**
+ The last encountered error. Please note that this value does not get nil'ed
+ when a new operation takes place. Therefore, do not use 'lastError' as a way
+ to determine if the last operation succeeded or not. Check the return value
+ first _then_ get the lastError.
+ */
+@property (nonatomic, readonly) NSError *lastError;
 
 /**
  Factory method to create FTPClient instance.
@@ -37,7 +24,7 @@
  @param FTPLocation The location's credentials
  @return FTPClient
  */
-+ (FTPClient *)clientWithCredentials:(FTPCredentials *)credentials;
++ (instancetype)clientWithCredentials:(FTPCredentials *)credentials;
 
 /**
  Factory method to create FTPClient instance.
@@ -48,7 +35,7 @@
  @param password Password of user.
  @return FTPClient
  */
-+ (FTPClient *)clientWithHost:(NSString *)host port:(int)port username:(NSString *)username password:(NSString* )password;
++ (instancetype)clientWithHost:(NSString *)host port:(int)port username:(NSString *)username password:(NSString* )password;
 
 /**
  Create an instance of FTPClient.
@@ -70,106 +57,299 @@
 - (instancetype)initWithHost:(NSString *)host port:(int)port username:(NSString *)username password:(NSString* )password;
 
 /**
- List directory contents at path.
+ Get the size, in bytes, for remote file at 'path'.
  
- @param showHiddenItems Show hidden items in directory.
- @return FTPRequest The request instance.
+ @param path Path to get size in bytes for.
+ @return The size of the file in bytes. -1 if file doesn't exist.
  */
-- (FTPRequest *)listContentsAtPath:(NSString *)path showHiddenFiles:(BOOL)showHiddenFiles;
+- (long long int)fileSizeAtPath:(NSString *)path;
 
 /**
- List handle's directory contents.
+ List directory contents at path.
+ 
+ @param path Path to remote directory to list.
+ @param showHiddenItems Show hidden items in directory.
+ @return List of contents as FTPHandle objects.
+ */
+- (NSArray *)listContentsAtPath:(NSString *)path showHiddenFiles:(BOOL)showHiddenFiles;
+
+/**
+ Refer to listContentsAtPath:showHiddenFiles:
+ 
+ This adds the ability to perform the operation asynchronously.
+ 
+ @param path Path to remote directory to list.
+ @param showHiddenItems Show hidden items in directory.
+ @param success Method called when process succeeds. Provides list of contents
+        as FTPHandle objects.
+ @param failure Method called when process fails.
+ */
+- (void)listContentsAtPath:(NSString *)path showHiddenFiles:(BOOL)showHiddenFiles
+                   success:(void (^)(NSArray *contents))success
+                   failure:(void (^)(NSError *error))failure;
+
+/**
+ List directory contents at handle's location.
+ 
+ @param handle Remote directory handle to list.
+ @param showHiddenItems Show hidden items in directory.
+ @return List of contents as FTPHandle objects.
+ */
+- (NSArray *)listContentsAtHandle:(FTPHandle *)handle showHiddenFiles:(BOOL)showHiddenFiles;
+
+/**
+ Refer to listContentsAtHandle:showHiddenFiles:
+ 
+ This adds the ability to perform the operation asynchronously.
  
  @param showHiddenItems Show hidden items in directory.
- @return FTPRequest The request instance.
+ @param success Method called when process succeeds. Provides list of contents
+        as FTPHandle objects.
+ @param failure Method called when process fails.
  */
-- (FTPRequest *)listContentsAtHandle:(FTPHandle *)handle showHiddenFiles:(BOOL)showHiddenFiles;
+- (void)listContentsAtHandle:(FTPHandle *)handle showHiddenFiles:(BOOL)showHiddenFiles
+                     success:(void (^)(NSArray *contents))success
+                     failure:(void (^)(NSError *error))failure;
 
 /**
  Download remote file path to local path.
  
  @param fileName Full path of remote file to download.
  @param localPath Local path to download file to.
- @return FTPRequest The request instance.
+ @param progress Calls after data has been received to remote server.
+        Return NO to cancel the operation.
+ @return YES on success. NO on failure.
  */
-- (FTPRequest *)downloadFile:(NSString *)remotePath to:(NSString *)localPath;
+- (BOOL)downloadFile:(NSString *)remotePath to:(NSString *)localPath
+            progress:(BOOL (^)(NSUInteger received, NSUInteger totalBytes))progress;
+
+/**
+ Refer to downloadFile:to:progress:
+ 
+ This adds the ability to perform the operation asynchronously.
+ 
+ @param fileName Full path of remote file to download.
+ @param localPath Local path to download file to.
+ @param progress Calls after data has been received to remote server.
+        Return NO to cancel the operation.
+ @param success Method called when process succeeds.
+ @param failure Method called when process fails.
+ */
+- (void)downloadFile:(NSString *)remotePath to:(NSString *)localPath
+            progress:(BOOL (^)(NSUInteger received, NSUInteger totalBytes))progress
+             success:(void (^)(void))success
+             failure:(void (^)(NSError *error))failure;
 
 /**
  Download handle at specific location.
  
  @param handle Handle to download. Handles are produced by listDirectory* and friends.
  @param localPath Local path to download file to.
- @returns FTPRequest The request instance.
+ @param progress Calls after data has been received to remote server.
+        Return NO to cancel the operation.
+ @return YES on success. NO on failure.
  */
-- (FTPRequest *)downloadHandle:(FTPHandle *)handle to:(NSString *)localPath;
+- (BOOL)downloadHandle:(FTPHandle *)handle to:(NSString *)localPath
+              progress:(BOOL (^)(NSUInteger received, NSUInteger totalBytes))progress;
+
+/**
+ Refer to downloadHandle:to:progress:
+ 
+ This adds the ability to perform the operation asynchronously.
+ 
+ @param handle Handle to download. Handles are produced by listDirectory* and friends.
+ @param localPath Local path to download file to.
+ @param progress Calls after data has been received to remote server.
+        Return NO to cancel the operation.
+ @param success Method called when process succeeds.
+ @param failure Method called when process fails.
+ */
+- (void)downloadHandle:(FTPHandle *)handle to:(NSString *)localPath
+              progress:(BOOL (^)(NSUInteger received, NSUInteger totalBytes))progress
+               success:(void (^)(void))success
+               failure:(void (^)(NSError *error))failure;
 
 /**
  Upload file to specific directory on remote server.
  
  @param localPath Path of local file to upload.
- @return FTPRequest The request instance.
+ @param toPath Remote path where file will be uploaded to.
+ @param progress Calls after data has been sent to remote server.
+        Return NO to cancel the operation.
+ @return YES on success. NO on failure.
  */
-- (FTPRequest *)uploadFile:(NSString *)localPath to:(NSString *)remotePath;
+- (BOOL)uploadFile:(NSString *)localPath to:(NSString *)remotePath
+          progress:(BOOL (^)(NSUInteger sent, NSUInteger totalBytes))progress;
+
+/**
+ Refer to uploadFile:to:progress:
+ 
+ This adds the ability to perform the operation asynchronously.
+ 
+ @param localPath Path of local file to upload.
+ @param toPath Remote path where file will be uploaded to.
+ @param progress Calls after data has been sent to remote server.
+        Return NO to cancel the operation.
+ @param success Method called when process succeeds.
+ @param failure Method called when process fails.
+ */
+- (void)uploadFile:(NSString *)localPath to:(NSString *)remotePath
+          progress:(BOOL (^)(NSUInteger sent, NSUInteger totalBytes))progress
+           success:(void (^)(void))success
+           failure:(void (^)(NSError *error))failure;
 
 /**
  Create directory at the specified path on the remote server.
  
- @param directoryName Name of directory to create on remote server.
- @param remotePath Path to remote directory where file should be created.
- @return FTPRequest The request instance.
+ @param remotePath Path to create remote directory.
+ @return YES on success. NO on failure.
  */
-- (FTPRequest *)createDirectoryAtPath:(NSString *)remotePath;
+- (BOOL)createDirectoryAtPath:(NSString *)remotePath;
+
+/**
+ Refer to createDirectoryAtPath:
+ 
+ @param remotePath Path to create remote directory.
+ @param success Method called when process succeeds.
+ @param failure Method called when process fails.
+ */
+- (void)createDirectoryAtPath:(NSString *)remotePath
+                      success:(void (^)(void))success
+                      failure:(void (^)(NSError *error))failure;
 
 /**
  Create remote directory within the handle's location.
  
  @param directoryName Name of directory to create on remote server.
  @param remotePath Path to remote directory where file should be created.
- @return FTPRequest The request instance.
+ @return YES on success. NO on failure.
  */
-- (FTPRequest *)createDirectoryAtHandle:(FTPHandle *)handle;
+- (BOOL)createDirectoryAtHandle:(FTPHandle *)handle;
 
 /**
- Delete folder at specified remote path.
+ Refer to createDirectoryAtHandle:
+ 
+ This adds the ability to perform the operation asynchronously.
+ 
+ @param directoryName Name of directory to create on remote server.
+ @param remotePath Path to remote directory where file should be created.
+ @param success Method called when process succeeds.
+ @param failure Method called when process fails.
+ */
+- (void)createDirectoryAtHandle:(FTPHandle *)handle
+                        success:(void (^)(void))success
+                        failure:(void (^)(NSError *error))failure;
+
+/**
+ Delete directory at specified remote path.
  
  @param remotePath The path of the remote directory to delete.
- @return FTPRequest The request instance.
+ @return YES on success. NO on failure.
  */
-- (FTPRequest *)deleteDirectoryAtPath:(NSString *)remotePath;
+- (BOOL)deleteDirectoryAtPath:(NSString *)remotePath;
+
+/**
+ Refer to deleteDirectoryAtPath:
+ 
+ This adds the ability to perform the operation asynchronously.
+ 
+ @param remotePath The path of the remote directory to delete.
+ @param success Method called when process succeeds.
+ @param failure Method called when process fails.
+ */
+- (void)deleteDirectoryAtPath:(NSString *)remotePath
+                      success:(void (^)(void))success
+                      failure:(void (^)(NSError *error))failure;
 
 /**
  Delete a file at a specified remote path.
  
  @param remotePath The path to the remote resource to delete.
+ @return YES on success. NO on failure.
+ */
+- (BOOL)deleteFileAtPath:(NSString *)remotePath;
+
+/**
+ Refer to deleteFileAtPath:
+ 
+ This adds the ability to perform the operation asynchronously.
+ 
+ @param remotePath The path to the remote resource to delete.
+ @param success Method called when process succeeds.
+ @param failure Method called when process fails.
  @return FTPRequest The request instance.
  */
-- (FTPRequest *)deleteFileAtPath:(NSString *)remotePath;
+- (void)deleteFileAtPath:(NSString *)remotePath
+                 success:(void (^)(void))success
+                 failure:(void (^)(NSError *error))failure;
 
 /**
  Delete a remote handle from the server.
  
  @param handle The remote handle to delete.
- @return FTPRequest The request instance.
+ @return YES on success. NO on failure.
  */
-- (FTPRequest *)deleteHandle:(FTPHandle *)handle;
+- (BOOL)deleteHandle:(FTPHandle *)handle;
 
 /**
- Change file mode of a remote file or folder.
+ Refer to deleteHandle:
+ 
+ This adds the ability to perform the operation asynchronously.
+ 
+ @param handle The remote handle to delete.
+ @param success Method called when process succeeds.
+ @param failure Method called when process fails.
+ @return FTPRequest The request instance.
+ */
+- (void)deleteHandle:(FTPHandle *)handle
+             success:(void (^)(void))success
+             failure:(void (^)(NSError *error))failure;
+
+/**
+ Change file mode of a remote file or directory.
  
  @param remotePath Full path to remote resource.
  @param mode File mode to change to.
- @return FTPRequest The request instance.
+ @return YES on success. NO on failure.
  */
-- (FTPRequest *)chmodPath:(NSString *)remotePath toMode:(int)mode;
+- (BOOL)chmodPath:(NSString *)remotePath toMode:(int)mode;
 
 /**
- Change file mode of a remote handle.
+ Refer to chmodPath:toMode:
+ 
+ This adds the ability to perform the operation asynchronously.
+ 
+ @param remotePath Full path to remote resource.
+ @param mode File mode to change to.
+ @param success Method called when process succeeds.
+ @param failure Method called when process fails.
+ */
+- (void)chmodPath:(NSString *)remotePath toMode:(int)mode
+          success:(void (^)(void))success
+          failure:(void (^)(NSError *error))failure;
+
+/**
+ Change file mode of a remote file or directory.
+ 
+ @param handle The remote handle.
+ @param mode File mode to change to.
+ @return YES on success. NO on failure.
+ */
+- (BOOL)chmodHandle:(FTPHandle *)handle toMode:(int)mode;
+
+/**
+ Refer to chmodHandle:toMode:
+ 
+ This adds the ability to perform the operation asynchronously.
  
  @param handle The remote handle to change mode on.
  @param mode File mode to change to.
- @return FTPRequest The request instance.
+ @param success Method called when process succeeds.
+ @param failure Method called when process fails.
  */
-- (FTPRequest *)chmodHandle:(FTPHandle *)handle toMode:(int)mode;
+- (void)chmodHandle:(FTPHandle *)handle toMode:(int)mode
+            success:(void (^)(void))success
+            failure:(void (^)(NSError *error))failure;
 
 /**
  Rename a remote path to something else. This method can be used to move a
@@ -177,8 +357,21 @@
  
  @param sourcePath Source path to rename.
  @param destPath Destination of renamed file.
- @return FTPRequest The request instance.
  */
-- (FTPRequest *)renamePath:(NSString *)sourcePath to:(NSString *)destPath;
+- (BOOL)renamePath:(NSString *)sourcePath to:(NSString *)destPath;
+
+/**
+ Refer to renamePath:to:
+ 
+ This adds the ability to perform the operation asynchronously.
+ 
+ @param sourcePath Source path to rename.
+ @param destPath Destination of renamed file.
+ @param success Method called when process succeeds.
+ @param failure Method called when process fails.
+ */
+- (void)renamePath:(NSString *)sourcePath to:(NSString *)destPath
+           success:(void (^)(void))success
+           failure:(void (^)(NSError *error))failure;
 
 @end

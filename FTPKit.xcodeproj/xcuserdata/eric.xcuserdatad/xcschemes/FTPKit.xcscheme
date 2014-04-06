@@ -37,6 +37,11 @@
                BlueprintName = "FTPKit Tests"
                ReferencedContainer = "container:FTPKit.xcodeproj">
             </BuildableReference>
+            <SkippedTests>
+               <Test
+                  Identifier = "FTPKit_Tests/testAsync">
+               </Test>
+            </SkippedTests>
          </TestableReference>
       </Testables>
    </TestAction>

@@ -1,6 +1,6 @@
 # FTPKit
 
-Version 1.0.0b
+Version 1.0.0b RC2
 
 FTPKit is an Objective-C library providing facilities implementing the client
 side of the File Transfer Protocol (FTP).
@@ -30,131 +30,139 @@ the remote actions.
 
     // Connect and list contents.
     FTPClient *client = [FTPClient clientWithHost:@"localhost" port:21 username:@"user" password:@"pass"];
-    [client listContentsAtPath:@"/" showHiddenFiles:NO];
+    NSArray *contents = [client listContentsAtPath:@"/" showHiddenFiles:NO];
 
-    ...
-
-    // Delegate callback will return a list of FTPHandle objects.
-    - (void)client:(FTPClient *)client request:(FTPRequest *)request didListContents:(NSArray *)handles
-    {
+    if (contents /* Returns nil if an error occured */) {
         // Iterate through handles. Display them in a table, etc.
-        for (FTPHandle *handle in handles)
-        {
-            if (handle.type == FTPHandleTypeFile)
-            {
+        for (FTPHandle *handle in handles) {
+            if (handle.type == FTPHandleTypeFile) {
                 // Do something with file.
-            }
-            else if (handle.type == FTPHandleTypeDirectory)
-            {
+            } else if (handle.type == FTPHandleTypeDirectory) {
                 // Do something with directory.
             }
         }
+    } else {
+        // Display error using: client.lastError
     }
+
+    ...
+
+    // Or, make the call asynchronous;
+    [client listContentsAtPath:@"/test" showHiddenFiles:YES success:^(NSArray *contents) {
+        if (handle.type == FTPHandleTypeFile) {
+            // Do something with file.
+        } else if (handle.type == FTPHandleTypeDirectory) {
+            // Do something with directory.
+        }
+    } failure:^(NSError *error) {
+        // Display error...
+    }];
+
+
 
 ## Create a new directory
 
 Continuing on from our previous example; below shows how to create a remote directory.
 
-    [client createDirectoryAtPath:@"/my_new_folder"];
+    BOOL success = [client createDirectoryAtPath:@"/my_new_folder"];
+    if (! success) {
+        // Display error...
+    }
 
     ...
 
-    // Delegate callback will inform you when the request is complete.
-    - (void)client:(FTPClient *)client request:(FTPRequest *)request didCreateDirectory:(NSString *)path
-    {
-        // Add file to the list of files you are tracking?
-    }
+    // Or, make the call asynchronous;
+    [client createDirectoryAtPath:@"/my_new_folder" success:^(void) {
+        // Success!
+    } failure:^(NSError *error) {
+        // Display an error...
+    }];
 
 ## Download a file
 
-    [client downloadFile:@"index.html" to:@"/Users/me/index.html"];
-
-    - (void)client:(FTPClient *)client request:(FTPRequest *)request didDownloadFile:(NSString *)remotePath to:(NSString *)localPath
-    {
-        // Open the file?
+    BOOL success = [client downloadFile:@"/index.html" to:@"/Users/me/index.html"];
+    if (! success) {
+        // Display an error...
     }
+    
+    ...
+
+    // Or, make the call asynchronous;
+    [client downloadFile:@"/index.html" to:@"/Users/me/index.html" progress:NULL success:^(void) {
+        // Success!
+    } failure:^(NSError *error) {
+        // Display an error...
+    }];
+
+Please note that the `progress:` parameter has not yet been implemented.
 
 ## Upload a file
     
     // Upload index.html to the /public/ directory on the FTP server.
-    [client uploadFile:@"index.html" to:@"/public/"];
-
-    // Delegate callback.
-    - (void)client:(FTPClient *)client request:(FTPRequest *)request didUploadFile:(NSString *)localPath to:(NSString *)remotePath
-    {
-        // ...
+    BOOL success = [client uploadFile:@"index.html" to:@"/public/"];
+    if (! success) {
+        // Display an error...
     }
+
+    ...
+
+    // Or, make the call asynchronous;
+    [client uploadFile:@"/Users/me/index.html" to:@"/index.html" progress:NULL success:^(void) {
+        // Success!
+    } failure:^(NSError *error) {
+        // Display an error...
+    }];
 
 ## Rename a file
     
     // You can easily rename (or move) a file from one path to another.
-    [client renamePath:@"/index.html" to:@"/public/index.html"];
-
-    // Delegate callback.
-    - (void)client:(FTPClient *)client request:(FTPRequest *)request didRenamePath:(NSString *)sourcePath to:(NSString *)destPath
-    {
-        // ...
+    BOOL success = [client renamePath:@"/index.html" to:@"/public/index.html"];
+    if (! success) {
+        // Display an error...
     }
+
+    ...
+
+    // Or, make the call asynchronous;
+    [client renamePath:@"/index.html" to:@"/public/index.html" success:^(void) {
+        // Success!
+    } failure:^(NSError *error) {
+        // Display an error...
+    }];
 
 ## Delete a file
 
     // You can either provide a FTPHandle or a path on the FTP server to delete.
     // The FTPHandle will have been returned from the listDirectory* method.
-    [client deleteFileAtPath:@"/path/deleteme.html"];
+    BOOL success = [client deleteFileAtPath:@"/path/deleteme.html"];
+    if (! success) {
+        // Display an error...
+    }
 
     ...
 
-    [client deleteDirectoryAtPath:@"/my_folder"];
+    // Or, make the call asynchronous;
+    [client deleteFileAtPath:@"/path/deleteme.html" success:^(void) {
+        // Success!
+    } failure:^(NSError *error) {
+        // Display an error...
+    }];
 
-    // Delegate callback.
-    - (void)client:(FTPClient *)client request:(FTPRequest *)request didDeletePath:(NSString *)path
-    {
-        // ...
+## chmod a file
+
+    BOOL success = [client chmodPath:@"/public/defaceme.html" toMode:777];
+    if (! success) {
+        // Display an error...
     }
-
-## Cancel a request
-
-Currently there are no requests that can be cancelled. This will change once the
-underlying lib has been updated. However, the API for this has been complete.
-
-    // Keep the request object around until we no longer need it.
-    FTPRequest *request = [client downloadFile:@"my_remote_movie.mp4" to:@"/my/local/my_movie.mp4"];
 
     ...
 
-    // Cancel the request.
-    [request cancel];
-
-    // Delegate callback will inform you that the process was cancelled.
-    - (void)client:(FTPClient *)client requestDidCancel:(FTPRequest *)request
-    {
-        // Alert the user that the request cancelled? Or may they already know!
-    }
-
-## Update status of requests
-
-As requests process, they will periodically notify the delegate of their status. Implement the following delegate callbacks to inform your end-user of the status.
-
-    - (void)client:(FTPClient *)client request:(FTPRequest *)request didUpdateProgress:(float)progress
-    {
-        // This callback is useful for file uploads/downloads. Update your
-        // UIProgressView, etc. here
-    }
-
-    - (void)client:(FTPClient *)client request:(FTPRequest *)request didUpdateStatus:(NSString *)status
-    {
-        // This will display the commands executed and general status updates --
-        // such as when a connection is opened, complete, etc.
-    }
-
-## Error handling
-
-When requests fail they will notify the delegate with the following call:
-
-    - (void)client:(FTPClient *)client request:(FTPRequest *)request didFailWithError:(NSError *)error
-    {
-        // Display alert to end-user?
-    }
+    // Or, make the call asynchronous;
+    [client chmodPath:@"/public/defaceme.html" toMode:777 success:^(void) {
+        // Success!
+    } failure:^(NSError *error) {
+        // Display an error...
+    }];
 
 # Setup & Integration
 
@@ -164,7 +172,6 @@ This project was developed using Xcode 5.0. It requires a deployment target of i
 
 ## Required Frameworks
 
-- CFNetwork
 - Foundation
 
 If you add FTPKit to your project as a static library, you will need to set the **-ObjC** and **-all_load** linker flags. Look below for more details.

@@ -1,7 +1,6 @@
 
 #import "FTPCredentials.h"
 #import "FTPHandle.h"
-#import "FTPRequest.h"
 #import "FTPClient.h"
 
 #ifndef __CFNETWORK__
