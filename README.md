@@ -30,26 +30,25 @@ the remote actions.
 
     // Connect and list contents.
     FTPClient *client = [FTPClient clientWithHost:@"localhost" port:21 username:@"user" password:@"pass"];
-    [client listContentsAtPath:@"/" showHiddenFiles:NO];
+    NSArray *contents = [client listContentsAtPath:@"/" showHiddenFiles:NO];
+
+    // Iterate through handles. Display them in a table, etc.
+    for (FTPHandle *handle in handles)
+    {
+        if (handle.type == FTPHandleTypeFile)
+        {
+            // Do something with file.
+        }
+        else if (handle.type == FTPHandleTypeDirectory)
+        {
+            // Do something with directory.
+        }
+    }
 
     ...
 
-    // Delegate callback will return a list of FTPHandle objects.
-    - (void)client:(FTPClient *)client request:(FTPRequest *)request didListContents:(NSArray *)handles
-    {
-        // Iterate through handles. Display them in a table, etc.
-        for (FTPHandle *handle in handles)
-        {
-            if (handle.type == FTPHandleTypeFile)
-            {
-                // Do something with file.
-            }
-            else if (handle.type == FTPHandleTypeDirectory)
-            {
-                // Do something with directory.
-            }
-        }
-    }
+    // Or, make the call asynchronous;
+
 
 ## Create a new directory
 

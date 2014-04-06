@@ -15,22 +15,11 @@
 - (void)connect
 {
     self.ftp = [FTPClient clientWithHost:@"localhost" port:21 username:@"unittest" password:@"unitpass"];
-    ftp.delegate = self;
 }
 
 - (void)run
 {
     // Nothing to do.
-}
-
-- (void)client:(FTPClient *)client request:(FTPRequest *)request didUpdateStatus:(NSString *)status
-{
-    // @todo
-}
-
-- (void)client:(FTPClient *)client request:(FTPRequest *)request didFailWithError:(NSError *)error
-{
-    // @todo
 }
 
 @end

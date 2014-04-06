@@ -5,76 +5,122 @@
 
 - (void)run
 {
+    // TODO:
+    // Make sure hidden files are returned.
+    // Make sure you can not rename a file to a dest file that already exists.
+    
     self.ftp = [FTPClient clientWithHost:@"localhost" port:21 username:@"unittest" password:@"unitpass"];
-    ftp.delegate = self;
     NSURL *localUrl = [[[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject] URLByAppendingPathComponent:@"ftplib.tgz"];
-    [ftp downloadFile:@"/ftplib.tgz" to:localUrl.path];
-}
+    
+    // Note: All of these actions will queue in the order they are called.
+    // Note: All of these tests are 1 to 1 relationship with the tests used within
+    // the FTPKit, except the actions are synchronized.
+    [ftp listContentsAtPath:@"/test" showHiddenFiles:YES success:^(NSArray *contents) {
+        if (contents.count == 0) {
+            NSLog(@"Success 001");
+        } else {
+            NSLog(@"Error: Should not have no contents!");
+        }
+    } failure:^(NSError *error) {
+        NSLog(@"Error: %@", error.localizedDescription);
+    }];
+    
+    /*
+     * @todo
+     *
+    long long int bytes = [ftp fileSizeAtPath:@"/ftplib.tgz"];
+    XCTAssertTrue((bytes > 0), @"");
+    
+    bytes = [ftp fileSizeAtPath:@"/copy.tgz"];
+    XCTAssertEqual(-1, -1, @"");
+     */
+    
+    [ftp downloadFile:@"/ftplib.tgz" to:localUrl.path progress:NULL success:^(void) {
+        NSLog(@"Success 002");
+    } failure:^(NSError *error) {
+        NSLog(@"Error: %@", error.localizedDescription);
+    }];
+    
+    [ftp uploadFile:localUrl.path to:@"/copy.tgz" progress:NULL success:^(void) {
+        NSLog(@"Success 003");
+    } failure:^(NSError *error) {
+        NSLog(@"Error: %@", error.localizedDescription);
+    }];
+    
+    [ftp chmodPath:@"/copy.tgz" toMode:777 success:^(void) {
+        NSLog(@"Success 004");
+    } failure:^(NSError *error) {
+        NSLog(@"Error: %@", error.localizedDescription);
+    }];
+    
+    [ftp createDirectoryAtPath:@"/test" success:^(void) {
+        NSLog(@"Success 005");
+    } failure:^(NSError *error) {
+        NSLog(@"Error: %@", error.localizedDescription);
+    }];
+    
+    // chmod 'test' to 777
+    [ftp chmodPath:@"/test" toMode:777 success:^(void) {
+        NSLog(@"Success 006");
+    } failure:^(NSError *error) {
+        NSLog(@"Error: %@", error.localizedDescription);
+    }];
+    
+    [ftp listContentsAtPath:@"/test" showHiddenFiles:YES success:^(NSArray *contents) {
+        if (contents.count == 0) {
+            NSLog(@"Success 007");
+        } else {
+            NSLog(@"Error: Should not have no contents!");
+        }
+    } failure:^(NSError *error) {
+        NSLog(@"Error: %@", error.localizedDescription);
+    }];
+    
+    [ftp renamePath:@"/copy.tgz" to:@"/test/copy.tgz" success:^(void) {
+        NSLog(@"Success 008");
+    } failure:^(NSError *error) {
+        NSLog(@"Error: %@", error.localizedDescription);
+    }];
+    
+    [ftp createDirectoryAtPath:@"/test/test2" success:^(void) {
+        NSLog(@"Success 009");
+    } failure:^(NSError *error) {
+        NSLog(@"Error: %@", error.localizedDescription);
+    }];
+    
+    [ftp listContentsAtPath:@"/test" showHiddenFiles:YES success:^(NSArray *contents) {
+        if (contents.count == 2) {
+            NSLog(@"Success 010");
+        } else {
+            NSLog(@"Error: Must have contents!");
+        }
+    } failure:^(NSError *error) {
+        NSLog(@"Error: %@", error.localizedDescription);
+    }];
+    
+    [ftp deleteDirectoryAtPath:@"/test" success:^(void) {
+        NSLog(@"Error: Should have failed!");
+    } failure:^(NSError *error) {
+        NSLog(@"Success 011. Error: %@", error.localizedDescription);
+    }];
+    
+    [ftp deleteFileAtPath:@"/test/copy.tgz" success:^(void) {
+        NSLog(@"Success 012");
+    } failure:^(NSError *error) {
+        NSLog(@"Error: %@", error.localizedDescription);
+    }];
 
-
-- (void)client:(FTPClient *)client request:(FTPRequest *)request didDownloadFile:(NSString *)remotePath to:(NSString *)localPath
-{
-    [client uploadFile:localPath to:@"/copy.tgz"];
-}
-
-- (void)client:(FTPClient *)client request:(FTPRequest *)request didUploadFile:(NSString *)localPath to:(NSString *)remotePath
-{
-    [client chmodPath:remotePath toMode:777];
-}
-
-- (void)client:(FTPClient *)client request:(FTPRequest *)request didChmodPath:(NSString *)path toMode:(int)mode
-{
-    if ([path isEqualToString:@"/copy.tgz"])
-    {
-        // test chmod'ing folder
-        [client createDirectoryAtPath:@"/test"];
-    }
-    else if ([path isEqualToString:@"/test"])
-    {
-        [client listContentsAtPath:@"/" showHiddenFiles:YES];
-    }
-    else
-    {
-        NSLog(@"ERROR");
-    }
-}
-
-- (void)client:(FTPClient *)client request:(FTPRequest *)request didCreateDirectory:(NSString *)path
-{
-    [client chmodPath:path toMode:777];
-}
-
-- (void)client:(FTPClient *)client request:(FTPRequest *)request didListContents:(NSArray *)contents
-{
-    for (FTPHandle *handle in contents)
-    {
-        NSLog(@"handle: %@", handle.name);
-    }
-    [client renamePath:@"/copy.tgz" to:@"/test/copy.tgz"];
-}
-
-- (void)client:(FTPClient *)client request:(FTPRequest *)request didRenamePath:(NSString *)sourcePath to:(NSString *)destPath
-{
-    if ([sourcePath isEqualToString:@"/copy.tgz"])
-    {
-        [client renamePath:destPath to:@"/test/copy2.tgz"];
-    }
-    else if ([sourcePath isEqualToString:@"/test/copy.tgz"])
-    {
-        [client deleteFileAtPath:@"/test/copy2.tgz"];
-    }
-}
-
-- (void)client:(FTPClient *)client request:(FTPRequest *)request didDeletePath:(NSString *)path
-{
-    if ([path isEqualToString:@"/test/copy2.tgz"])
-    {
-        [client deleteDirectoryAtPath:@"/test"];
-    }
-    else if ([path isEqualToString:@"/test"])
-    {
-        [self.delegate testCaseDidFinish:self];
-    }
+    [ftp deleteDirectoryAtPath:@"/test/test2" success:^(void) {
+        NSLog(@"Success 013");
+    } failure:^(NSError *error) {
+        NSLog(@"Error: %@", error.localizedDescription);
+    }];
+    
+    [ftp deleteDirectoryAtPath:@"/test" success:^(void) {
+        NSLog(@"Success 014");
+    } failure:^(NSError *error) {
+        NSLog(@"Error: %@", error.localizedDescription);
+    }];
 }
 
 @end

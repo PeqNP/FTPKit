@@ -15,7 +15,7 @@
 - (void)testCaseDidFinish:(TestCase *)testCase;
 @end
 
-@interface TestCase : NSObject <FTPClientDelegate>
+@interface TestCase : NSObject
 {
     FTPClient *ftp;
 }

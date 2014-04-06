@@ -50,6 +50,13 @@
  */
 - (NSArray *)parseListData:(NSData *)data handle:(FTPHandle *)handle showHiddentFiles:(BOOL)showHiddenFiles;
 
+/**
+ Sets lastError w/ 'message' as description and error code 502.
+ 
+ @param message Description to set to last error.
+ */
+- (void)failedWithMessage:(NSString *)message;
+
 @end
 
 @implementation FTPClient
@@ -89,18 +96,21 @@
     char dt[kFTPKitRequestBufferSize];
     BOOL success = FtpModDate(cPath, dt, kFTPKitRequestBufferSize, conn);
     FtpQuit(conn);
-    if (! success)
+    if (! success) {
+        // @todo Why?
+        self.lastError = [NSError FTPKitErrorWithCode:451];
         return -1;
+    }
     char *endptr;
     errno = 0;
     long long int bytes = strtoll(dt, &endptr, 10);
     if ((errno == ERANGE && (bytes == LONG_LONG_MAX || bytes == LONG_LONG_MIN))
         || (errno != 0 && bytes == 0)) {
-        FKLogError(@"Prevented overflow");
+        [self failedWithMessage:@"Prevented overflow"];
         return -1;
     }
     if (endptr == cPath) {
-        FKLogError(@"No digits were found");
+        [self failedWithMessage:@"No digits were found"];
         return -1;
     }
     FKLogDebug(@"bytes %lld", bytes);
@@ -129,8 +139,11 @@
     const char *output = [tmpPath cStringUsingEncoding:NSUTF8StringEncoding];
     int stat = FtpDir(output, path, conn);
     FtpQuit(conn);
-    if (stat == 0)
+    if (stat == 0) {
+        // @todo Why?
+        self.lastError = [NSError FTPKitErrorWithCode:451];
         return nil;
+    }
     NSError *error = nil;
     NSData *data = [NSData dataWithContentsOfFile:tmpPath options:NSDataReadingUncached error:&error];
     if (error) {
@@ -175,8 +188,11 @@
     int stat = FtpGet(output, path, FTPLIB_BINARY, conn);
     // @todo Use 'progress' block.
     FtpQuit(conn);
-    if (stat == 0)
+    if (stat == 0) {
+        // @todo Why?
+        self.lastError = [NSError FTPKitErrorWithCode:451];
         return NO;
+    }
     return YES;
 }
 
@@ -203,8 +219,11 @@
     int stat = FtpPut(input, path, FTPLIB_BINARY, conn);
     // @todo Use 'progress' block.
     FtpQuit(conn);
-    if (stat == 0)
+    if (stat == 0) {
+        // @todo Why?
+        self.lastError = [NSError FTPKitErrorWithCode:451];
         return NO;
+    }
     return YES;
 }
 
@@ -238,8 +257,11 @@
     const char *path = [handle.path cStringUsingEncoding:NSUTF8StringEncoding];
     int stat = FtpMkdir(path, conn);
     FtpQuit(conn);
-    if (stat == 0)
+    if (stat == 0) {
+        // @todo Why?
+        self.lastError = [NSError FTPKitErrorWithCode:451];
         return NO;
+    }
     return YES;
 }
 
@@ -287,8 +309,11 @@
     else
         stat = FtpDelete(path, conn);
     FtpQuit(conn);
-    if (stat == 0)
+    if (stat == 0) {
+        // @todo Why?
+        self.lastError = [NSError FTPKitErrorWithCode:451];
         return NO;
+    }
     return YES;
 }
 
@@ -328,8 +353,11 @@
         return NO;
     BOOL success = [self sendCommand:command conn:conn];
     FtpQuit(conn);
-    if (! success)
+    if (! success) {
+        // @todo Why?
+        self.lastError = [NSError FTPKitErrorWithCode:451];
         return NO;
+    }
     return YES;
 }
 
@@ -354,8 +382,11 @@
     const char *dst = [destPath cStringUsingEncoding:NSUTF8StringEncoding];
     int stat = FtpRename(src, dst, conn);
     FtpQuit(conn);
-    if (stat == 0)
+    if (stat == 0) {
+        // @todo Why?
+        self.lastError = [NSError FTPKitErrorWithCode:451];
         return NO;
+    }
     return YES;
 }
 
@@ -406,7 +437,7 @@
     return YES;
 }
 
-- (void)didFailWithMessage:(NSString *)message
+- (void)failedWithMessage:(NSString *)message
 {
     self.lastError = [NSError errorWithDomain:FTPErrorDomain
                                          code:502
@@ -417,7 +448,7 @@
 {
     // Do not use NSURL. It will not allow you to read the file contents.
     NSString *path = [NSTemporaryDirectory() stringByAppendingPathComponent:@"FTPKit.list"];
-    FKLogDebug(@"path: %@", path);
+    //FKLogDebug(@"path: %@", path);
     return path;
 }
 
@@ -473,7 +504,7 @@
         if (bytes == 0) {
             break;
         } else if (bytes < 0) {
-            [self didFailWithMessage:NSLocalizedString(@"Failed to parse directory listing", @"")];
+            [self failedWithMessage:NSLocalizedString(@"Failed to parse directory listing", @"")];
             return nil;
         }
     } while (YES);
