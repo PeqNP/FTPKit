@@ -11,7 +11,6 @@
 		072A829C18CC2450001E640B /* NSString+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 072A829A18CC2450001E640B /* NSString+Additions.m */; };
 		074A7B5218CAC98F00A03068 /* libFTPKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F27BA1CE1802FE7E00584A9E /* libFTPKit.a */; };
 		076BD40018CD18CC00517DEE /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F27BA1D11802FE7E00584A9E /* Foundation.framework */; };
-		076BD40118CD18D200517DEE /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F27BA2151802FFAE00584A9E /* CFNetwork.framework */; };
 		076BD40518CD198D00517DEE /* FTPCredentials.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = F27BA2051802FF1800584A9E /* FTPCredentials.h */; };
 		076BD40618CD199100517DEE /* FTPHandle.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = F27BA1FB1802FF1800584A9E /* FTPHandle.h */; };
 		076BD46318CFB76E00517DEE /* ftplib.c in Sources */ = {isa = PBXBuildFile; fileRef = 076BD46118CFB76E00517DEE /* ftplib.c */; };
@@ -80,7 +79,6 @@
 		F27BA1FC1802FF1800584A9E /* FTPHandle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTPHandle.m; sourceTree = "<group>"; };
 		F27BA2051802FF1800584A9E /* FTPCredentials.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTPCredentials.h; sourceTree = "<group>"; };
 		F27BA2061802FF1800584A9E /* FTPCredentials.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTPCredentials.m; sourceTree = "<group>"; };
-		F27BA2151802FFAE00584A9E /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,7 +97,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				076BD40118CD18D200517DEE /* CFNetwork.framework in Frameworks */,
 				076BD40018CD18CC00517DEE /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -184,7 +181,6 @@
 		F27BA1D01802FE7E00584A9E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				F27BA2151802FFAE00584A9E /* CFNetwork.framework */,
 				F27BA1D11802FE7E00584A9E /* Foundation.framework */,
 				07F23C4918CA4C43002BDF93 /* XCTest.framework */,
 				07F23C4C18CA4C43002BDF93 /* UIKit.framework */,

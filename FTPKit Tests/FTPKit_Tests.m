@@ -111,21 +111,4 @@
     //XCTFail(@"No implementation for \"%s\"", __PRETTY_FUNCTION__);
 }
 
-// These don't work.
-- (void)testAsync
-{
-    FTPClient * ftp = [[FTPClient alloc] initWithHost:@"localhost" port:21 username:@"unittest" password:@"unitpass"];
-    
-    // Note: All of these actions will queue in the order they are called.
-    // Note: All of these tests are 1 to 1 relationship with the tests used within
-    // the FTPKit, except the actions are synchronized.
-    [ftp listContentsAtPath:@"/test" showHiddenFiles:YES success:^(NSArray *contents) {
-        XCTAssertEqual(0, contents.count, @"/test should not yet exist!");
-    } failure:^(NSError *error) {
-        NSLog(@"Error: %@", error.localizedDescription);
-    }];
-    
-    NSURL *localUrl = [[[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject] URLByAppendingPathComponent:@"ftplib.tgz"];
-}
-
 @end
