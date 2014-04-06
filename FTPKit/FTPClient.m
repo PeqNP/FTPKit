@@ -151,6 +151,11 @@
         self.lastError = error;
         return nil;
     }
+    [[NSFileManager defaultManager] removeItemAtPath:tmpPath error:&error];
+    // Log the error, but do not fail.
+    if (error) {
+        FKLogError(@"Failed to remove tmp file. Error: %@", error.localizedDescription);
+    }
     NSArray *files = [self parseListData:data handle:handle showHiddentFiles:showHiddenFiles];
     return files; // If files == nil, method will set the lastError.
 }
@@ -160,9 +165,13 @@
     dispatch_async(_queue, ^{
         NSArray *contents = [self listContentsAtHandle:handle showHiddenFiles:showHiddenFiles];
         if (contents && success) {
-            success(contents);
+            dispatch_async(dispatch_get_main_queue(), ^{
+                success(contents);
+            });
         } else if (! contents && failure) {
-            failure(_lastError);
+            dispatch_async(dispatch_get_main_queue(), ^{
+                failure(_lastError);
+            });
         }
     });
 }
@@ -201,9 +210,13 @@
     dispatch_async(_queue, ^{
         BOOL ret = [self downloadHandle:handle to:localPath progress:progress];
         if (ret && success) {
-            success();
+            dispatch_async(dispatch_get_main_queue(), ^{
+                success();
+            });
         } else if (! ret && failure) {
-            failure(_lastError);
+            dispatch_async(dispatch_get_main_queue(), ^{
+                failure(_lastError);
+            });
         }
     });
 }
@@ -232,9 +245,13 @@
     dispatch_async(_queue, ^{
         BOOL ret = [self uploadFile:localPath to:remotePath progress:progress];
         if (ret && success) {
-            success();
+            dispatch_async(dispatch_get_main_queue(), ^{
+                success();
+            });
         } else if (! ret && failure) {
-            failure(_lastError);
+            dispatch_async(dispatch_get_main_queue(), ^{
+                failure(_lastError);
+            });
         }
     });
 }
@@ -270,9 +287,13 @@
 	dispatch_async(_queue, ^{
         BOOL ret = [self createDirectoryAtHandle:handle];
         if (ret && success) {
-            success();
+            dispatch_async(dispatch_get_main_queue(), ^{
+                success();
+            });
         } else if (! ret && failure) {
-            failure(_lastError);
+            dispatch_async(dispatch_get_main_queue(), ^{
+                failure(_lastError);
+            });
         }
     });
 }
@@ -322,9 +343,13 @@
     dispatch_async(_queue, ^{
         BOOL ret = [self deleteHandle:handle];
         if (ret && success) {
-            success();
+            dispatch_async(dispatch_get_main_queue(), ^{
+                success();
+            });
         } else if (! ret && failure) {
-            failure(_lastError);
+            dispatch_async(dispatch_get_main_queue(), ^{
+                failure(_lastError);
+            });
         }
     });
 }
@@ -366,9 +391,13 @@
     dispatch_async(_queue, ^{
         BOOL ret = [self chmodHandle:handle toMode:mode];
         if (ret && success) {
-            success();
+            dispatch_async(dispatch_get_main_queue(), ^{
+                success();
+            });
         } else if (! ret && failure) {
-            failure(_lastError);
+            dispatch_async(dispatch_get_main_queue(), ^{
+                failure(_lastError);
+            });
         }
     });
 }
@@ -395,9 +424,48 @@
     dispatch_async(_queue, ^{
         BOOL ret = [self renamePath:sourcePath to:destPath];
         if (ret && success) {
-            success();
+            dispatch_async(dispatch_get_main_queue(), ^{
+                success();
+            });
         } else if (! ret && failure) {
-            failure(_lastError);
+            dispatch_async(dispatch_get_main_queue(), ^{
+                failure(_lastError);
+            });
+        }
+    });
+}
+
+- (BOOL)copyPath:(NSString *)sourcePath to:(NSString *)destPath
+{
+    NSString *tmpPath = [self temporaryUrl];
+    BOOL success = [self downloadFile:sourcePath to:tmpPath progress:NULL];
+    if (! success)
+        return NO;
+    success = [self uploadFile:tmpPath to:destPath progress:NULL];
+    // Remove file.
+    NSError *error;
+    [[NSFileManager defaultManager] removeItemAtPath:tmpPath error:&error];
+    // Log the error, but do not fail.
+    if (error) {
+        FKLogError(@"Failed to remove tmp file. Error: %@", error.localizedDescription);
+    }
+    if (! success)
+        return NO;
+    return YES;
+}
+
+- (void)copyPath:(NSString *)sourcePath to:(NSString *)destPath success:(void (^)(void))success failure:(void (^)(NSError *))failure
+{
+    dispatch_async(_queue, ^{
+        BOOL ret = [self copyPath:sourcePath to:destPath];
+        if (ret && success) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                success();
+            });
+        } else if (! ret && failure) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                failure(_lastError);
+            });
         }
     });
 }

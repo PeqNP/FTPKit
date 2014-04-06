@@ -85,6 +85,10 @@
     success = [ftp renamePath:@"/copy.tgz" to:@"/test/copy.tgz"];
     XCTAssertTrue(success, @"");
     
+    // Copy 'copy.tgz' to 'copy2.tgz'
+    success = [ftp copyPath:@"/test/copy.tgz" to:@"/test/copy2.tgz"];
+    XCTAssertTrue(success, @"");
+    
     // Create '/test/test2' directory
     success = [ftp createDirectoryAtPath:@"/test/test2"];
     XCTAssertTrue(success, @"");
@@ -93,8 +97,9 @@
     contents = [ftp listContentsAtPath:@"/test" showHiddenFiles:YES];
     
     // - Should have 'copy.tgz' (a file) and 'test2' (a directory)
-    // @todo make sure they are the files we requested, including the correct type.
-    XCTAssertEqual(2, contents.count, @"");
+    // @todo make sure they are the files we requested, including the correct
+    // file type.
+    XCTAssertEqual(3, contents.count, @"");
     
     // Delete 'test'. It should fail as there are contents in the directory.
     success = [ftp deleteDirectoryAtPath:@"/test"];
@@ -102,6 +107,8 @@
     
     // Delete 'test2', 'copy.tgz' and then 'test'. All operations should succeed.
     success = [ftp deleteFileAtPath:@"/test/copy.tgz"];
+    XCTAssertTrue(success, @"");
+    success = [ftp deleteFileAtPath:@"/test/copy2.tgz"];
     XCTAssertTrue(success, @"");
     success = [ftp deleteDirectoryAtPath:@"/test/test2"];
     XCTAssertTrue(success, @"");
