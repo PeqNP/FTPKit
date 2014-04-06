@@ -371,10 +371,10 @@ static int socket_wait(netbuf *ctl)
  *
  * return -1 on error or bytecount
  */
-static int readline(char *buf,int max,netbuf *ctl)
+static int readline(char *buf, int max, netbuf *ctl)
 {
-    int x,retval = 0;
-    char *end,*bp=buf;
+    int x, retval = 0;
+    char *end, *bp=buf;
     int eof = 0;
 
     if ((ctl->dir != FTPLIB_CONTROL) && (ctl->dir != FTPLIB_READ))
@@ -1482,7 +1482,7 @@ GLOBALDEF int FtpSize(const char *path, unsigned int *size, char mode, netbuf *n
     if (!FtpSendCmd(cmd, '2', nControl))
         return 0;
     sprintf(cmd,"SIZE %s",path);
-    if (!FtpSendCmd(cmd,'2',nControl))
+    if (!FtpSendCmd(cmd, '2', nControl))
         rv = 0;
     else
     {
@@ -1537,8 +1537,8 @@ GLOBALDEF int FtpModDate(const char *path, char *dt, int max, netbuf *nControl)
 
     if ((strlen(path) + 7) > sizeof(buf))
         return 0;
-    sprintf(buf,"MDTM %s",path);
-    if (!FtpSendCmd(buf,'2',nControl))
+    sprintf(buf, "MDTM %s", path);
+    if (!FtpSendCmd(buf, '2', nControl))
         rv = 0;
     else
         strncpy(dt, &nControl->response[4], max);

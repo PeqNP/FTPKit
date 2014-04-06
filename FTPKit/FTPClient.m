@@ -80,6 +80,33 @@
 	return [self initWithCredentials:creds];
 }
 
+- (long long int)fileSizeAtPath:(NSString *)path
+{
+    netbuf *conn = [self connect];
+    if (conn == NULL)
+        return -1;
+    const char *cPath = [path cStringUsingEncoding:NSUTF8StringEncoding];
+    char dt[kFTPKitRequestBufferSize];
+    BOOL success = FtpModDate(cPath, dt, kFTPKitRequestBufferSize, conn);
+    FtpQuit(conn);
+    if (! success)
+        return -1;
+    char *endptr;
+    errno = 0;
+    long long int bytes = strtoll(dt, &endptr, 10);
+    if ((errno == ERANGE && (bytes == LONG_LONG_MAX || bytes == LONG_LONG_MIN))
+        || (errno != 0 && bytes == 0)) {
+        FKLogError(@"Prevented overflow");
+        return -1;
+    }
+    if (endptr == cPath) {
+        FKLogError(@"No digits were found");
+        return -1;
+    }
+    FKLogDebug(@"bytes %lld", bytes);
+    return bytes;
+}
+
 - (NSArray *)listContentsAtPath:(NSString *)path showHiddenFiles:(BOOL)showHiddenFiles
 {
     FTPHandle *hdl = [FTPHandle handleAtPath:path type:FTPHandleTypeDirectory];

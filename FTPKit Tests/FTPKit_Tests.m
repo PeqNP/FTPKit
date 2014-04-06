@@ -41,27 +41,39 @@
 - (void)testFtp
 {
     FTPClient * ftp = [[FTPClient alloc] initWithHost:@"localhost" port:21 username:@"unittest" password:@"unitpass"];
+    
     NSArray *contents = [ftp listContentsAtPath:@"/test" showHiddenFiles:YES];
-    for (FTPHandle *handle in contents) {
-        FKLogDebug(@"name (%@) size (%llu)", handle.name, handle.size);
-    }
-    return;
+    //XCTAssertNil(contents, @"Directory should not exist");
+    XCTAssertEqual(0, contents.count, @"");
+    
+    long long int bytes = [ftp fileSizeAtPath:@"/ftplib.tgz"];
+    XCTAssertTrue((bytes > 0), @"");
+    
+    bytes = [ftp fileSizeAtPath:@"/copy.tgz"];
+    XCTAssertEqual(-1, -1, @"");
+    
     // Create 'test1.txt' file to upload. Contents are 'testing 1'.
     NSURL *localUrl = [[[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject] URLByAppendingPathComponent:@"ftplib.tgz"];
+    
     // Download 'ftplib.tgz'
-    [ftp downloadFile:@"/ftplib.tgz" to:localUrl.path progress:NULL];
+    BOOL success = [ftp downloadFile:@"/ftplib.tgz" to:localUrl.path progress:NULL];
+    XCTAssertTrue(success, @"");
     
     // Upload 'ftplib.tgz' as 'copy.tgz'
-    [ftp uploadFile:localUrl.path to:@"/copy.tgz" progress:NULL];
+    success = [ftp uploadFile:localUrl.path to:@"/copy.tgz" progress:NULL];
+    XCTAssertTrue(success, @"");
     
     // chmod 'copy.tgz' to 777
-    [ftp chmodPath:@"/copy.tgz" toMode:777];
+    success = [ftp chmodPath:@"/copy.tgz" toMode:777];
+    XCTAssertTrue(success, @"");
     
     // Create directory 'test'
-    [ftp createDirectoryAtPath:@"/test"];
+    success = [ftp createDirectoryAtPath:@"/test"];
+    XCTAssertTrue(success, @"");
     
     // chmod 'test' to 777
-    [ftp chmodPath:@"/test" toMode:777];
+    success = [ftp chmodPath:@"/test" toMode:777];
+    XCTAssertTrue(success, @"");
     
     // List contents of 'test'
     contents = [ftp listContentsAtPath:@"/test" showHiddenFiles:YES];
@@ -83,8 +95,16 @@
     XCTAssertEqual(2, contents.count, @"");
     
     // Delete 'test'. It should fail as there are contents in the directory.
+    success = [ftp deleteDirectoryAtPath:@"/test"];
+    XCTAssertFalse(success, @"Directory has contents");
     
     // Delete 'test2', 'copy.tgz' and then 'test'. All operations should succeed.
+    success = [ftp deleteFileAtPath:@"/test/copy.tgz"];
+    XCTAssertTrue(success, @"");
+    success = [ftp deleteDirectoryAtPath:@"/test/test2"];
+    XCTAssertTrue(success, @"");
+    success = [ftp deleteDirectoryAtPath:@"/test"];
+    XCTAssertTrue(success, @"");
     
     //XCTFail(@"No implementation for \"%s\"", __PRETTY_FUNCTION__);
 }

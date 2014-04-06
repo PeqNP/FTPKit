@@ -57,6 +57,14 @@
 - (instancetype)initWithHost:(NSString *)host port:(int)port username:(NSString *)username password:(NSString* )password;
 
 /**
+ Get the size, in bytes, for remote file at 'path'.
+ 
+ @param path Path to get size in bytes for.
+ @return The size of the file in bytes. -1 if file doesn't exist.
+ */
+- (long long int)fileSizeAtPath:(NSString *)path;
+
+/**
  List directory contents at path.
  
  @param path Path to remote directory to list.
