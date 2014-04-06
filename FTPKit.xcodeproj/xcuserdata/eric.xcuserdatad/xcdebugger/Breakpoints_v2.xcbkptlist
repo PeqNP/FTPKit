@@ -26,11 +26,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "FTPKit/FTPClient.m"
-            timestampString = "418450973.704793"
+            timestampString = "418454245.080228"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "512"
-            endingLineNumber = "512"
+            startingLineNumber = "548"
+            endingLineNumber = "548"
             landmarkName = "-parseListData:handle:showHiddentFiles:"
             landmarkType = "5">
          </BreakpointContent>
@@ -65,6 +65,66 @@
             endingLineNumber = "49"
             landmarkName = "-testFtp"
             landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FTPKit Tests/FTPKit_Tests.m"
+            timestampString = "418454239.317727"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "90"
+            endingLineNumber = "90"
+            landmarkName = "-testFtp"
+            landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[FTPKit_Tests testFtp]"
+                  moduleName = "FTPKit Tests"
+                  urlString = "file:///Users/eric/git/FTPKit/FTPKit%20Tests/FTPKit_Tests.m"
+                  timestampString = "418454245.748346"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "90"
+                  endingLineNumber = "90"
+                  offsetFromSymbolStart = "13665">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[FTPKit_Tests testFtp]"
+                  moduleName = "FTPKit Tests"
+                  urlString = "file:///Users/eric/git/FTPKit/FTPKit%20Tests/FTPKit_Tests.m"
+                  timestampString = "418454245.749685"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "90"
+                  endingLineNumber = "90"
+                  offsetFromSymbolStart = "14905">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[FTPKit_Tests testFtp]"
+                  moduleName = "FTPKit Tests"
+                  urlString = "file:///Users/eric/git/FTPKit/FTPKit%20Tests/FTPKit_Tests.m"
+                  timestampString = "418454245.750007"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "90"
+                  endingLineNumber = "90"
+                  offsetFromSymbolStart = "15305">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

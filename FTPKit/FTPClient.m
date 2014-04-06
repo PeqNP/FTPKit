@@ -151,6 +151,11 @@
         self.lastError = error;
         return nil;
     }
+    [[NSFileManager defaultManager] removeItemAtPath:tmpPath error:&error];
+    // Log the error, but do not fail.
+    if (error) {
+        FKLogError(@"Failed to remove tmp file. Error: %@", error.localizedDescription);
+    }
     NSArray *files = [self parseListData:data handle:handle showHiddentFiles:showHiddenFiles];
     return files; // If files == nil, method will set the lastError.
 }
@@ -394,6 +399,37 @@
 {
     dispatch_async(_queue, ^{
         BOOL ret = [self renamePath:sourcePath to:destPath];
+        if (ret && success) {
+            success();
+        } else if (! ret && failure) {
+            failure(_lastError);
+        }
+    });
+}
+
+- (BOOL)copyPath:(NSString *)sourcePath to:(NSString *)destPath
+{
+    NSString *tmpPath = [self temporaryUrl];
+    BOOL success = [self downloadFile:sourcePath to:tmpPath progress:NULL];
+    if (! success)
+        return NO;
+    success = [self uploadFile:tmpPath to:destPath progress:NULL];
+    // Remove file.
+    NSError *error;
+    [[NSFileManager defaultManager] removeItemAtPath:tmpPath error:&error];
+    // Log the error, but do not fail.
+    if (error) {
+        FKLogError(@"Failed to remove tmp file. Error: %@", error.localizedDescription);
+    }
+    if (! success)
+        return NO;
+    return YES;
+}
+
+- (void)copyPath:(NSString *)sourcePath to:(NSString *)destPath success:(void (^)(void))success failure:(void (^)(NSError *))failure
+{
+    dispatch_async(_queue, ^{
+        BOOL ret = [self copyPath:sourcePath to:destPath];
         if (ret && success) {
             success();
         } else if (! ret && failure) {

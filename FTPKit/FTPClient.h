@@ -374,4 +374,26 @@
            success:(void (^)(void))success
            failure:(void (^)(NSError *error))failure;
 
+/**
+ Copy a remote path to another location.
+ 
+ @param sourcePath Source path to copy.
+ @param destPath Destination of copied file.
+ */
+- (BOOL)copyPath:(NSString *)sourcePath to:(NSString *)destPath;
+
+/**
+ Refer to copyPath:to:
+ 
+ This adds the ability to perform the operation asynchronously.
+ 
+ @param sourcePath Source path to copy.
+ @param destPath Destination of copied file.
+ @param success Method called when process succeeds.
+ @param failure Method called when process fails.
+ */
+- (void)copyPath:(NSString *)sourcePath to:(NSString *)destPath
+         success:(void (^)(void))success
+         failure:(void (^)(NSError *error))failure;
+
 @end
