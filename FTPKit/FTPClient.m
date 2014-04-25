@@ -234,6 +234,8 @@
     FtpQuit(conn);
     if (stat == 0) {
         // @todo Why?
+        // In my experience this usually fails because the user does not have
+        // permissions to access the file.
         self.lastError = [NSError FTPKitErrorWithCode:451];
         return NO;
     }
