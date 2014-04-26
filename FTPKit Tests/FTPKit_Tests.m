@@ -71,6 +71,11 @@
     success = [ftp createDirectoryAtPath:@"/test"];
     XCTAssertTrue(success, @"");
     
+    NSDate *date = [ftp lastModifiedAtPath:@"/ftplib.tgz"];
+    NSLog(@"date %@", date);
+    XCTAssertNotNil(date, @"");
+    // @todo
+    
     // chmod 'test' to 777
     success = [ftp chmodPath:@"/test" toMode:777];
     XCTAssertTrue(success, @"");

@@ -93,28 +93,15 @@
     if (conn == NULL)
         return -1;
     const char *cPath = [path cStringUsingEncoding:NSUTF8StringEncoding];
-    char dt[kFTPKitRequestBufferSize];
-    BOOL success = FtpModDate(cPath, dt, kFTPKitRequestBufferSize, conn);
+    unsigned int bytes;
+    int stat = FtpSize(cPath, &bytes, FTPLIB_BINARY, conn);
     FtpQuit(conn);
-    if (! success) {
-        // @todo Why?
+    if (stat == 0) {
+        FKLogError(@"Failed to SIZE %@", path);
         self.lastError = [NSError FTPKitErrorWithCode:451];
-        return -1;
     }
-    char *endptr;
-    errno = 0;
-    long long int bytes = strtoll(dt, &endptr, 10);
-    if ((errno == ERANGE && (bytes == LONG_LONG_MAX || bytes == LONG_LONG_MIN))
-        || (errno != 0 && bytes == 0)) {
-        [self failedWithMessage:@"Prevented overflow"];
-        return -1;
-    }
-    if (endptr == cPath) {
-        [self failedWithMessage:@"No digits were found"];
-        return -1;
-    }
-    FKLogDebug(@"bytes %lld", bytes);
-    return bytes;
+    FKLogDebug(@"bytes %d", bytes);
+    return (long long int)bytes;
 }
 
 - (NSArray *)listContentsAtPath:(NSString *)path showHiddenFiles:(BOOL)showHiddenFiles
@@ -234,6 +221,8 @@
     FtpQuit(conn);
     if (stat == 0) {
         // @todo Why?
+        // In my experience this usually fails because the user does not have
+        // permissions to access the file.
         self.lastError = [NSError FTPKitErrorWithCode:451];
         return NO;
     }
@@ -474,6 +463,7 @@
 
 - (netbuf *)connect
 {
+    self.lastError = nil;
     const char *host = [_credentials.host cStringUsingEncoding:NSUTF8StringEncoding];
     const char *user = [_credentials.username cStringUsingEncoding:NSUTF8StringEncoding];
     const char *pass = [_credentials.password cStringUsingEncoding:NSUTF8StringEncoding];
@@ -582,6 +572,31 @@
     }
     
     return files;
+}
+
+- (NSDate *)lastModifiedAtPath:(NSString *)remotePath
+{
+    netbuf *conn = [self connect];
+    if (conn == NULL)
+        return nil;
+    const char *cPath = [remotePath cStringUsingEncoding:NSUTF8StringEncoding];
+    char dt[kFTPKitRequestBufferSize];
+    // This is returning FALSE when attempting to create a new folder that exists... why?
+    // MDTM does not work with folders. It is meant to be used only for types
+    // of files that can be downloaded using the RETR command.
+    int stat = FtpModDate(cPath, dt, kFTPKitRequestBufferSize, conn);
+    FtpQuit(conn);
+    if (stat == 0) {
+        self.lastError = [NSError FTPKitErrorWithCode:451];
+        return nil;
+    }
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    // FTP spec: YYYYMMDDhhmmss
+    // @note dt always contains a trailing newline char.
+    formatter.dateFormat = @"yyyyMMddHHmmss\n";
+    NSString *dateString = [NSString stringWithCString:dt encoding:NSUTF8StringEncoding];
+    NSDate *date = [formatter dateFromString:dateString];
+    return date;
 }
 
 @end

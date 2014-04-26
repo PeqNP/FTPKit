@@ -1,3 +1,11 @@
+/**
+ Provides FTP client.
+ 
+ Consider implementing more of the commands specified at:
+ http://en.wikipedia.org/wiki/List_of_FTP_commands
+ 
+ */
+
 #import "FTPHandle.h"
 #import "FTPCredentials.h"
 
@@ -395,5 +403,14 @@
 - (void)copyPath:(NSString *)sourcePath to:(NSString *)destPath
          success:(void (^)(void))success
          failure:(void (^)(NSError *error))failure;
+
+/**
+ Returns the last modification date of remotePath. This will NOT work with
+ directories, as the RFC spec does not require it.
+ 
+ @param remotePath Path to get modified date for
+ @return Date the remote path was last modified
+ */
+- (NSDate *)lastModifiedAtPath:(NSString *)remotePath;
 
 @end

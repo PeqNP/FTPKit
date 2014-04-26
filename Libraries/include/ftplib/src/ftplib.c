@@ -1115,7 +1115,7 @@ GLOBALDEF int FtpAccess(const char *path, int typ, int mode, netbuf *nControl,
         buf[i++] = ' ';
         if ((strlen(path) + i + 1) >= sizeof(buf))
             return 0;
-        strcpy(&buf[i],path);
+        strcpy(&buf[i], path);
     }
     if (FtpOpenPort(nControl, nData, mode, dir) == -1)
         return 0;
@@ -1129,7 +1129,7 @@ GLOBALDEF int FtpAccess(const char *path, int typ, int mode, netbuf *nControl,
     nControl->data = *nData;
     if (nControl->cmode == FTPLIB_PORT)
     {
-        if (!FtpAcceptConnection(*nData,nControl))
+        if (!FtpAcceptConnection(*nData, nControl))
         {
             FtpClose(*nData);
             *nData = NULL;
@@ -1222,10 +1222,15 @@ GLOBALDEF int FtpClose(netbuf *nData)
         net_close(nData->handle);
         ctrl = nData->ctrl;
         free(nData);
+        // ctrl is NULL. Why? All this does is fix the bug. I don't know if
+        // there's an underlying issue with the lib.
+        if (ctrl == NULL)
+            return 1;
         ctrl->data = NULL;
         if (ctrl && ctrl->response[0] != '4' && ctrl->response[0] != 5)
         {
-            return(readresp('2', ctrl));
+            int resp = readresp('2', ctrl);
+            return resp;
         }
         return 1;
       case FTPLIB_CONTROL:
