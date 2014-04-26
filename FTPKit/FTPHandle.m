@@ -4,7 +4,6 @@
 
 #include <sys/socket.h>
 #include <sys/dirent.h>
-#include <CFNetwork/CFNetwork.h>
 
 @interface FTPHandle()
 @property (nonatomic, strong) NSString *path;

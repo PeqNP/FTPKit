@@ -1,3 +1,11 @@
+/**
+ Provides FTP client.
+ 
+ Consider implementing more of the commands specified at:
+ http://en.wikipedia.org/wiki/List_of_FTP_commands
+ 
+ */
+
 #import "FTPHandle.h"
 #import "FTPCredentials.h"
 
@@ -373,5 +381,36 @@
 - (void)renamePath:(NSString *)sourcePath to:(NSString *)destPath
            success:(void (^)(void))success
            failure:(void (^)(NSError *error))failure;
+
+/**
+ Copy a remote path to another location.
+ 
+ @param sourcePath Source path to copy.
+ @param destPath Destination of copied file.
+ */
+- (BOOL)copyPath:(NSString *)sourcePath to:(NSString *)destPath;
+
+/**
+ Refer to copyPath:to:
+ 
+ This adds the ability to perform the operation asynchronously.
+ 
+ @param sourcePath Source path to copy.
+ @param destPath Destination of copied file.
+ @param success Method called when process succeeds.
+ @param failure Method called when process fails.
+ */
+- (void)copyPath:(NSString *)sourcePath to:(NSString *)destPath
+         success:(void (^)(void))success
+         failure:(void (^)(NSError *error))failure;
+
+/**
+ Returns the last modification date of remotePath. This will NOT work with
+ directories, as the RFC spec does not require it.
+ 
+ @param remotePath Path to get modified date for
+ @return Date the remote path was last modified
+ */
+- (NSDate *)lastModifiedAtPath:(NSString *)remotePath;
 
 @end
