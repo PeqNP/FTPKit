@@ -97,10 +97,11 @@
     int stat = FtpSize(cPath, &bytes, FTPLIB_BINARY, conn);
     FtpQuit(conn);
     if (stat == 0) {
-        FKLogError(@"Failed to SIZE %@", path);
+        FKLogError(@"SIZE %@", path);
         self.lastError = [NSError FTPKitErrorWithCode:451];
+        return -1;
     }
-    FKLogDebug(@"bytes %d", bytes);
+    FKLogDebug(@"%@ bytes %d", path, bytes);
     return (long long int)bytes;
 }
 
@@ -597,6 +598,14 @@
     NSString *dateString = [NSString stringWithCString:dt encoding:NSUTF8StringEncoding];
     NSDate *date = [formatter dateFromString:dateString];
     return date;
+}
+
+- (BOOL)directoryExistsAtPath:(NSString *)remotePath
+{
+    NSArray *contents = [self listContentsAtPath:remotePath showHiddenFiles:NO];
+    if (contents)
+        return YES;
+    return NO;
 }
 
 @end

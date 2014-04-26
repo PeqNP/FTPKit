@@ -65,7 +65,8 @@
 - (instancetype)initWithHost:(NSString *)host port:(int)port username:(NSString *)username password:(NSString* )password;
 
 /**
- Get the size, in bytes, for remote file at 'path'.
+ Get the size, in bytes, for remote file at 'path'. This can not be used
+ for directories.
  
  @param path Path to get size in bytes for.
  @return The size of the file in bytes. -1 if file doesn't exist.
@@ -412,5 +413,13 @@
  @return Date the remote path was last modified
  */
 - (NSDate *)lastModifiedAtPath:(NSString *)remotePath;
+
+/**
+ Check if a remote directory exists.
+ 
+ @param remotePath Directory to check
+ @return YES if the directory exists. NO, otherwise
+ */
+- (BOOL)directoryExistsAtPath:(NSString *)remotePath;
 
 @end
