@@ -76,6 +76,15 @@
     XCTAssertNotNil(date, @"");
     // @todo
     
+    BOOL exists = [ftp directoryExistsAtPath:@"/test"];
+    XCTAssertTrue(exists, @"");
+    
+    exists = [ftp directoryExistsAtPath:@"/badpath"];
+    XCTAssertTrue(exists, @"");
+    
+    bytes = [ftp fileSizeAtPath:@"/badpath.txt"];
+    XCTAssertEqual(-1, bytes, @"");
+    
     // chmod 'test' to 777
     success = [ftp chmodPath:@"/test" toMode:777];
     XCTAssertTrue(success, @"");
