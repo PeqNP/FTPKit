@@ -97,8 +97,7 @@
     int stat = FtpSize(cPath, &bytes, FTPLIB_BINARY, conn);
     FtpQuit(conn);
     if (stat == 0) {
-        FKLogError(@"SIZE %@", path);
-        self.lastError = [NSError FTPKitErrorWithCode:451];
+        FKLogError(@"File most likely does not exist %@", path);
         return -1;
     }
     FKLogDebug(@"%@ bytes %d", path, bytes);
@@ -602,6 +601,8 @@
 
 - (BOOL)directoryExistsAtPath:(NSString *)remotePath
 {
+    // @note this is a hack until I can implement CWD. You must make sure that
+    // the directory testing is not the current working directory.
     NSArray *contents = [self listContentsAtPath:remotePath showHiddenFiles:NO];
     if (contents)
         return YES;
