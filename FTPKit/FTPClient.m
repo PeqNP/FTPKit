@@ -138,6 +138,11 @@
         self.lastError = error;
         return nil;
     }
+    /**
+     Please note: If there are no contents in the folder OR if the folder does
+     not exist data.bytes _will_ 0. Therefore, you can not use this method to
+     determine if a directory exists!
+     */
     [[NSFileManager defaultManager] removeItemAtPath:tmpPath error:&error];
     // Log the error, but do not fail.
     if (error) {
@@ -603,10 +608,25 @@
 {
     // @note this is a hack until I can implement CWD. You must make sure that
     // the directory testing is not the current working directory.
-    NSArray *contents = [self listContentsAtPath:remotePath showHiddenFiles:NO];
-    if (contents)
+    BOOL success = [self changeDirectoryToPath:remotePath];
+    if (success)
         return YES;
     return NO;
+}
+
+- (BOOL)changeDirectoryToPath:(NSString *)remotePath
+{
+    netbuf *conn = [self connect];
+    if (conn == NULL)
+        return NO;
+    const char *cPath = [remotePath cStringUsingEncoding:NSUTF8StringEncoding];
+    int stat = FtpChdir(cPath, conn);
+    FtpQuit(conn);
+    if (stat == 0) {
+        self.lastError = [NSError FTPKitErrorWithCode:450];
+        return NO;
+    }
+    return YES;
 }
 
 @end

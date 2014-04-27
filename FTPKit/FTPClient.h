@@ -417,9 +417,20 @@
 /**
  Check if a remote directory exists.
  
+ Please note that this internally calls [self changeDirectoryToPath:] and does
+ _not_ change back to the previous directory!
+ 
  @param remotePath Directory to check
  @return YES if the directory exists. NO, otherwise
  */
 - (BOOL)directoryExistsAtPath:(NSString *)remotePath;
+
+/**
+ Change the working directory to remotePath.
+ 
+ @param remotePath Remote directory path to make current directory
+ @return YES if the directory was successfully changed.
+ */
+- (BOOL)changeDirectoryToPath:(NSString *)remotePath;
 
 @end
