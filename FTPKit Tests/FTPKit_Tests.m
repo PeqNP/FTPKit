@@ -42,6 +42,10 @@
 {
     FTPClient * ftp = [[FTPClient alloc] initWithHost:@"localhost" port:21 username:@"unittest" password:@"unitpass"];
     
+    // Sanity. Make sure the root path exists. This should always be true.
+    BOOL success = [ftp directoryExistsAtPath:@"/"];
+    XCTAssertTrue(success, @"");
+    
     NSArray *contents = [ftp listContentsAtPath:@"/test" showHiddenFiles:YES];
     //XCTAssertNil(contents, @"Directory should not exist");
     XCTAssertEqual(0, contents.count, @"");
@@ -56,7 +60,7 @@
     NSURL *localUrl = [[[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject] URLByAppendingPathComponent:@"ftplib.tgz"];
     
     // Download 'ftplib.tgz'
-    BOOL success = [ftp downloadFile:@"/ftplib.tgz" to:localUrl.path progress:NULL];
+    success = [ftp downloadFile:@"/ftplib.tgz" to:localUrl.path progress:NULL];
     XCTAssertTrue(success, @"");
     
     // Upload 'ftplib.tgz' as 'copy.tgz'
@@ -80,7 +84,7 @@
     XCTAssertTrue(exists, @"");
     
     exists = [ftp directoryExistsAtPath:@"/badpath"];
-    XCTAssertTrue(exists, @"");
+    XCTAssertFalse(exists, @"");
     
     bytes = [ftp fileSizeAtPath:@"/badpath.txt"];
     XCTAssertEqual(-1, bytes, @"");
@@ -106,6 +110,25 @@
     // Create '/test/test2' directory
     success = [ftp createDirectoryAtPath:@"/test/test2"];
     XCTAssertTrue(success, @"");
+    
+    NSString *cwd = [ftp printWorkingDirectory];
+    XCTAssertTrue([cwd isEqualToString:@"/"], @"");
+    
+    // Change directory to /test
+    success = [ftp changeDirectoryToPath:@"/test"];
+    XCTAssertTrue(success, @"");
+    
+    /**
+     Currently the connection is not left open between calls and therefore we
+     will always be put back to the root directory when each command is sent.
+     
+     Uncomment this when the same connection is used between commands.
+     
+    // Make sure we are still in /test.
+    cwd = [ftp printWorkingDirectory];
+    NSLog(@"cwd is %@", cwd);
+    XCTAssertTrue([cwd isEqualToString:@"/test"], @"");
+     */
     
     // List contents of 'test'
     contents = [ftp listContentsAtPath:@"/test" showHiddenFiles:YES];

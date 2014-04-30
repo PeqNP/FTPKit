@@ -4,6 +4,10 @@
  Consider implementing more of the commands specified at:
  http://en.wikipedia.org/wiki/List_of_FTP_commands
  
+ Currently this creates a new connection to the FTP server for every command
+ issued. This means the state of the current working directory is NOT kept and.
+ therefore, some commands are not of use.
+ 
  */
 
 #import "FTPHandle.h"
@@ -428,9 +432,28 @@
 /**
  Change the working directory to remotePath.
  
+ @note This is currently used ONLY to determine if a directory exists on the
+ server. The state of the cwd is not saved between commands being issued. This
+ is because a new connection is created for every command issued.
+ 
+ Therefore, in its current state, it is used in a very limited scope. Eventually
+ you will be able to issue commands in the cwd. Not right now.
+ 
  @param remotePath Remote directory path to make current directory
  @return YES if the directory was successfully changed.
  */
 - (BOOL)changeDirectoryToPath:(NSString *)remotePath;
+
+/**
+ Returns the current working directory.
+ 
+ @note Currently this will always return the root path. This is because the
+ lib creates a new connection for every command issued to the server -- and
+ therefore the command will always being in the root path when issuing the
+ command.
+ 
+ @return The current working directory
+ */
+- (NSString *)printWorkingDirectory;
 
 @end

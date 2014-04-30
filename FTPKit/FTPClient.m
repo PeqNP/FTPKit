@@ -140,7 +140,7 @@
     }
     /**
      Please note: If there are no contents in the folder OR if the folder does
-     not exist data.bytes _will_ 0. Therefore, you can not use this method to
+     not exist data.bytes _will_ be 0. Therefore, you can not use this method to
      determine if a directory exists!
      */
     [[NSFileManager defaultManager] removeItemAtPath:tmpPath error:&error];
@@ -606,12 +606,40 @@
 
 - (BOOL)directoryExistsAtPath:(NSString *)remotePath
 {
-    // @note this is a hack until I can implement CWD. You must make sure that
-    // the directory testing is not the current working directory.
-    BOOL success = [self changeDirectoryToPath:remotePath];
-    if (success)
+    /**
+     Test the directory by changing to the directory. If the process succeeds
+     then the directory exists.
+     
+     The process is to get the current working directory and change _back_ to
+     the previous current working directory. There is a possibility that the
+     second changeDirectoryToPath: may fail! This is really the price we pay
+     for this command as there is no other accurate way to determine this.
+     
+     Using listContentsAtPath:showHiddenFiles: will fail as it will return empty
+     contents even if the directory doesn't exist! So long as the command
+     _succeeds_ it will return an empty list.
+     
+    // Get the current working directory. We will change back to this directory
+    // if necessary.
+    NSString *cwd = [self printWorkingDirectory];
+    // No need to continue. We already know the path exists by the fact that we
+    // are currently _in_ the directory.
+    if ([cwd isEqualToString:remotePath])
         return YES;
-    return NO;
+    // Test directory by changing to it.
+    BOOL success = [self changeDirectoryToPath:remotePath];
+    // Attempt to change back to the previous directory.
+    if (success)
+        [self changeDirectoryToPath:cwd];
+    return success;
+     */
+    
+    /**
+     Currently the lib creates a new connection for every command issued.
+     Therefore, it is unnecessary to change back to the original cwd.
+     */
+    BOOL success = [self changeDirectoryToPath:remotePath];
+    return success;
 }
 
 - (BOOL)changeDirectoryToPath:(NSString *)remotePath
@@ -627,6 +655,21 @@
         return NO;
     }
     return YES;
+}
+
+- (NSString *)printWorkingDirectory
+{
+    netbuf *conn = [self connect];
+    if (conn == NULL)
+        return NO;
+    char cPath[kFTPKitTempBufferSize];
+    int stat = FtpPwd(cPath, kFTPKitTempBufferSize, conn);
+    FtpQuit(conn);
+    if (stat == 0) {
+        self.lastError = [NSError FTPKitErrorWithCode:450];
+        return NO;
+    }
+    return [NSString stringWithCString:cPath encoding:NSUTF8StringEncoding];
 }
 
 @end

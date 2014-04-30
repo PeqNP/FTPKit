@@ -1359,7 +1359,7 @@ GLOBALDEF int FtpPwd(char *path, int max, netbuf *nControl)
     int l = max;
     char *b = path;
     char *s;
-    if (!FtpSendCmd("PWD",'2',nControl))
+    if (!FtpSendCmd("PWD", '2', nControl))
         return 0;
     s = strchr(nControl->response, '"');
     if (s == NULL)
