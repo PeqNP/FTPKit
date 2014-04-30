@@ -166,7 +166,7 @@ Please note that the `progress:` parameter has not yet been implemented.
 
 ## Check if a directory exists
 
-    BOOL success = [client chmodPath:@"/public/defaceme.html" toMode:777];
+    BOOL success = [ftp directoryExistsAtPath:@"/mypath"];
     if (! success) {
         // Display an error...
     }
@@ -174,8 +174,12 @@ Please note that the `progress:` parameter has not yet been implemented.
     ...
 
     // Or, make the call asynchronous;
-    [client chmodPath:@"/public/defaceme.html" toMode:777 success:^(void) {
-        // Success!
+    [ftp directoryExistsAtPath:@"/mypath" success:^(BOOL exists) {
+        if (exists) {
+            // The file exists.
+        } else {
+            // The file doesn't exist.
+        }
     } failure:^(NSError *error) {
         // Display an error...
     }];
