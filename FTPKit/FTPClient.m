@@ -57,6 +57,14 @@
  */
 - (void)failedWithMessage:(NSString *)message;
 
+/**
+ Convenience method that wraps failure(error) in dispatch_async(main_queue)
+ and ensures that the error is copied before sending back to callee -- to ensure
+ it doesn't get nil'ed out by the next command before the callee has a chance
+ to read the error.
+ */
+- (void)returnFailure:(void (^)(NSError *error))failure;
+
 @end
 
 @implementation FTPClient
@@ -161,9 +169,7 @@
                 success(contents);
             });
         } else if (! contents && failure) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                failure(_lastError);
-            });
+            [self returnFailure:failure];
         }
     });
 }
@@ -206,9 +212,7 @@
                 success();
             });
         } else if (! ret && failure) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                failure(_lastError);
-            });
+            [self returnFailure:failure];
         }
     });
 }
@@ -243,9 +247,7 @@
                 success();
             });
         } else if (! ret && failure) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                failure(_lastError);
-            });
+            [self returnFailure:failure];
         }
     });
 }
@@ -285,9 +287,7 @@
                 success();
             });
         } else if (! ret && failure) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                failure(_lastError);
-            });
+            [self returnFailure:failure];
         }
     });
 }
@@ -341,9 +341,7 @@
                 success();
             });
         } else if (! ret && failure) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                failure(_lastError);
-            });
+            [self returnFailure:failure];
         }
     });
 }
@@ -389,9 +387,7 @@
                 success();
             });
         } else if (! ret && failure) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                failure(_lastError);
-            });
+            [self returnFailure:failure];
         }
     });
 }
@@ -422,9 +418,7 @@
                 success();
             });
         } else if (! ret && failure) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                failure(_lastError);
-            });
+            [self returnFailure:failure];
         }
     });
 }
@@ -457,9 +451,7 @@
                 success();
             });
         } else if (! ret && failure) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                failure(_lastError);
-            });
+            [self returnFailure:failure];
         }
     });
 }
@@ -604,6 +596,20 @@
     return date;
 }
 
+- (void)lastModifiedAtPath:(NSString *)remotePath success:(void (^)(NSDate *))success failure:(void (^)(NSError *))failure
+{
+    dispatch_async(_queue, ^{
+        NSDate *date = [self lastModifiedAtPath:remotePath];
+        if (! _lastError && success) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                success(date);
+            });
+        } else if (_lastError && failure) {
+            [self returnFailure:failure];
+        }
+    });
+}
+
 - (BOOL)directoryExistsAtPath:(NSString *)remotePath
 {
     /**
@@ -642,6 +648,20 @@
     return success;
 }
 
+- (void)directoryExistsAtPath:(NSString *)remotePath success:(void (^)(BOOL))success failure:(void (^)(NSError *))failure
+{
+    dispatch_async(_queue, ^{
+        BOOL exists = [self directoryExistsAtPath:remotePath];
+        if (! _lastError && success) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                success(exists);
+            });
+        } else if (_lastError && failure) {
+            [self returnFailure:failure];
+        }
+    });
+}
+
 - (BOOL)changeDirectoryToPath:(NSString *)remotePath
 {
     netbuf *conn = [self connect];
@@ -670,6 +690,14 @@
         return NO;
     }
     return [NSString stringWithCString:cPath encoding:NSUTF8StringEncoding];
+}
+
+- (void)returnFailure:(void (^)(NSError *))failure
+{
+    NSError *error = [_lastError copy];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        failure(error);
+    });
 }
 
 @end

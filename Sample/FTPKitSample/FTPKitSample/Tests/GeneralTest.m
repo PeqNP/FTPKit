@@ -12,6 +12,16 @@
     self.ftp = [FTPClient clientWithHost:@"localhost" port:21 username:@"unittest" password:@"unitpass"];
     NSURL *localUrl = [[[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject] URLByAppendingPathComponent:@"ftplib.tgz"];
     
+    [ftp directoryExistsAtPath:@"/" success:^(BOOL exists) {
+        if (exists) {
+            NSLog(@"Success: 000");
+        } else {
+            NSLog(@"Error: Root path '/' must exist");
+        }
+    } failure:^(NSError *error) {
+        NSLog(@"Error: %@", error.localizedDescription);
+    }];
+    
     // Note: All of these actions will queue in the order they are called.
     // Note: All of these tests are 1 to 1 relationship with the tests used within
     // the FTPKit, except the actions are synchronized.
@@ -101,7 +111,7 @@
     [ftp deleteDirectoryAtPath:@"/test" success:^(void) {
         NSLog(@"Error: Should have failed!");
     } failure:^(NSError *error) {
-        NSLog(@"Success 011. Error: %@", error.localizedDescription);
+        NSLog(@"Success 011 -- Error: %@", error.localizedDescription);
     }];
     
     [ftp deleteFileAtPath:@"/test/copy.tgz" success:^(void) {
@@ -118,6 +128,22 @@
     
     [ftp deleteDirectoryAtPath:@"/test" success:^(void) {
         NSLog(@"Success 014");
+    } failure:^(NSError *error) {
+        NSLog(@"Error: %@", error.localizedDescription);
+    }];
+    
+    [ftp directoryExistsAtPath:@"/badpath" success:^(BOOL exists) {
+        if (exists) {
+            NSLog(@"Error: /badpath should not exist");
+        } else {
+            NSLog(@"Success 015");
+        }
+    } failure:^(NSError *error) {
+        NSLog(@"Error: %@", error.localizedDescription);
+    }];
+    
+    [ftp lastModifiedAtPath:@"/ftplib.tgz" success:^(NSDate *lastModified) {
+        NSLog(@"Success 016 -- Date: %@", lastModified);
     } failure:^(NSError *error) {
         NSLog(@"Error: %@", error.localizedDescription);
     }];

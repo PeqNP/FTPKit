@@ -1,6 +1,6 @@
 # FTPKit
 
-Version 1.0.0b RC2
+Version 1.2.0
 
 FTPKit is an Objective-C library providing facilities implementing the client
 side of the File Transfer Protocol (FTP).
@@ -149,6 +149,22 @@ Please note that the `progress:` parameter has not yet been implemented.
     }];
 
 ## chmod a file
+
+    BOOL success = [client chmodPath:@"/public/defaceme.html" toMode:777];
+    if (! success) {
+        // Display an error...
+    }
+
+    ...
+
+    // Or, make the call asynchronous;
+    [client chmodPath:@"/public/defaceme.html" toMode:777 success:^(void) {
+        // Success!
+    } failure:^(NSError *error) {
+        // Display an error...
+    }];
+
+## Check if a directory exists
 
     BOOL success = [client chmodPath:@"/public/defaceme.html" toMode:777];
     if (! success) {

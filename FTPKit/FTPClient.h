@@ -419,6 +419,20 @@
 - (NSDate *)lastModifiedAtPath:(NSString *)remotePath;
 
 /**
+ Refer to lastModifiedAtPath:
+ 
+ This adds the ability to perform the operation asynchronously.
+ 
+ @param remotePath Remote path to check
+ @param success Method called when process succeeds. 'lastModified' is the
+ last modified time.
+ @param failure Method called when process fails.
+ */
+- (void)lastModifiedAtPath:(NSString *)remotePath
+                   success:(void (^)(NSDate *lastModified))success
+                   failure:(void (^)(NSError *error))failure;
+
+/**
  Check if a remote directory exists.
  
  Please note that this internally calls [self changeDirectoryToPath:] and does
@@ -430,6 +444,20 @@
 - (BOOL)directoryExistsAtPath:(NSString *)remotePath;
 
 /**
+ Refer to directoryExistsAtPath:
+ 
+ This adds the ability to perform the operation asynchronously.
+ 
+ @param remotePath Remote path to check
+ @param success Method called when process succeeds. 'exists' will be YES if the
+ directory exists. NO otherwise.
+ @param failure Method called when process fails.
+ */
+- (void)directoryExistsAtPath:(NSString *)remotePath
+                      success:(void (^)(BOOL exists))success
+                      failure:(void (^)(NSError *error))failure;
+
+/**
  Change the working directory to remotePath.
  
  @note This is currently used ONLY to determine if a directory exists on the
@@ -439,7 +467,7 @@
  Therefore, in its current state, it is used in a very limited scope. Eventually
  you will be able to issue commands in the cwd. Not right now.
  
- @param remotePath Remote directory path to make current directory
+ @param remotePath Remote directory path to make current directory.
  @return YES if the directory was successfully changed.
  */
 - (BOOL)changeDirectoryToPath:(NSString *)remotePath;
@@ -452,7 +480,7 @@
  therefore the command will always being in the root path when issuing the
  command.
  
- @return The current working directory
+ @return The current working directory.
  */
 - (NSString *)printWorkingDirectory;
 
