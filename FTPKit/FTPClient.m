@@ -57,6 +57,14 @@
  */
 - (void)failedWithMessage:(NSString *)message;
 
+/**
+ Convenience method that wraps failure(error) in dispatch_async(main_queue)
+ and ensures that the error is copied before sending back to callee -- to ensure
+ it doesn't get nil'ed out by the next command before the callee has a chance
+ to read the error.
+ */
+- (void)returnFailure:(void (^)(NSError *error))failure;
+
 @end
 
 @implementation FTPClient
@@ -97,8 +105,7 @@
     int stat = FtpSize(cPath, &bytes, FTPLIB_BINARY, conn);
     FtpQuit(conn);
     if (stat == 0) {
-        FKLogError(@"SIZE %@", path);
-        self.lastError = [NSError FTPKitErrorWithCode:451];
+        FKLogError(@"File most likely does not exist %@", path);
         return -1;
     }
     FKLogDebug(@"%@ bytes %d", path, bytes);
@@ -139,6 +146,11 @@
         self.lastError = error;
         return nil;
     }
+    /**
+     Please note: If there are no contents in the folder OR if the folder does
+     not exist data.bytes _will_ be 0. Therefore, you can not use this method to
+     determine if a directory exists!
+     */
     [[NSFileManager defaultManager] removeItemAtPath:tmpPath error:&error];
     // Log the error, but do not fail.
     if (error) {
@@ -157,9 +169,7 @@
                 success(contents);
             });
         } else if (! contents && failure) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                failure(_lastError);
-            });
+            [self returnFailure:failure];
         }
     });
 }
@@ -202,9 +212,7 @@
                 success();
             });
         } else if (! ret && failure) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                failure(_lastError);
-            });
+            [self returnFailure:failure];
         }
     });
 }
@@ -239,9 +247,7 @@
                 success();
             });
         } else if (! ret && failure) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                failure(_lastError);
-            });
+            [self returnFailure:failure];
         }
     });
 }
@@ -281,9 +287,7 @@
                 success();
             });
         } else if (! ret && failure) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                failure(_lastError);
-            });
+            [self returnFailure:failure];
         }
     });
 }
@@ -337,9 +341,7 @@
                 success();
             });
         } else if (! ret && failure) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                failure(_lastError);
-            });
+            [self returnFailure:failure];
         }
     });
 }
@@ -385,9 +387,7 @@
                 success();
             });
         } else if (! ret && failure) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                failure(_lastError);
-            });
+            [self returnFailure:failure];
         }
     });
 }
@@ -418,9 +418,7 @@
                 success();
             });
         } else if (! ret && failure) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                failure(_lastError);
-            });
+            [self returnFailure:failure];
         }
     });
 }
@@ -453,9 +451,7 @@
                 success();
             });
         } else if (! ret && failure) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                failure(_lastError);
-            });
+            [self returnFailure:failure];
         }
     });
 }
@@ -600,12 +596,108 @@
     return date;
 }
 
+- (void)lastModifiedAtPath:(NSString *)remotePath success:(void (^)(NSDate *))success failure:(void (^)(NSError *))failure
+{
+    dispatch_async(_queue, ^{
+        NSDate *date = [self lastModifiedAtPath:remotePath];
+        if (! _lastError && success) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                success(date);
+            });
+        } else if (_lastError && failure) {
+            [self returnFailure:failure];
+        }
+    });
+}
+
 - (BOOL)directoryExistsAtPath:(NSString *)remotePath
 {
-    NSArray *contents = [self listContentsAtPath:remotePath showHiddenFiles:NO];
-    if (contents)
+    /**
+     Test the directory by changing to the directory. If the process succeeds
+     then the directory exists.
+     
+     The process is to get the current working directory and change _back_ to
+     the previous current working directory. There is a possibility that the
+     second changeDirectoryToPath: may fail! This is really the price we pay
+     for this command as there is no other accurate way to determine this.
+     
+     Using listContentsAtPath:showHiddenFiles: will fail as it will return empty
+     contents even if the directory doesn't exist! So long as the command
+     _succeeds_ it will return an empty list.
+     
+    // Get the current working directory. We will change back to this directory
+    // if necessary.
+    NSString *cwd = [self printWorkingDirectory];
+    // No need to continue. We already know the path exists by the fact that we
+    // are currently _in_ the directory.
+    if ([cwd isEqualToString:remotePath])
         return YES;
-    return NO;
+    // Test directory by changing to it.
+    BOOL success = [self changeDirectoryToPath:remotePath];
+    // Attempt to change back to the previous directory.
+    if (success)
+        [self changeDirectoryToPath:cwd];
+    return success;
+     */
+    
+    /**
+     Currently the lib creates a new connection for every command issued.
+     Therefore, it is unnecessary to change back to the original cwd.
+     */
+    BOOL success = [self changeDirectoryToPath:remotePath];
+    return success;
+}
+
+- (void)directoryExistsAtPath:(NSString *)remotePath success:(void (^)(BOOL))success failure:(void (^)(NSError *))failure
+{
+    dispatch_async(_queue, ^{
+        BOOL exists = [self directoryExistsAtPath:remotePath];
+        if (! _lastError && success) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                success(exists);
+            });
+        } else if (_lastError && failure) {
+            [self returnFailure:failure];
+        }
+    });
+}
+
+- (BOOL)changeDirectoryToPath:(NSString *)remotePath
+{
+    netbuf *conn = [self connect];
+    if (conn == NULL)
+        return NO;
+    const char *cPath = [remotePath cStringUsingEncoding:NSUTF8StringEncoding];
+    int stat = FtpChdir(cPath, conn);
+    FtpQuit(conn);
+    if (stat == 0) {
+        self.lastError = [NSError FTPKitErrorWithCode:450];
+        return NO;
+    }
+    return YES;
+}
+
+- (NSString *)printWorkingDirectory
+{
+    netbuf *conn = [self connect];
+    if (conn == NULL)
+        return NO;
+    char cPath[kFTPKitTempBufferSize];
+    int stat = FtpPwd(cPath, kFTPKitTempBufferSize, conn);
+    FtpQuit(conn);
+    if (stat == 0) {
+        self.lastError = [NSError FTPKitErrorWithCode:450];
+        return NO;
+    }
+    return [NSString stringWithCString:cPath encoding:NSUTF8StringEncoding];
+}
+
+- (void)returnFailure:(void (^)(NSError *))failure
+{
+    NSError *error = [_lastError copy];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        failure(error);
+    });
 }
 
 @end
