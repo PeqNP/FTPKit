@@ -644,8 +644,15 @@
      Currently the lib creates a new connection for every command issued.
      Therefore, it is unnecessary to change back to the original cwd.
      */
-    BOOL success = [self changeDirectoryToPath:remotePath];
-    return success;
+    netbuf *conn = [self connect];
+    if (conn == NULL)
+        return NO;
+    const char *cPath = [remotePath cStringUsingEncoding:NSUTF8StringEncoding];
+    int stat = FtpChdir(cPath, conn);
+    FtpQuit(conn);
+    if (stat == 0)
+        return NO;
+    return YES;
 }
 
 - (void)directoryExistsAtPath:(NSString *)remotePath success:(void (^)(BOOL))success failure:(void (^)(NSError *))failure
