@@ -160,6 +160,8 @@
     // @todo listContentsAtPath: w/ space in name.
     // @todo directoryExistsAtPath: w/ space in name.
     // @todo changeDirectoryToPath: w/ space in name.
+    // @todo fileSizeAtPath: w/ space in name.
+    // @todo one more.. can't remember.
     
     [ftp deleteDirectoryAtPath:@"/test" success:^(void) {
         NSLog(@"Success 014");
