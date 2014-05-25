@@ -126,6 +126,41 @@
         NSLog(@"Error: %@", error.localizedDescription);
     }];
     
+    // Add a file that has a space in the name.
+    [ftp uploadFile:localUrl.path to:@"/test/Hello World.tgz" progress:NULL success:^(void) {
+        NSLog(@"Success 013-a");
+    } failure:^(NSError *error) {
+        NSLog(@"Error: %@", error.localizedDescription);
+    }];
+    
+    [ftp chmodPath:@"/test/Hello World.tgz" toMode:777 success:^(void) {
+        NSLog(@"Success 013-b");
+    } failure:^(NSError *error) {
+        NSLog(@"Error: %@", error.localizedDescription);
+    }];
+    
+    [ftp renamePath:@"/test/Hello World.tgz" to:@"/test/eric test.tgz" success:^(void) {
+        NSLog(@"Success 013-c");
+    } failure:^(NSError *error) {
+        NSLog(@"Error: %@", error.localizedDescription);
+    }];
+    
+    [ftp lastModifiedAtPath:@"/test/eric test.tgz" success:^(NSDate *lastModified) {
+        NSLog(@"Success 013-d -- Date: %@", lastModified);
+    } failure:^(NSError *error) {
+        NSLog(@"Error: %@", error.localizedDescription);
+    }];
+    
+    [ftp deleteFileAtPath:@"/test/eric test.tgz" success:^(void) {
+        NSLog(@"Success 013-e");
+    } failure:^(NSError *error) {
+        NSLog(@"Error: %@", error.localizedDescription);
+    }];
+    
+    // @todo listContentsAtPath: w/ space in name.
+    // @todo directoryExistsAtPath: w/ space in name.
+    // @todo changeDirectoryToPath: w/ space in name.
+    
     [ftp deleteDirectoryAtPath:@"/test" success:^(void) {
         NSLog(@"Success 014");
     } failure:^(NSError *error) {

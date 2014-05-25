@@ -129,7 +129,7 @@
     netbuf *conn = [self connect];
     if (conn == NULL)
         return nil;
-    const char *path = [handle.path cStringUsingEncoding:NSUTF8StringEncoding];
+    const char *path = [[handle.path stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding] cStringUsingEncoding:NSUTF8StringEncoding];
     NSString *tmpPath = [self temporaryUrl];
     const char *output = [tmpPath cStringUsingEncoding:NSUTF8StringEncoding];
     int stat = FtpDir(output, path, conn);
@@ -223,7 +223,7 @@
     if (conn == NULL)
         return NO;
     const char *input = [localPath cStringUsingEncoding:NSUTF8StringEncoding];
-    const char *path = [remotePath cStringUsingEncoding:NSUTF8StringEncoding];
+    const char *path = [[remotePath stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding] cStringUsingEncoding:NSUTF8StringEncoding];
     // @todo Send w/ appropriate mode. FTPLIB_ASCII | FTPLIB_BINARY
     int stat = FtpPut(input, path, FTPLIB_BINARY, conn);
     // @todo Use 'progress' block.
@@ -317,7 +317,7 @@
     netbuf *conn = [self connect];
     if (conn == NULL)
         return NO;
-    const char *path = [handle.path cStringUsingEncoding:NSUTF8StringEncoding];
+    const char *path = [[handle.path stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding] cStringUsingEncoding:NSUTF8StringEncoding];
     int stat = 0;
     if (handle.type == FTPHandleTypeDirectory)
         stat = FtpRmdir(path, conn);
@@ -364,7 +364,7 @@
         self.lastError = [[NSError alloc] initWithDomain:FTPErrorDomain code:0 userInfo:userInfo];
         return NO;
     }
-    NSString *command = [NSString stringWithFormat:@"SITE CHMOD %i %@", mode, handle.path];
+    NSString *command = [NSString stringWithFormat:@"SITE CHMOD %i %@", mode, [handle.path stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
     netbuf *conn = [self connect];
     if (conn == NULL)
         return NO;
@@ -397,8 +397,8 @@
     netbuf *conn = [self connect];
     if (conn == NULL)
         return NO;
-    const char *src = [sourcePath cStringUsingEncoding:NSUTF8StringEncoding];
-    const char *dst = [destPath cStringUsingEncoding:NSUTF8StringEncoding];
+    const char *src = [[sourcePath stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding] cStringUsingEncoding:NSUTF8StringEncoding];
+    const char *dst = [[destPath stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding] cStringUsingEncoding:NSUTF8StringEncoding];
     int stat = FtpRename(src, dst, conn);
     FtpQuit(conn);
     if (stat == 0) {
@@ -576,7 +576,7 @@
     netbuf *conn = [self connect];
     if (conn == NULL)
         return nil;
-    const char *cPath = [remotePath cStringUsingEncoding:NSUTF8StringEncoding];
+    const char *cPath = [[remotePath stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding] cStringUsingEncoding:NSUTF8StringEncoding];
     char dt[kFTPKitRequestBufferSize];
     // This is returning FALSE when attempting to create a new folder that exists... why?
     // MDTM does not work with folders. It is meant to be used only for types
@@ -647,7 +647,7 @@
     netbuf *conn = [self connect];
     if (conn == NULL)
         return NO;
-    const char *cPath = [remotePath cStringUsingEncoding:NSUTF8StringEncoding];
+    const char *cPath = [[remotePath stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding] cStringUsingEncoding:NSUTF8StringEncoding];
     int stat = FtpChdir(cPath, conn);
     FtpQuit(conn);
     if (stat == 0)
@@ -674,7 +674,7 @@
     netbuf *conn = [self connect];
     if (conn == NULL)
         return NO;
-    const char *cPath = [remotePath cStringUsingEncoding:NSUTF8StringEncoding];
+    const char *cPath = [[remotePath stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding] cStringUsingEncoding:NSUTF8StringEncoding];
     int stat = FtpChdir(cPath, conn);
     FtpQuit(conn);
     if (stat == 0) {
