@@ -100,7 +100,7 @@
     netbuf *conn = [self connect];
     if (conn == NULL)
         return -1;
-    const char *cPath = [path cStringUsingEncoding:NSUTF8StringEncoding];
+    const char *cPath = [[path stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding] cStringUsingEncoding:NSUTF8StringEncoding];
     unsigned int bytes;
     int stat = FtpSize(cPath, &bytes, FTPLIB_BINARY, conn);
     FtpQuit(conn);
@@ -190,7 +190,7 @@
     if (conn == NULL)
         return NO;
     const char *output = [localPath cStringUsingEncoding:NSUTF8StringEncoding];
-    const char *path = [handle.path cStringUsingEncoding:NSUTF8StringEncoding];
+    const char *path = [[handle.path stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding] cStringUsingEncoding:NSUTF8StringEncoding];
     // @todo Send w/ appropriate mode. FTPLIB_ASCII | FTPLIB_BINARY
     int stat = FtpGet(output, path, FTPLIB_BINARY, conn);
     // @todo Use 'progress' block.
