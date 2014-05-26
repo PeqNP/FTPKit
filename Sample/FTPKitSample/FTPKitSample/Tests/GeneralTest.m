@@ -126,6 +126,89 @@
         NSLog(@"Error: %@", error.localizedDescription);
     }];
     
+    // Add a file that has a space in the name.
+    [ftp uploadFile:localUrl.path to:@"/test/Hello World.tgz" progress:NULL success:^(void) {
+        NSLog(@"Success 013-a");
+    } failure:^(NSError *error) {
+        NSLog(@"Error: %@", error.localizedDescription);
+    }];
+    
+    [ftp chmodPath:@"/test/Hello World.tgz" toMode:777 success:^(void) {
+        NSLog(@"Success 013-b");
+    } failure:^(NSError *error) {
+        NSLog(@"Error: %@", error.localizedDescription);
+    }];
+    
+    [ftp renamePath:@"/test/Hello World.tgz" to:@"/test/eric test.tgz" success:^(void) {
+        NSLog(@"Success 013-c");
+    } failure:^(NSError *error) {
+        NSLog(@"Error: %@", error.localizedDescription);
+    }];
+    
+    [ftp lastModifiedAtPath:@"/test/eric test.tgz" success:^(NSDate *lastModified) {
+        NSLog(@"Success 013-d -- Date: %@", lastModified);
+        long long filesize = [ftp fileSizeAtPath:@"/test/eric test.tgz"];
+        if (filesize > 0) {
+            NSLog(@"Success 013-e -- Size: %llu", filesize);
+        } else {
+            NSLog(@"Error: filesizeAtPath: failed.");
+        }
+    } failure:^(NSError *error) {
+        NSLog(@"Error: %@", error.localizedDescription);
+    }];
+    
+    [ftp listContentsAtPath:@"/test" showHiddenFiles:NO success:^(NSArray *contents) {
+        if (contents.count == 1) {
+            NSLog(@"Success 013-f -- Contents (%@)", ((FTPHandle *)[contents objectAtIndex:0]).name);
+        } else {
+            NSLog(@"Error: Too many folders (%@)", [contents componentsJoinedByString:@", "]);
+        }
+    } failure:^(NSError *error) {
+        NSLog(@"Error: %@", error.localizedDescription);
+    }];
+    
+    [ftp deleteFileAtPath:@"/test/eric test.tgz" success:^(void) {
+        NSLog(@"Success 013-g");
+    } failure:^(NSError *error) {
+        NSLog(@"Error: %@", error.localizedDescription);
+    }];
+    
+    [ftp createDirectoryAtPath:@"/test/Hello World" success:^(void) {
+        NSLog(@"Success 013-h");
+        if ([ftp changeDirectoryToPath:@"/test/Hello World"]) {
+            NSLog(@"Success 013-i");
+        } else {
+            NSLog(@"Error: Failed to change directory w/ space in name");
+        }
+    } failure:^(NSError *error) {
+        NSLog(@"Error: %@", error.localizedDescription);
+    }];
+    
+    [ftp directoryExistsAtPath:@"/test/Hello World" success:^(BOOL exists) {
+        if (exists) {
+            NSLog(@"Success 013-j");
+        } else {
+            NSLog(@"Error: Failed to determine if directory exists w/ space in name");
+        }
+    } failure:^(NSError *error) {
+        NSLog(@"Error: %@", error.localizedDescription);
+    }];
+    
+    // @todo Add contents to this folder before testing.
+    [ftp listContentsAtPath:@"/test/Hello World" showHiddenFiles:NO success:^(NSArray *contents) {
+        NSLog(@"Success 013-k -- Contents.count (%lu)", contents.count);
+    } failure:^(NSError *error) {
+        NSLog(@"Error: %@", error.localizedDescription);
+    }];
+    
+    [ftp deleteDirectoryAtPath:@"/test/Hello World" success:^(void) {
+        NSLog(@"Success 013-l");
+    } failure:^(NSError *error) {
+        NSLog(@"Error: %@", error.localizedDescription);
+    }];
+    
+    // @todo one more.. can't remember.
+    
     [ftp deleteDirectoryAtPath:@"/test" success:^(void) {
         NSLog(@"Success 014");
     } failure:^(NSError *error) {
