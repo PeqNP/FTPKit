@@ -704,13 +704,13 @@
 {
     netbuf *conn = [self connect];
     if (conn == NULL)
-        return NO;
+        return nil;
     char cPath[kFTPKitTempBufferSize];
     int stat = FtpPwd(cPath, kFTPKitTempBufferSize, conn);
     FtpQuit(conn);
     if (stat == 0) {
         self.lastError = [NSError FTPKitErrorWithCode:450];
-        return NO;
+        return nil;
     }
     return [NSString stringWithCString:cPath encoding:NSUTF8StringEncoding];
 }
