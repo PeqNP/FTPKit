@@ -93,7 +93,7 @@
     self = [super init];
 	if (self) {
 		self.credentials = aLocation;
-        self.queue = dispatch_queue_create("NMSFTPQueue", DISPATCH_QUEUE_SERIAL);
+        self.queue = dispatch_queue_create("com.upstart-illustration-llc.FTPKitQueue", DISPATCH_QUEUE_SERIAL);
 	}
 	return self;
 }
