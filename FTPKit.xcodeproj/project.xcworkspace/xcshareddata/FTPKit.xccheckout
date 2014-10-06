@@ -5,34 +5,34 @@
 	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
 	<false/>
 	<key>IDESourceControlProjectIdentifier</key>
-	<string>E93B999A-D4E3-4A79-B06B-F1C6CD684017</string>
+	<string>DC6B3E88-0BDA-4EFA-BC17-D3C7C081565B</string>
 	<key>IDESourceControlProjectName</key>
 	<string>FTPKit</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>2FD5A573-8D63-43F3-8AC6-A05C6A9B05C4</key>
+		<key>E60CA41811954B4B65A8C3425AEDF2C90AD3886E</key>
 		<string>ssh://github.com/PeqNP/FTPKit.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
 	<string>FTPKit.xcodeproj/project.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>2FD5A573-8D63-43F3-8AC6-A05C6A9B05C4</key>
+		<key>E60CA41811954B4B65A8C3425AEDF2C90AD3886E</key>
 		<string>../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
 	<string>ssh://github.com/PeqNP/FTPKit.git</string>
 	<key>IDESourceControlProjectVersion</key>
-	<integer>110</integer>
+	<integer>111</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>2FD5A573-8D63-43F3-8AC6-A05C6A9B05C4</string>
+	<string>E60CA41811954B4B65A8C3425AEDF2C90AD3886E</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>2FD5A573-8D63-43F3-8AC6-A05C6A9B05C4</string>
+			<string>E60CA41811954B4B65A8C3425AEDF2C90AD3886E</string>
 			<key>IDESourceControlWCCName</key>
 			<string>FTPKit</string>
 		</dict>

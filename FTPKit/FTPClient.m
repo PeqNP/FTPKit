@@ -57,6 +57,23 @@
  */
 - (void)failedWithMessage:(NSString *)message;
 
+/**
+ Convenience method that wraps failure(error) in dispatch_async(main_queue)
+ and ensures that the error is copied before sending back to callee -- to ensure
+ it doesn't get nil'ed out by the next command before the callee has a chance
+ to read the error.
+ */
+- (void)returnFailure:(void (^)(NSError *error))failure;
+
+/**
+ URL encode a path.
+ 
+ This method is used only on _existing_ files on the FTP server.
+ 
+ @param path The path to URL encode.
+ */
+- (NSString *)urlEncode:(NSString *)path;
+
 @end
 
 @implementation FTPClient
@@ -87,12 +104,17 @@
 	return [self initWithCredentials:creds];
 }
 
+- (NSString *)urlEncode:(NSString *)path
+{
+    return [path stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+}
+
 - (long long int)fileSizeAtPath:(NSString *)path
 {
     netbuf *conn = [self connect];
     if (conn == NULL)
         return -1;
-    const char *cPath = [path cStringUsingEncoding:NSUTF8StringEncoding];
+    const char *cPath = [[self urlEncode:path] cStringUsingEncoding:NSUTF8StringEncoding];
     unsigned int bytes;
     int stat = FtpSize(cPath, &bytes, FTPLIB_BINARY, conn);
     FtpQuit(conn);
@@ -121,7 +143,7 @@
     netbuf *conn = [self connect];
     if (conn == NULL)
         return nil;
-    const char *path = [handle.path cStringUsingEncoding:NSUTF8StringEncoding];
+    const char *path = [[self urlEncode:handle.path] cStringUsingEncoding:NSUTF8StringEncoding];
     NSString *tmpPath = [self temporaryUrl];
     const char *output = [tmpPath cStringUsingEncoding:NSUTF8StringEncoding];
     int stat = FtpDir(output, path, conn);
@@ -138,6 +160,11 @@
         self.lastError = error;
         return nil;
     }
+    /**
+     Please note: If there are no contents in the folder OR if the folder does
+     not exist data.bytes _will_ be 0. Therefore, you can not use this method to
+     determine if a directory exists!
+     */
     [[NSFileManager defaultManager] removeItemAtPath:tmpPath error:&error];
     // Log the error, but do not fail.
     if (error) {
@@ -156,9 +183,7 @@
                 success(contents);
             });
         } else if (! contents && failure) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                failure(_lastError);
-            });
+            [self returnFailure:failure];
         }
     });
 }
@@ -179,7 +204,7 @@
     if (conn == NULL)
         return NO;
     const char *output = [localPath cStringUsingEncoding:NSUTF8StringEncoding];
-    const char *path = [handle.path cStringUsingEncoding:NSUTF8StringEncoding];
+    const char *path = [[self urlEncode:handle.path] cStringUsingEncoding:NSUTF8StringEncoding];
     // @todo Send w/ appropriate mode. FTPLIB_ASCII | FTPLIB_BINARY
     int stat = FtpGet(output, path, FTPLIB_BINARY, conn);
     // @todo Use 'progress' block.
@@ -201,9 +226,7 @@
                 success();
             });
         } else if (! ret && failure) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                failure(_lastError);
-            });
+            [self returnFailure:failure];
         }
     });
 }
@@ -238,9 +261,7 @@
                 success();
             });
         } else if (! ret && failure) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                failure(_lastError);
-            });
+            [self returnFailure:failure];
         }
     });
 }
@@ -280,9 +301,7 @@
                 success();
             });
         } else if (! ret && failure) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                failure(_lastError);
-            });
+            [self returnFailure:failure];
         }
     });
 }
@@ -312,7 +331,7 @@
     netbuf *conn = [self connect];
     if (conn == NULL)
         return NO;
-    const char *path = [handle.path cStringUsingEncoding:NSUTF8StringEncoding];
+    const char *path = [[self urlEncode:handle.path] cStringUsingEncoding:NSUTF8StringEncoding];
     int stat = 0;
     if (handle.type == FTPHandleTypeDirectory)
         stat = FtpRmdir(path, conn);
@@ -336,9 +355,7 @@
                 success();
             });
         } else if (! ret && failure) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                failure(_lastError);
-            });
+            [self returnFailure:failure];
         }
     });
 }
@@ -361,7 +378,7 @@
         self.lastError = [[NSError alloc] initWithDomain:FTPErrorDomain code:0 userInfo:userInfo];
         return NO;
     }
-    NSString *command = [NSString stringWithFormat:@"SITE CHMOD %i %@", mode, handle.path];
+    NSString *command = [NSString stringWithFormat:@"SITE CHMOD %i %@", mode, [self urlEncode:handle.path]];
     netbuf *conn = [self connect];
     if (conn == NULL)
         return NO;
@@ -384,9 +401,7 @@
                 success();
             });
         } else if (! ret && failure) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                failure(_lastError);
-            });
+            [self returnFailure:failure];
         }
     });
 }
@@ -396,7 +411,9 @@
     netbuf *conn = [self connect];
     if (conn == NULL)
         return NO;
-    const char *src = [sourcePath cStringUsingEncoding:NSUTF8StringEncoding];
+    const char *src = [[self urlEncode:sourcePath] cStringUsingEncoding:NSUTF8StringEncoding];
+    // @note The destination path does not need to be URL encoded. In fact, if
+    // it is, the filename will include the percent escaping!
     const char *dst = [destPath cStringUsingEncoding:NSUTF8StringEncoding];
     int stat = FtpRename(src, dst, conn);
     FtpQuit(conn);
@@ -417,9 +434,7 @@
                 success();
             });
         } else if (! ret && failure) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                failure(_lastError);
-            });
+            [self returnFailure:failure];
         }
     });
 }
@@ -452,9 +467,7 @@
                 success();
             });
         } else if (! ret && failure) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                failure(_lastError);
-            });
+            [self returnFailure:failure];
         }
     });
 }
@@ -579,7 +592,7 @@
     netbuf *conn = [self connect];
     if (conn == NULL)
         return nil;
-    const char *cPath = [remotePath cStringUsingEncoding:NSUTF8StringEncoding];
+    const char *cPath = [[self urlEncode:remotePath] cStringUsingEncoding:NSUTF8StringEncoding];
     char dt[kFTPKitRequestBufferSize];
     // This is returning FALSE when attempting to create a new folder that exists... why?
     // MDTM does not work with folders. It is meant to be used only for types
@@ -599,14 +612,115 @@
     return date;
 }
 
+- (void)lastModifiedAtPath:(NSString *)remotePath success:(void (^)(NSDate *))success failure:(void (^)(NSError *))failure
+{
+    dispatch_async(_queue, ^{
+        NSDate *date = [self lastModifiedAtPath:remotePath];
+        if (! _lastError && success) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                success(date);
+            });
+        } else if (_lastError && failure) {
+            [self returnFailure:failure];
+        }
+    });
+}
+
 - (BOOL)directoryExistsAtPath:(NSString *)remotePath
 {
-    // @note this is a hack until I can implement CWD. You must make sure that
-    // the directory testing is not the current working directory.
-    NSArray *contents = [self listContentsAtPath:remotePath showHiddenFiles:NO];
-    if (contents)
+    /**
+     Test the directory by changing to the directory. If the process succeeds
+     then the directory exists.
+     
+     The process is to get the current working directory and change _back_ to
+     the previous current working directory. There is a possibility that the
+     second changeDirectoryToPath: may fail! This is really the price we pay
+     for this command as there is no other accurate way to determine this.
+     
+     Using listContentsAtPath:showHiddenFiles: will fail as it will return empty
+     contents even if the directory doesn't exist! So long as the command
+     _succeeds_ it will return an empty list.
+     
+    // Get the current working directory. We will change back to this directory
+    // if necessary.
+    NSString *cwd = [self printWorkingDirectory];
+    // No need to continue. We already know the path exists by the fact that we
+    // are currently _in_ the directory.
+    if ([cwd isEqualToString:remotePath])
         return YES;
-    return NO;
+    // Test directory by changing to it.
+    BOOL success = [self changeDirectoryToPath:remotePath];
+    // Attempt to change back to the previous directory.
+    if (success)
+        [self changeDirectoryToPath:cwd];
+    return success;
+     */
+    
+    /**
+     Currently the lib creates a new connection for every command issued.
+     Therefore, it is unnecessary to change back to the original cwd.
+     */
+    netbuf *conn = [self connect];
+    if (conn == NULL)
+        return NO;
+    const char *cPath = [remotePath cStringUsingEncoding:NSUTF8StringEncoding];
+    int stat = FtpChdir(cPath, conn);
+    FtpQuit(conn);
+    if (stat == 0)
+        return NO;
+    return YES;
+}
+
+- (void)directoryExistsAtPath:(NSString *)remotePath success:(void (^)(BOOL))success failure:(void (^)(NSError *))failure
+{
+    dispatch_async(_queue, ^{
+        BOOL exists = [self directoryExistsAtPath:remotePath];
+        if (! _lastError && success) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                success(exists);
+            });
+        } else if (_lastError && failure) {
+            [self returnFailure:failure];
+        }
+    });
+}
+
+- (BOOL)changeDirectoryToPath:(NSString *)remotePath
+{
+    netbuf *conn = [self connect];
+    if (conn == NULL)
+        return NO;
+    const char *cPath = [remotePath cStringUsingEncoding:NSUTF8StringEncoding];
+    int stat = FtpChdir(cPath, conn);
+    FtpQuit(conn);
+    if (stat == 0) {
+        self.lastError = [NSError FTPKitErrorWithCode:450];
+        return NO;
+    }
+    return YES;
+}
+
+- (NSString *)printWorkingDirectory
+{
+    netbuf *conn = [self connect];
+    if (conn == NULL)
+        return nil;
+    char cPath[kFTPKitTempBufferSize];
+    int stat = FtpPwd(cPath, kFTPKitTempBufferSize, conn);
+    FtpQuit(conn);
+    if (stat == 0) {
+        self.lastError = [NSError FTPKitErrorWithCode:450];
+        return nil;
+    }
+    return [NSString stringWithCString:cPath encoding:NSUTF8StringEncoding];
+}
+
+- (void)returnFailure:(void (^)(NSError *))failure
+{
+    NSError *error = [_lastError copy];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        failure(error);
+    });
 }
 
 @end
