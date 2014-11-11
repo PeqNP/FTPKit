@@ -807,7 +807,7 @@ GLOBALDEF int FtpSendCmd(const char *cmd, char expresp, netbuf *nControl)
         fprintf(stderr,"%s\n",cmd);
     if ((strlen(cmd) + 3) > sizeof(buf))
         return 0;
-    sprintf(buf,"%s\r\n",cmd);
+    sprintf(buf,"%s\r\n", cmd);
     if (net_write(nControl->handle,buf,strlen(buf)) <= 0)
     {
         if (ftplib_debug)

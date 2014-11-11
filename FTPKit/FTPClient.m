@@ -241,12 +241,13 @@
     // @todo Send w/ appropriate mode. FTPLIB_ASCII | FTPLIB_BINARY
     int stat = FtpPut(input, path, FTPLIB_BINARY, conn);
     // @todo Use 'progress' block.
+    NSString *response = [NSString stringWithCString:FtpLastResponse(conn) encoding:NSUTF8StringEncoding];
     FtpQuit(conn);
     if (stat == 0) {
         // @todo Why?
         // In my experience this usually fails because the user does not have
         // permissions to access the file.
-        self.lastError = [NSError FTPKitErrorWithCode:451];
+        self.lastError = [NSError FTPKitErrorWithResponse:response];// [NSError FTPKitErrorWithCode:451];
         return NO;
     }
     return YES;

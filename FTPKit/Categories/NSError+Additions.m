@@ -113,4 +113,16 @@ NSString *const FTPErrorDomain = @"FTPKit";
 	return [[NSError alloc] initWithDomain:FTPErrorDomain code:errorCode userInfo:userInfo];
 }
 
++ (NSError *)FTPKitErrorWithResponse:(NSString *)response
+{
+    // Extract the code and message from the reponse message.
+    NSMutableArray *components = [[response componentsSeparatedByString:@" "] mutableCopy];
+    NSInteger code = [components[0] integerValue];
+    [components removeObjectAtIndex:0];
+    NSString *message = [components componentsJoinedByString:@" "];
+    NSDictionary *userInfo = [NSDictionary dictionaryWithObject:message
+                                                         forKey:NSLocalizedDescriptionKey];
+    return [[NSError alloc] initWithDomain:FTPErrorDomain code:code userInfo:userInfo];
+}
+
 @end
