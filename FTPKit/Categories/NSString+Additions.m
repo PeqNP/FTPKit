@@ -24,4 +24,13 @@
     return [NSString FTPKitURLDecodeString:self];
 }
 
+- (BOOL)isIntegerValue
+{
+    NSScanner *scanner = [NSScanner scannerWithString:self];
+    if ([scanner scanInteger:NULL]) {
+        return [scanner isAtEnd];
+    }
+    return NO;
+}
+
 @end
