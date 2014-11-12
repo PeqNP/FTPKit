@@ -1,5 +1,11 @@
+Weid, Nov 12 2014 -- v1.3.1
+========================================
+Fixed
++ Server error messages are now being captured and returned, rather than
+guessing what the error is.
+
 Sun, May 25 2014 -- v1.3.0
 ========================================
-New:
+New
 + It is no longer necessary to URL encode paths before making calls to library;
 as all paths are now URL encoded internally.

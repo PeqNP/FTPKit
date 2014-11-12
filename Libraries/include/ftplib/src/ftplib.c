@@ -100,7 +100,7 @@ struct NetBuf {
 static char *version =
     "ftplib Release 4.0 07-Jun-2013, copyright 1996-2003, 2013 Thomas Pfau";
 
-GLOBALDEF int ftplib_debug = 0;
+GLOBALDEF int ftplib_debug = 3;
 
 #if defined(NEED_STRDUP)
 /*
@@ -581,7 +581,16 @@ GLOBALDEF int FtpConnect(const char *host, netbuf **nControl)
 {
     int sControl;
     struct sockaddr_in sin;
-    int on=1;
+    int on = 1;
+    /** Timeout after 20 seconds.
+     
+     The link below provides instruction on using select() to monitor
+     connections after a given timeout.
+     http://stackoverflow.com/questions/4181784/how-to-set-socket-timeout-in-c-when-making-multiple-connections
+     
+    struct timeval timeout;
+    timeout.tv_sec = 20;
+    timeout.tv_usec = 0; */
     netbuf *ctrl;
     char *lhost;
     char *pnum;
@@ -684,10 +693,19 @@ GLOBALDEF int FtpConnect(const char *host, netbuf **nControl)
                    SETSOCKOPT_OPTVAL_TYPE &on, sizeof(on)) == -1)
     {
         if (ftplib_debug)
-            perror("setsockopt");
+            perror("setsockopt SO_REUSEADDR");
         net_close(sControl);
         return 0;
     }
+    /** This does not work with the connect() method.
+    if (setsockopt(sControl, SOL_SOCKET, SO_SNDTIMEO,
+                   (char *)&timeout, sizeof(timeout)) < 0)
+    {
+        if (ftplib_debug)
+            perror("setsockopt SO_SNDTIMEO");
+        net_close(sControl);
+        return 0;
+    } */
     if (connect(sControl, (struct sockaddr *)&sin, sizeof(sin)) == -1)
     {
         if (ftplib_debug)
@@ -807,7 +825,7 @@ GLOBALDEF int FtpSendCmd(const char *cmd, char expresp, netbuf *nControl)
         fprintf(stderr,"%s\n",cmd);
     if ((strlen(cmd) + 3) > sizeof(buf))
         return 0;
-    sprintf(buf,"%s\r\n",cmd);
+    sprintf(buf,"%s\r\n", cmd);
     if (net_write(nControl->handle,buf,strlen(buf)) <= 0)
     {
         if (ftplib_debug)

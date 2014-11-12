@@ -93,7 +93,7 @@
     self = [super init];
 	if (self) {
 		self.credentials = aLocation;
-        self.queue = dispatch_queue_create("NMSFTPQueue", DISPATCH_QUEUE_SERIAL);
+        self.queue = dispatch_queue_create("com.upstart-illustration-llc.FTPKitQueue", DISPATCH_QUEUE_SERIAL);
 	}
 	return self;
 }
@@ -147,10 +147,10 @@
     NSString *tmpPath = [self temporaryUrl];
     const char *output = [tmpPath cStringUsingEncoding:NSUTF8StringEncoding];
     int stat = FtpDir(output, path, conn);
+    NSString *response = [NSString stringWithCString:FtpLastResponse(conn) encoding:NSUTF8StringEncoding];
     FtpQuit(conn);
     if (stat == 0) {
-        // @todo Why?
-        self.lastError = [NSError FTPKitErrorWithCode:451];
+        self.lastError = [NSError FTPKitErrorWithResponse:response];
         return nil;
     }
     NSError *error = nil;
@@ -207,11 +207,11 @@
     const char *path = [[self urlEncode:handle.path] cStringUsingEncoding:NSUTF8StringEncoding];
     // @todo Send w/ appropriate mode. FTPLIB_ASCII | FTPLIB_BINARY
     int stat = FtpGet(output, path, FTPLIB_BINARY, conn);
+    NSString *response = [NSString stringWithCString:FtpLastResponse(conn) encoding:NSUTF8StringEncoding];
     // @todo Use 'progress' block.
     FtpQuit(conn);
     if (stat == 0) {
-        // @todo Why?
-        self.lastError = [NSError FTPKitErrorWithCode:451];
+        self.lastError = [NSError FTPKitErrorWithResponse:response];
         return NO;
     }
     return YES;
@@ -241,12 +241,12 @@
     // @todo Send w/ appropriate mode. FTPLIB_ASCII | FTPLIB_BINARY
     int stat = FtpPut(input, path, FTPLIB_BINARY, conn);
     // @todo Use 'progress' block.
+    NSString *response = [NSString stringWithCString:FtpLastResponse(conn) encoding:NSUTF8StringEncoding];
     FtpQuit(conn);
     if (stat == 0) {
-        // @todo Why?
-        // In my experience this usually fails because the user does not have
-        // permissions to access the file.
-        self.lastError = [NSError FTPKitErrorWithCode:451];
+        // Invalid path, wrong permissions, etc. Make sure that permissions are
+        // set corectly on the path AND the path of the initialPath is correct.
+        self.lastError = [NSError FTPKitErrorWithResponse:response];
         return NO;
     }
     return YES;
@@ -283,10 +283,10 @@
         return NO;
     const char *path = [handle.path cStringUsingEncoding:NSUTF8StringEncoding];
     int stat = FtpMkdir(path, conn);
+    NSString *response = [NSString stringWithCString:FtpLastResponse(conn) encoding:NSUTF8StringEncoding];
     FtpQuit(conn);
     if (stat == 0) {
-        // @todo Why?
-        self.lastError = [NSError FTPKitErrorWithCode:451];
+        self.lastError = [NSError FTPKitErrorWithResponse:response];
         return NO;
     }
     return YES;
@@ -337,10 +337,10 @@
         stat = FtpRmdir(path, conn);
     else
         stat = FtpDelete(path, conn);
+    NSString *response = [NSString stringWithCString:FtpLastResponse(conn) encoding:NSUTF8StringEncoding];
     FtpQuit(conn);
     if (stat == 0) {
-        // @todo Why?
-        self.lastError = [NSError FTPKitErrorWithCode:451];
+        self.lastError = [NSError FTPKitErrorWithResponse:response];
         return NO;
     }
     return YES;
@@ -383,10 +383,10 @@
     if (conn == NULL)
         return NO;
     BOOL success = [self sendCommand:command conn:conn];
+    NSString *response = [NSString stringWithCString:FtpLastResponse(conn) encoding:NSUTF8StringEncoding];
     FtpQuit(conn);
     if (! success) {
-        // @todo Why?
-        self.lastError = [NSError FTPKitErrorWithCode:451];
+        self.lastError = [NSError FTPKitErrorWithResponse:response];
         return NO;
     }
     return YES;
@@ -416,10 +416,10 @@
     // it is, the filename will include the percent escaping!
     const char *dst = [destPath cStringUsingEncoding:NSUTF8StringEncoding];
     int stat = FtpRename(src, dst, conn);
+    NSString *response = [NSString stringWithCString:FtpLastResponse(conn) encoding:NSUTF8StringEncoding];
     FtpQuit(conn);
     if (stat == 0) {
-        // @todo Why?
-        self.lastError = [NSError FTPKitErrorWithCode:451];
+        self.lastError = [NSError FTPKitErrorWithResponse:response];
         return NO;
     }
     return YES;
@@ -490,7 +490,8 @@
     }
     stat = FtpLogin(user, pass, conn);
     if (stat == 0) {
-        self.lastError = [NSError FTPKitErrorWithCode:430];
+        NSString *response = [NSString stringWithCString:FtpLastResponse(conn) encoding:NSUTF8StringEncoding];
+        self.lastError = [NSError FTPKitErrorWithResponse:response];
         FtpQuit(conn);
         return NULL;
     }
@@ -501,8 +502,8 @@
 {
     const char *cmd = [command cStringUsingEncoding:NSUTF8StringEncoding];
     if (!FtpSendCmd(cmd, '2', conn)) {
-        // Could also be 451
-        self.lastError = [NSError FTPKitErrorWithCode:550];
+        NSString *response = [NSString stringWithCString:FtpLastResponse(conn) encoding:NSUTF8StringEncoding];
+        self.lastError = [NSError FTPKitErrorWithResponse:response];
         return NO;
     }
     return YES;
@@ -598,9 +599,10 @@
     // MDTM does not work with folders. It is meant to be used only for types
     // of files that can be downloaded using the RETR command.
     int stat = FtpModDate(cPath, dt, kFTPKitRequestBufferSize, conn);
+    NSString *response = [NSString stringWithCString:FtpLastResponse(conn) encoding:NSUTF8StringEncoding];
     FtpQuit(conn);
     if (stat == 0) {
-        self.lastError = [NSError FTPKitErrorWithCode:451];
+        self.lastError = [NSError FTPKitErrorWithResponse:response];
         return nil;
     }
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
@@ -692,9 +694,10 @@
         return NO;
     const char *cPath = [remotePath cStringUsingEncoding:NSUTF8StringEncoding];
     int stat = FtpChdir(cPath, conn);
+    NSString *response = [NSString stringWithCString:FtpLastResponse(conn) encoding:NSUTF8StringEncoding];
     FtpQuit(conn);
     if (stat == 0) {
-        self.lastError = [NSError FTPKitErrorWithCode:450];
+        self.lastError = [NSError FTPKitErrorWithResponse:response];
         return NO;
     }
     return YES;
@@ -707,9 +710,10 @@
         return nil;
     char cPath[kFTPKitTempBufferSize];
     int stat = FtpPwd(cPath, kFTPKitTempBufferSize, conn);
+    NSString *response = [NSString stringWithCString:FtpLastResponse(conn) encoding:NSUTF8StringEncoding];
     FtpQuit(conn);
     if (stat == 0) {
-        self.lastError = [NSError FTPKitErrorWithCode:450];
+        self.lastError = [NSError FTPKitErrorWithResponse:response];
         return nil;
     }
     return [NSString stringWithCString:cPath encoding:NSUTF8StringEncoding];
