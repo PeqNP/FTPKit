@@ -1,4 +1,5 @@
 #import "NSError+Additions.h"
+#import "NSString+Additions.h"
 
 NSString *const FTPErrorDomain = @"FTPKit";
 
@@ -111,6 +112,22 @@ NSString *const FTPErrorDomain = @"FTPKit";
     NSDictionary *userInfo = [NSDictionary dictionaryWithObject:[NSError FTPKitErrorMessageFromCode:errorCode]
                                                          forKey:NSLocalizedDescriptionKey];
 	return [[NSError alloc] initWithDomain:FTPErrorDomain code:errorCode userInfo:userInfo];
+}
+
++ (NSError *)FTPKitErrorWithResponse:(NSString *)response
+{
+    // Extract the code and message from the reponse message.
+    // Ex: '500 Server error'
+    NSMutableArray *components = [[response componentsSeparatedByString:@" "] mutableCopy];
+    NSInteger code = 500;
+    if ([components[0] isIntegerValue]) {
+        code = [components[0] integerValue];
+        [components removeObjectAtIndex:0];
+    }
+    NSString *message = [components componentsJoinedByString:@" "];
+    NSDictionary *userInfo = [NSDictionary dictionaryWithObject:message
+                                                         forKey:NSLocalizedDescriptionKey];
+    return [[NSError alloc] initWithDomain:FTPErrorDomain code:code userInfo:userInfo];
 }
 
 @end
