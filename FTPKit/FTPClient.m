@@ -477,7 +477,8 @@
 - (netbuf *)connect
 {
     self.lastError = nil;
-    const char *host = [_credentials.host cStringUsingEncoding:NSUTF8StringEncoding];
+    NSString *hostString = [NSString stringWithFormat:@"%@:%d",_credentials.host, _credentials.port];
+    const char *host = [hostString cStringUsingEncoding:NSUTF8StringEncoding];
     const char *user = [_credentials.username cStringUsingEncoding:NSUTF8StringEncoding];
     const char *pass = [_credentials.password cStringUsingEncoding:NSUTF8StringEncoding];
     netbuf *conn;
