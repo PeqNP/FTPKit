@@ -519,7 +519,8 @@
 - (NSString *)temporaryUrl
 {
     // Do not use NSURL. It will not allow you to read the file contents.
-    NSString *path = [NSTemporaryDirectory() stringByAppendingPathComponent:@"FTPKit.list"];
+    NSString *uniqueFilename = [[NSUUID UUID].UUIDString stringByAppendingPathExtension:@"list"];
+    NSString *path = [NSTemporaryDirectory() stringByAppendingPathComponent:uniqueFilename];
     //FKLogDebug(@"path: %@", path);
     return path;
 }
