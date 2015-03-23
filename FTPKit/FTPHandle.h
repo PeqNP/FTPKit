@@ -57,6 +57,13 @@ typedef enum {
 - (instancetype)initWithPath:(NSString *)path type:(FTPHandleType)type;
 
 /**
+* Attributes getter — useful when creating a copy of FTPHandle.
+*
+* @return attributes dictionary
+*/
+- (NSDictionary *)attributes;
+
+/**
  If mode set, returns string representation of file permissions.
  
  @param localPath Local path to handle
