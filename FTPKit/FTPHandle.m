@@ -47,7 +47,7 @@
         self.modified = [aAttributes objectForKey:(id)kCFFTPResourceModDate];
 		self.group = [aAttributes objectForKey:(id)kCFFTPResourceGroup];
 		self.link = [aAttributes objectForKey:(id)kCFFTPResourceLink];
-		self.mode = [[aAttributes objectForKey:(id)kCFFTPResourceSize] intValue];
+		self.mode = [[aAttributes objectForKey:(id)kCFFTPResourceMode] intValue];
 		self.name = [aAttributes objectForKey:(id)kCFFTPResourceName];
 		self.owner = [aAttributes objectForKey:(id)kCFFTPResourceOwner];
 		self.size = [[aAttributes objectForKey:(id)kCFFTPResourceSize] unsignedLongLongValue];
