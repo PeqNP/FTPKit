@@ -53,11 +53,7 @@
 		self.size = [[aAttributes objectForKey:(id)kCFFTPResourceSize] unsignedLongLongValue];
 		self.type = [[aAttributes objectForKey:(id)kCFFTPResourceType] intValue];
         
-        if ([aPath hasPrefix:@"/"]) {
-            self.path = [aPath stringByAppendingPathComponent:name];
-        } else {
-            self.path = [NSString stringWithFormat:@"%@/%@", aPath, name];
-        }
+        self.path = [aPath stringByAppendingPathComponent:name];
 	}
 	return self;
 }
