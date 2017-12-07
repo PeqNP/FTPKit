@@ -24,7 +24,7 @@
  Send arbitrary command to the FTP server.
  
  @param command Command to send to the FTP server.
- @param netbuf Connection to FTP server.
+ @param conn Connection to FTP server.
  @return BOOL YES on success. NO otherwise.
  */
 - (BOOL)sendCommand:(NSString *)command conn:(netbuf *)conn;

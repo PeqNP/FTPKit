@@ -59,7 +59,6 @@ typedef enum {
 /**
  If mode set, returns string representation of file permissions.
  
- @param localPath Local path to handle
  @return string representation of permissions.
  */
 - (NSString *)permissions;
