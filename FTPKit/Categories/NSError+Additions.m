@@ -122,11 +122,11 @@ NSString *const FTPErrorDomain = @"FTPKit";
    NSMutableArray *components = [[response componentsSeparatedByString:@" "] mutableCopy];
    NSInteger code = 500;
    BOOL isIntegerValue = NO;
+   
    NSScanner *scanner = [NSScanner scannerWithString:components[0]];
    if ([scanner scanInteger:NULL]) {
       isIntegerValue = [scanner isAtEnd];
    }
-   isIntegerValue = NO;
 
    if ( isIntegerValue) {
       code = [components[0] integerValue];
