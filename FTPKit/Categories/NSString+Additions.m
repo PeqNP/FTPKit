@@ -4,13 +4,15 @@
 
 + (NSString *)FTPKitURLEncodeString:(NSString *)unescaped
 {
-    NSString *result = (__bridge_transfer NSString *)CFURLCreateStringByAddingPercentEscapes(NULL, (__bridge CFStringRef)unescaped, NULL, CFSTR("!*'();:@&=+$,?%#[]\" ") /* Removed '/' */, kCFStringEncodingUTF8);
+//    NSString *result = (__bridge_transfer NSString *)CFURLCreateStringByAddingPercentEscapes(NULL, (__bridge CFStringRef)unescaped, NULL, CFSTR("!*'();:@&=+$,?%#[]\" ") /* Removed '/' */, kCFStringEncodingUTF8);
+   NSString *result = [unescaped stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLHostAllowedCharacterSet]];
     return result;
 }
 
 + (NSString *)FTPKitURLDecodeString:(NSString *)string
 {
-    NSString *result = (__bridge_transfer NSString *)CFURLCreateStringByReplacingPercentEscapesUsingEncoding(NULL, (__bridge CFStringRef)string, CFSTR(""), kCFStringEncodingUTF8);
+//    NSString *result = (__bridge_transfer NSString *)CFURLCreateStringByReplacingPercentEscapesUsingEncoding(NULL, (__bridge CFStringRef)string, CFSTR(""), kCFStringEncodingUTF8);
+   NSString *result = [string stringByRemovingPercentEncoding];
 	return result;
 }
 

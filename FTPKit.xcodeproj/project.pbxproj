@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		072A829B18CC2450001E640B /* NSError+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 072A829818CC2450001E640B /* NSError+Additions.m */; };
-		072A829C18CC2450001E640B /* NSString+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 072A829A18CC2450001E640B /* NSString+Additions.m */; };
 		074A7B5218CAC98F00A03068 /* libFTPKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F27BA1CE1802FE7E00584A9E /* libFTPKit.a */; };
 		076BD40018CD18CC00517DEE /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F27BA1D11802FE7E00584A9E /* Foundation.framework */; };
 		076BD40518CD198D00517DEE /* FTPCredentials.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = F27BA2051802FF1800584A9E /* FTPCredentials.h */; };
@@ -31,14 +30,12 @@
 		54DBC7E31FD94CA8004BA12D /* FTPCredentials.m in Sources */ = {isa = PBXBuildFile; fileRef = F27BA2061802FF1800584A9E /* FTPCredentials.m */; };
 		54DBC7E41FD94CAC004BA12D /* FTPHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = F27BA1FC1802FF1800584A9E /* FTPHandle.m */; };
 		54DBC7E51FD94CB4004BA12D /* NSError+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 072A829818CC2450001E640B /* NSError+Additions.m */; };
-		54DBC7E61FD94CB6004BA12D /* NSString+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 072A829A18CC2450001E640B /* NSString+Additions.m */; };
 		54DBC7E71FD94CBE004BA12D /* ftplib.c in Sources */ = {isa = PBXBuildFile; fileRef = 076BD46118CFB76E00517DEE /* ftplib.c */; };
 		54DBC8281FD977AD004BA12D /* TVFTPKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 54DBC8261FD977AD004BA12D /* TVFTPKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		54DBC82C1FD977BD004BA12D /* FTPClient.m in Sources */ = {isa = PBXBuildFile; fileRef = F27BA1F81802FF1800584A9E /* FTPClient.m */; };
 		54DBC82D1FD977BD004BA12D /* FTPCredentials.m in Sources */ = {isa = PBXBuildFile; fileRef = F27BA2061802FF1800584A9E /* FTPCredentials.m */; };
 		54DBC82E1FD977BD004BA12D /* FTPHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = F27BA1FC1802FF1800584A9E /* FTPHandle.m */; };
 		54DBC82F1FD977CC004BA12D /* NSError+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 072A829818CC2450001E640B /* NSError+Additions.m */; };
-		54DBC8301FD977CC004BA12D /* NSString+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 072A829A18CC2450001E640B /* NSString+Additions.m */; };
 		54DBC8311FD977CC004BA12D /* ftplib.c in Sources */ = {isa = PBXBuildFile; fileRef = 076BD46118CFB76E00517DEE /* ftplib.c */; };
 		54DBC8321FD9798D004BA12D /* FTPKit.h in Headers */ = {isa = PBXBuildFile; fileRef = F27BA1D61802FE7E00584A9E /* FTPKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		54DBC8331FD9798D004BA12D /* FTPClient.h in Headers */ = {isa = PBXBuildFile; fileRef = F27BA1F71802FF1800584A9E /* FTPClient.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -465,7 +462,6 @@
 				54DBC7E21FD94CA5004BA12D /* FTPClient.m in Sources */,
 				54DBC7E41FD94CAC004BA12D /* FTPHandle.m in Sources */,
 				54DBC7E31FD94CA8004BA12D /* FTPCredentials.m in Sources */,
-				54DBC7E61FD94CB6004BA12D /* NSString+Additions.m in Sources */,
 				54DBC7E51FD94CB4004BA12D /* NSError+Additions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -478,7 +474,6 @@
 				54DBC82C1FD977BD004BA12D /* FTPClient.m in Sources */,
 				54DBC82E1FD977BD004BA12D /* FTPHandle.m in Sources */,
 				54DBC82D1FD977BD004BA12D /* FTPCredentials.m in Sources */,
-				54DBC8301FD977CC004BA12D /* NSString+Additions.m in Sources */,
 				54DBC82F1FD977CC004BA12D /* NSError+Additions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -491,7 +486,6 @@
 				F27BA2121802FF1800584A9E /* FTPCredentials.m in Sources */,
 				F27BA20D1802FF1800584A9E /* FTPHandle.m in Sources */,
 				F27BA20B1802FF1800584A9E /* FTPClient.m in Sources */,
-				072A829C18CC2450001E640B /* NSString+Additions.m in Sources */,
 				072A829B18CC2450001E640B /* NSError+Additions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

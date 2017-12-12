@@ -20,6 +20,6 @@
 - (NSString *)FTPKitURLEncodedString;
 - (NSString *)FTPKitURLDecodedString;
 
-- (BOOL)isIntegerValue;
+//- (BOOL)isIntegerValue;
 
 @end
