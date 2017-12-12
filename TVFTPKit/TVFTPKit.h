@@ -16,4 +16,4 @@ FOUNDATION_EXPORT const unsigned char TVFTPKitVersionString[];
 
 // In this header, you should import all the public headers of your framework using statements like #import <TVFTPKit/PublicHeader.h>
 
-#import <FTPKit/FTPKit.h"
+#import "FTPKit.h"

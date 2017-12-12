@@ -844,7 +844,7 @@ GLOBALDEF int FtpLogin(const char *user, const char *pass, netbuf *nControl)
 {
     char tempbuf[64];
 
-    if (((strlen(user) + 7) > sizeof(tempbuf)) ||
+   if (((strlen(user) + 7) > sizeof(tempbuf)) ||
         ((strlen(pass) + 7) > sizeof(tempbuf)))
         return 0;
     sprintf(tempbuf,"USER %s",user);
