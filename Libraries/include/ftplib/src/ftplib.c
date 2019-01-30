@@ -100,7 +100,7 @@ struct NetBuf {
 static char *version =
     "ftplib Release 4.0 07-Jun-2013, copyright 1996-2003, 2013 Thomas Pfau";
 
-GLOBALDEF int ftplib_debug = 3;
+/*GLOBALDEF*/ int ftplib_debug = 3;
 
 #if defined(NEED_STRDUP)
 /*
@@ -371,9 +371,9 @@ static int socket_wait(netbuf *ctl)
  *
  * return -1 on error or bytecount
  */
-static int readline(char *buf, int max, netbuf *ctl)
+static long readline(char *buf, int max, netbuf *ctl)
 {
-    int x, retval = 0;
+    long x, retval = 0;
     char *end, *bp=buf;
     int eof = 0;
 
@@ -448,7 +448,7 @@ static int readline(char *buf, int max, netbuf *ctl)
  *
  * return -1 on error or bytecount
  */
-static int writeline(const char *buf, int len, netbuf *nData)
+static long writeline(const char *buf, long len, netbuf *nData)
 {
     int x, nb=0, w;
     const char *ubp = buf;
@@ -844,7 +844,7 @@ GLOBALDEF int FtpLogin(const char *user, const char *pass, netbuf *nControl)
 {
     char tempbuf[64];
 
-    if (((strlen(user) + 7) > sizeof(tempbuf)) ||
+   if (((strlen(user) + 7) > sizeof(tempbuf)) ||
         ((strlen(pass) + 7) > sizeof(tempbuf)))
         return 0;
     sprintf(tempbuf,"USER %s",user);
@@ -1161,9 +1161,9 @@ GLOBALDEF int FtpAccess(const char *path, int typ, int mode, netbuf *nControl,
 /*
  * FtpRead - read from a data connection
  */
-GLOBALDEF int FtpRead(void *buf, int max, netbuf *nData)
+GLOBALDEF long FtpRead(void *buf, int max, netbuf *nData)
 {
-    int i;
+    long i;
     if (nData->dir != FTPLIB_READ)
         return 0;
     if (nData->buf)
@@ -1194,9 +1194,9 @@ GLOBALDEF int FtpRead(void *buf, int max, netbuf *nData)
 /*
  * FtpWrite - write to a data connection
  */
-GLOBALDEF int FtpWrite(const void *buf, int len, netbuf *nData)
+GLOBALDEF long FtpWrite(const void *buf, long len, netbuf *nData)
 {
-    int i;
+    long i;
     if (nData->dir != FTPLIB_WRITE)
         return 0;
     if (nData->buf)
@@ -1397,7 +1397,7 @@ GLOBALDEF int FtpPwd(char *path, int max, netbuf *nControl)
 static int FtpXfer(const char *localfile, const char *path,
         netbuf *nControl, int typ, int mode)
 {
-    int l,c;
+    long l,c;
     char *dbuf;
     FILE *local = NULL;
     netbuf *nData;
@@ -1440,7 +1440,7 @@ static int FtpXfer(const char *localfile, const char *path,
         {
             if ((c = FtpWrite(dbuf, l, nData)) < l)
             {
-                printf("short write: passed %d, wrote %d\n", l, c);
+                printf("short write: passed %ld, wrote %ld\n", l, c);
                 rv = 0;
                 break;
             }

@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		072A829B18CC2450001E640B /* NSError+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 072A829818CC2450001E640B /* NSError+Additions.m */; };
-		072A829C18CC2450001E640B /* NSString+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 072A829A18CC2450001E640B /* NSString+Additions.m */; };
 		074A7B5218CAC98F00A03068 /* libFTPKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F27BA1CE1802FE7E00584A9E /* libFTPKit.a */; };
 		076BD40018CD18CC00517DEE /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F27BA1D11802FE7E00584A9E /* Foundation.framework */; };
 		076BD40518CD198D00517DEE /* FTPCredentials.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = F27BA2051802FF1800584A9E /* FTPCredentials.h */; };
@@ -22,6 +21,38 @@
 		07F23C4D18CA4C43002BDF93 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07F23C4C18CA4C43002BDF93 /* UIKit.framework */; };
 		07F23C5318CA4C43002BDF93 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 07F23C5118CA4C43002BDF93 /* InfoPlist.strings */; };
 		07F23C5518CA4C43002BDF93 /* FTPKit_Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 07F23C5418CA4C43002BDF93 /* FTPKit_Tests.m */; };
+		54DBC7C11FD949AC004BA12D /* FTPKitMac.h in Headers */ = {isa = PBXBuildFile; fileRef = 54DBC7BF1FD949AC004BA12D /* FTPKitMac.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		54DBC7DE1FD94B44004BA12D /* FTPKit.h in Headers */ = {isa = PBXBuildFile; fileRef = F27BA1D61802FE7E00584A9E /* FTPKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		54DBC7DF1FD94B44004BA12D /* FTPClient.h in Headers */ = {isa = PBXBuildFile; fileRef = F27BA1F71802FF1800584A9E /* FTPClient.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		54DBC7E01FD94B44004BA12D /* FTPCredentials.h in Headers */ = {isa = PBXBuildFile; fileRef = F27BA2051802FF1800584A9E /* FTPCredentials.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		54DBC7E11FD94B44004BA12D /* FTPHandle.h in Headers */ = {isa = PBXBuildFile; fileRef = F27BA1FB1802FF1800584A9E /* FTPHandle.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		54DBC7E21FD94CA5004BA12D /* FTPClient.m in Sources */ = {isa = PBXBuildFile; fileRef = F27BA1F81802FF1800584A9E /* FTPClient.m */; };
+		54DBC7E31FD94CA8004BA12D /* FTPCredentials.m in Sources */ = {isa = PBXBuildFile; fileRef = F27BA2061802FF1800584A9E /* FTPCredentials.m */; };
+		54DBC7E41FD94CAC004BA12D /* FTPHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = F27BA1FC1802FF1800584A9E /* FTPHandle.m */; };
+		54DBC7E51FD94CB4004BA12D /* NSError+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 072A829818CC2450001E640B /* NSError+Additions.m */; };
+		54DBC7E71FD94CBE004BA12D /* ftplib.c in Sources */ = {isa = PBXBuildFile; fileRef = 076BD46118CFB76E00517DEE /* ftplib.c */; };
+		54DBC8281FD977AD004BA12D /* TVFTPKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 54DBC8261FD977AD004BA12D /* TVFTPKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		54DBC82C1FD977BD004BA12D /* FTPClient.m in Sources */ = {isa = PBXBuildFile; fileRef = F27BA1F81802FF1800584A9E /* FTPClient.m */; };
+		54DBC82D1FD977BD004BA12D /* FTPCredentials.m in Sources */ = {isa = PBXBuildFile; fileRef = F27BA2061802FF1800584A9E /* FTPCredentials.m */; };
+		54DBC82E1FD977BD004BA12D /* FTPHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = F27BA1FC1802FF1800584A9E /* FTPHandle.m */; };
+		54DBC82F1FD977CC004BA12D /* NSError+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 072A829818CC2450001E640B /* NSError+Additions.m */; };
+		54DBC8311FD977CC004BA12D /* ftplib.c in Sources */ = {isa = PBXBuildFile; fileRef = 076BD46118CFB76E00517DEE /* ftplib.c */; };
+		54DBC8321FD9798D004BA12D /* FTPKit.h in Headers */ = {isa = PBXBuildFile; fileRef = F27BA1D61802FE7E00584A9E /* FTPKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		54DBC8331FD9798D004BA12D /* FTPClient.h in Headers */ = {isa = PBXBuildFile; fileRef = F27BA1F71802FF1800584A9E /* FTPClient.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		54DBC8341FD9798D004BA12D /* FTPCredentials.h in Headers */ = {isa = PBXBuildFile; fileRef = F27BA2051802FF1800584A9E /* FTPCredentials.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		54DBC8351FD9798D004BA12D /* FTPHandle.h in Headers */ = {isa = PBXBuildFile; fileRef = F27BA1FB1802FF1800584A9E /* FTPHandle.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		54F7CC791FF6FC7200185880 /* MobileFTPKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 54F7CC771FF6FC7200185880 /* MobileFTPKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		54F7CC7D1FF6FCC700185880 /* ftplib.c in Sources */ = {isa = PBXBuildFile; fileRef = 076BD46118CFB76E00517DEE /* ftplib.c */; };
+		54F7CC7E1FF6FCD200185880 /* NSError+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 072A829818CC2450001E640B /* NSError+Additions.m */; };
+		54F7CC7F1FF6FCE100185880 /* FTPClient.m in Sources */ = {isa = PBXBuildFile; fileRef = F27BA1F81802FF1800584A9E /* FTPClient.m */; };
+		54F7CC801FF6FCE100185880 /* FTPCredentials.m in Sources */ = {isa = PBXBuildFile; fileRef = F27BA2061802FF1800584A9E /* FTPCredentials.m */; };
+		54F7CC811FF6FCE100185880 /* FTPHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = F27BA1FC1802FF1800584A9E /* FTPHandle.m */; };
+		54F7CC821FF6FCF900185880 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F27BA1D11802FE7E00584A9E /* Foundation.framework */; };
+		54F7CC831FF6FD2300185880 /* FTPKit.h in Headers */ = {isa = PBXBuildFile; fileRef = F27BA1D61802FE7E00584A9E /* FTPKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		54F7CC841FF6FD2700185880 /* FTPClient.h in Headers */ = {isa = PBXBuildFile; fileRef = F27BA1F71802FF1800584A9E /* FTPClient.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		54F7CC851FF6FD2B00185880 /* FTPCredentials.h in Headers */ = {isa = PBXBuildFile; fileRef = F27BA2051802FF1800584A9E /* FTPCredentials.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		54F7CC861FF6FD2F00185880 /* FTPHandle.h in Headers */ = {isa = PBXBuildFile; fileRef = F27BA1FB1802FF1800584A9E /* FTPHandle.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		54F7CC871FF6FD3800185880 /* ftplib.h in Headers */ = {isa = PBXBuildFile; fileRef = 076BD46218CFB76E00517DEE /* ftplib.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F27BA20B1802FF1800584A9E /* FTPClient.m in Sources */ = {isa = PBXBuildFile; fileRef = F27BA1F81802FF1800584A9E /* FTPClient.m */; };
 		F27BA20D1802FF1800584A9E /* FTPHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = F27BA1FC1802FF1800584A9E /* FTPHandle.m */; };
 		F27BA2121802FF1800584A9E /* FTPCredentials.m in Sources */ = {isa = PBXBuildFile; fileRef = F27BA2061802FF1800584A9E /* FTPCredentials.m */; };
@@ -69,6 +100,15 @@
 		07F23C5218CA4C43002BDF93 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		07F23C5418CA4C43002BDF93 /* FTPKit_Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FTPKit_Tests.m; sourceTree = "<group>"; };
 		07F23C5618CA4C43002BDF93 /* FTPKit Tests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FTPKit Tests-Prefix.pch"; sourceTree = "<group>"; };
+		54DBC7BD1FD949AC004BA12D /* FTPKitMac.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = FTPKitMac.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		54DBC7BF1FD949AC004BA12D /* FTPKitMac.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FTPKitMac.h; sourceTree = "<group>"; };
+		54DBC7C01FD949AC004BA12D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		54DBC8241FD977AD004BA12D /* TVFTPKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TVFTPKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		54DBC8261FD977AD004BA12D /* TVFTPKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TVFTPKit.h; sourceTree = "<group>"; };
+		54DBC8271FD977AD004BA12D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		54F7CC751FF6FC7200185880 /* MobileFTPKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MobileFTPKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		54F7CC771FF6FC7200185880 /* MobileFTPKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MobileFTPKit.h; sourceTree = "<group>"; };
+		54F7CC781FF6FC7200185880 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F27BA1CE1802FE7E00584A9E /* libFTPKit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libFTPKit.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		F27BA1D11802FE7E00584A9E /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		F27BA1D51802FE7E00584A9E /* FTPKit-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FTPKit-Prefix.pch"; sourceTree = "<group>"; };
@@ -90,6 +130,28 @@
 				07F23C4A18CA4C43002BDF93 /* XCTest.framework in Frameworks */,
 				07F23C4D18CA4C43002BDF93 /* UIKit.framework in Frameworks */,
 				07F23C4B18CA4C43002BDF93 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		54DBC7B91FD949AC004BA12D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		54DBC8201FD977AD004BA12D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		54F7CC711FF6FC7200185880 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				54F7CC821FF6FCF900185880 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -159,11 +221,41 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		54DBC7BE1FD949AC004BA12D /* FTPKitMac */ = {
+			isa = PBXGroup;
+			children = (
+				54DBC7BF1FD949AC004BA12D /* FTPKitMac.h */,
+				54DBC7C01FD949AC004BA12D /* Info.plist */,
+			);
+			path = FTPKitMac;
+			sourceTree = "<group>";
+		};
+		54DBC8251FD977AD004BA12D /* TVFTPKit */ = {
+			isa = PBXGroup;
+			children = (
+				54DBC8261FD977AD004BA12D /* TVFTPKit.h */,
+				54DBC8271FD977AD004BA12D /* Info.plist */,
+			);
+			path = TVFTPKit;
+			sourceTree = "<group>";
+		};
+		54F7CC761FF6FC7200185880 /* MobileFTPKit */ = {
+			isa = PBXGroup;
+			children = (
+				54F7CC771FF6FC7200185880 /* MobileFTPKit.h */,
+				54F7CC781FF6FC7200185880 /* Info.plist */,
+			);
+			path = MobileFTPKit;
+			sourceTree = "<group>";
+		};
 		F27BA1C51802FE7E00584A9E = {
 			isa = PBXGroup;
 			children = (
 				F27BA1D31802FE7E00584A9E /* FTPKit */,
 				07F23C4E18CA4C43002BDF93 /* FTPKit Tests */,
+				54DBC7BE1FD949AC004BA12D /* FTPKitMac */,
+				54DBC8251FD977AD004BA12D /* TVFTPKit */,
+				54F7CC761FF6FC7200185880 /* MobileFTPKit */,
 				F27BA1D01802FE7E00584A9E /* Frameworks */,
 				F27BA1CF1802FE7E00584A9E /* Products */,
 			);
@@ -174,6 +266,9 @@
 			children = (
 				F27BA1CE1802FE7E00584A9E /* libFTPKit.a */,
 				07F23C4818CA4C43002BDF93 /* FTPKit Tests.xctest */,
+				54DBC7BD1FD949AC004BA12D /* FTPKitMac.framework */,
+				54DBC8241FD977AD004BA12D /* TVFTPKit.framework */,
+				54F7CC751FF6FC7200185880 /* MobileFTPKit.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -216,6 +311,46 @@
 		};
 /* End PBXGroup section */
 
+/* Begin PBXHeadersBuildPhase section */
+		54DBC7BA1FD949AC004BA12D /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				54DBC7DE1FD94B44004BA12D /* FTPKit.h in Headers */,
+				54DBC7DF1FD94B44004BA12D /* FTPClient.h in Headers */,
+				54DBC7E01FD94B44004BA12D /* FTPCredentials.h in Headers */,
+				54DBC7C11FD949AC004BA12D /* FTPKitMac.h in Headers */,
+				54DBC7E11FD94B44004BA12D /* FTPHandle.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		54DBC8211FD977AD004BA12D /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				54DBC8281FD977AD004BA12D /* TVFTPKit.h in Headers */,
+				54DBC8321FD9798D004BA12D /* FTPKit.h in Headers */,
+				54DBC8331FD9798D004BA12D /* FTPClient.h in Headers */,
+				54DBC8341FD9798D004BA12D /* FTPCredentials.h in Headers */,
+				54DBC8351FD9798D004BA12D /* FTPHandle.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		54F7CC721FF6FC7200185880 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				54F7CC791FF6FC7200185880 /* MobileFTPKit.h in Headers */,
+				54F7CC831FF6FD2300185880 /* FTPKit.h in Headers */,
+				54F7CC841FF6FD2700185880 /* FTPClient.h in Headers */,
+				54F7CC851FF6FD2B00185880 /* FTPCredentials.h in Headers */,
+				54F7CC861FF6FD2F00185880 /* FTPHandle.h in Headers */,
+				54F7CC871FF6FD3800185880 /* ftplib.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
 /* Begin PBXNativeTarget section */
 		07F23C4718CA4C43002BDF93 /* FTPKit Tests */ = {
 			isa = PBXNativeTarget;
@@ -234,6 +369,60 @@
 			productName = "FTPKit Tests";
 			productReference = 07F23C4818CA4C43002BDF93 /* FTPKit Tests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		54DBC7BC1FD949AC004BA12D /* FTPKitMac */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 54DBC7C41FD949AC004BA12D /* Build configuration list for PBXNativeTarget "FTPKitMac" */;
+			buildPhases = (
+				54DBC7B81FD949AC004BA12D /* Sources */,
+				54DBC7B91FD949AC004BA12D /* Frameworks */,
+				54DBC7BA1FD949AC004BA12D /* Headers */,
+				54DBC7BB1FD949AC004BA12D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = FTPKitMac;
+			productName = FTPKitMac;
+			productReference = 54DBC7BD1FD949AC004BA12D /* FTPKitMac.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		54DBC8231FD977AD004BA12D /* TVFTPKit */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 54DBC82B1FD977AD004BA12D /* Build configuration list for PBXNativeTarget "TVFTPKit" */;
+			buildPhases = (
+				54DBC81F1FD977AD004BA12D /* Sources */,
+				54DBC8201FD977AD004BA12D /* Frameworks */,
+				54DBC8211FD977AD004BA12D /* Headers */,
+				54DBC8221FD977AD004BA12D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = TVFTPKit;
+			productName = TVFTPKit;
+			productReference = 54DBC8241FD977AD004BA12D /* TVFTPKit.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		54F7CC741FF6FC7200185880 /* MobileFTPKit */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 54F7CC7C1FF6FC7200185880 /* Build configuration list for PBXNativeTarget "MobileFTPKit" */;
+			buildPhases = (
+				54F7CC701FF6FC7200185880 /* Sources */,
+				54F7CC711FF6FC7200185880 /* Frameworks */,
+				54F7CC721FF6FC7200185880 /* Headers */,
+				54F7CC731FF6FC7200185880 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = MobileFTPKit;
+			productName = MobileFTPKit;
+			productReference = 54F7CC751FF6FC7200185880 /* MobileFTPKit.framework */;
+			productType = "com.apple.product-type.framework";
 		};
 		F27BA1CD1802FE7E00584A9E /* FTPKit */ = {
 			isa = PBXNativeTarget;
@@ -258,11 +447,25 @@
 		F27BA1C61802FE7E00584A9E /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0510;
+				LastUpgradeCheck = 0940;
 				ORGANIZATIONNAME = "Upstart Illustration LLC";
 				TargetAttributes = {
 					07F23C4718CA4C43002BDF93 = {
 						TestTargetID = F27BA1CD1802FE7E00584A9E;
+					};
+					54DBC7BC1FD949AC004BA12D = {
+						CreatedOnToolsVersion = 9.2;
+						DevelopmentTeam = B75KV4ZCCF;
+						ProvisioningStyle = Automatic;
+					};
+					54DBC8231FD977AD004BA12D = {
+						CreatedOnToolsVersion = 9.2;
+						DevelopmentTeam = CL94MF5PCP;
+						ProvisioningStyle = Automatic;
+					};
+					54F7CC741FF6FC7200185880 = {
+						CreatedOnToolsVersion = 9.2;
+						ProvisioningStyle = Automatic;
 					};
 				};
 			};
@@ -280,6 +483,9 @@
 			targets = (
 				F27BA1CD1802FE7E00584A9E /* FTPKit */,
 				07F23C4718CA4C43002BDF93 /* FTPKit Tests */,
+				54DBC7BC1FD949AC004BA12D /* FTPKitMac */,
+				54DBC8231FD977AD004BA12D /* TVFTPKit */,
+				54F7CC741FF6FC7200185880 /* MobileFTPKit */,
 			);
 		};
 /* End PBXProject section */
@@ -290,6 +496,27 @@
 			buildActionMask = 2147483647;
 			files = (
 				07F23C5318CA4C43002BDF93 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		54DBC7BB1FD949AC004BA12D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		54DBC8221FD977AD004BA12D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		54F7CC731FF6FC7200185880 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -304,6 +531,42 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		54DBC7B81FD949AC004BA12D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				54DBC7E71FD94CBE004BA12D /* ftplib.c in Sources */,
+				54DBC7E21FD94CA5004BA12D /* FTPClient.m in Sources */,
+				54DBC7E41FD94CAC004BA12D /* FTPHandle.m in Sources */,
+				54DBC7E31FD94CA8004BA12D /* FTPCredentials.m in Sources */,
+				54DBC7E51FD94CB4004BA12D /* NSError+Additions.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		54DBC81F1FD977AD004BA12D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				54DBC8311FD977CC004BA12D /* ftplib.c in Sources */,
+				54DBC82C1FD977BD004BA12D /* FTPClient.m in Sources */,
+				54DBC82E1FD977BD004BA12D /* FTPHandle.m in Sources */,
+				54DBC82D1FD977BD004BA12D /* FTPCredentials.m in Sources */,
+				54DBC82F1FD977CC004BA12D /* NSError+Additions.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		54F7CC701FF6FC7200185880 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				54F7CC7D1FF6FCC700185880 /* ftplib.c in Sources */,
+				54F7CC7F1FF6FCE100185880 /* FTPClient.m in Sources */,
+				54F7CC7E1FF6FCD200185880 /* NSError+Additions.m in Sources */,
+				54F7CC801FF6FCE100185880 /* FTPCredentials.m in Sources */,
+				54F7CC811FF6FCE100185880 /* FTPHandle.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F27BA1CA1802FE7E00584A9E /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -312,7 +575,6 @@
 				F27BA2121802FF1800584A9E /* FTPCredentials.m in Sources */,
 				F27BA20D1802FF1800584A9E /* FTPHandle.m in Sources */,
 				F27BA20B1802FF1800584A9E /* FTPClient.m in Sources */,
-				072A829C18CC2450001E640B /* NSString+Additions.m in Sources */,
 				072A829B18CC2450001E640B /* NSError+Additions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -355,6 +617,7 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = "FTPKit Tests/FTPKit Tests-Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.upstart-illustration-llc.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = xctest;
 			};
@@ -372,8 +635,259 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "FTPKit Tests/FTPKit Tests-Prefix.pch";
 				INFOPLIST_FILE = "FTPKit Tests/FTPKit Tests-Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.upstart-illustration-llc.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = xctest;
+			};
+			name = Release;
+		};
+		54DBC7C21FD949AC004BA12D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = B75KV4ZCCF;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_VERSION = A;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREFIX_HEADER = "FTPKit/FTPKit-Prefix.pch";
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = FTPKitMac/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "de.schmidt-bilkenroth.FTPKitMac";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				TVOS_DEPLOYMENT_TARGET = 9.0;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		54DBC7C31FD949AC004BA12D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = B75KV4ZCCF;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_VERSION = A;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREFIX_HEADER = "FTPKit/FTPKit-Prefix.pch";
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = FTPKitMac/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = "de.schmidt-bilkenroth.FTPKitMac";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				TVOS_DEPLOYMENT_TARGET = 9.0;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		54DBC8291FD977AD004BA12D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = CL94MF5PCP;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_BITCODE = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_PREFIX_HEADER = "FTPKit/FTPKit-Prefix.pch";
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = TVFTPKit/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "de.schmidt-bilkenroth.TVFTPKit";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = appletvos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 9.0;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		54DBC82A1FD977AD004BA12D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = CL94MF5PCP;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_BITCODE = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_PREFIX_HEADER = "FTPKit/FTPKit-Prefix.pch";
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = TVFTPKit/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = "de.schmidt-bilkenroth.TVFTPKit";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = appletvos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 9.0;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		54F7CC7A1FF6FC7200185880 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_PREFIX_HEADER = "FTPKit/FTPKit-Prefix.pch";
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = MobileFTPKit/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "de.schmidt-bilkenroth.MobileFTPKit";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		54F7CC7B1FF6FC7200185880 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_PREFIX_HEADER = "FTPKit/FTPKit-Prefix.pch";
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = MobileFTPKit/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = "de.schmidt-bilkenroth.MobileFTPKit";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
 			};
 			name = Release;
 		};
@@ -385,17 +899,31 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = NO;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -408,7 +936,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -426,24 +954,37 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = NO;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-all_load",
@@ -468,7 +1009,7 @@
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				LINK_WITH_STANDARD_LIBRARIES = YES;
 				MACH_O_TYPE = staticlib;
-				ONLY_ACTIVE_ARCH = YES;
+				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "-ObjC";
 				PRIVATE_HEADERS_FOLDER_PATH = /usr/local/include;
 				PRODUCT_NAME = FTPKit;
@@ -477,6 +1018,7 @@
 				SKIP_INSTALL = YES;
 				STRIP_STYLE = debugging;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				VALID_ARCHS = "arm64 armv7 armv7s";
 				WRAPPER_EXTENSION = "";
 			};
 			name = Debug;
@@ -506,6 +1048,7 @@
 				SKIP_INSTALL = YES;
 				STRIP_STYLE = debugging;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				VALID_ARCHS = "arm64 armv7 armv7s";
 				WRAPPER_EXTENSION = "";
 			};
 			name = Release;
@@ -518,6 +1061,33 @@
 			buildConfigurations = (
 				07F23C5918CA4C43002BDF93 /* Debug */,
 				07F23C5A18CA4C43002BDF93 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		54DBC7C41FD949AC004BA12D /* Build configuration list for PBXNativeTarget "FTPKitMac" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				54DBC7C21FD949AC004BA12D /* Debug */,
+				54DBC7C31FD949AC004BA12D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		54DBC82B1FD977AD004BA12D /* Build configuration list for PBXNativeTarget "TVFTPKit" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				54DBC8291FD977AD004BA12D /* Debug */,
+				54DBC82A1FD977AD004BA12D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		54F7CC7C1FF6FC7200185880 /* Build configuration list for PBXNativeTarget "MobileFTPKit" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				54F7CC7A1FF6FC7200185880 /* Debug */,
+				54F7CC7B1FF6FC7200185880 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
